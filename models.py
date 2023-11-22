@@ -36,10 +36,14 @@ class User(db.Model):
     email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
     password: Mapped[str] = mapped_column(Text, nullable=False)
-    image_url: Mapped[str] = mapped_column(Text, default="/static/img/default_pic.png")
-    head_image_url: Mapped[str] = mapped_column(Text, default="/static/img/h_pic_.png")
-    bio: Mapped[str] = mapped_column(Text)
-    location: Mapped[str] = mapped_column(String)
+    image_url: Mapped[str] = mapped_column(
+        Text, default="app_routes/static/img/default-pic.png"
+    )
+    head_image_url: Mapped[str] = mapped_column(
+        Text, default="app_routes/static/img/warbler-hero.jpg"
+    )
+    bio: Mapped[str] = mapped_column(Text, default="")
+    location: Mapped[str] = mapped_column(String, default="")
 
     followers = Relationship(
         "User",

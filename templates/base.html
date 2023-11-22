@@ -7,6 +7,11 @@
     <link href="css/style.css" rel="stylesheet" />
   </head>
   <body>
+        {% if user %}
+        <form action="/logout" method="POST">
+            <button>logout</button>
+        </form>
+        {% endif %}
     {% block content %} {% endblock %}
   </body>
 </html>
