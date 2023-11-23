@@ -1,0 +1,52 @@
+body {
+  /* background-color: blue; */
+}
+
+#profile-pic {
+  max-width: 200px;
+  max-height: 200px;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  text-align: center;
+  text-size: 0.1rem;
+}
+
+.stat {
+  padding: 0 1rem 0 1rem;
+}
+
+.profile-pic {
+  max-width: 50px;
+}
+
+.home {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.messages {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 1rem;
+}
+.message {
+  width: 30rem;
+  max-height: 15rem;
+  padding: 1rem;
+}
+
+.home-layout {
+  padding-right: 1rem;
+}
+
+.message-display {
+  padding: 1rem;
+}

@@ -16,6 +16,6 @@
     {% for field in form if field.widget.input_type != "hidden" %}
         {{ field.label }} {{ field }}
     {% endfor %}
-    <button>Sign Up</button>
+    <button class="btn btn-primary">Sign Up</button>
 </form>
 {% endblock %}

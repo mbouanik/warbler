@@ -1,7 +1,8 @@
 from flask import Blueprint, redirect, render_template, url_for, session
+from wtforms.i18n import messages_path
 from init import db
 from models import User, Message, Follows, Likes
-from forms import LoginForm, UserForm
+from forms import LoginForm, MessageForm, UserForm
 
 app_routes = Blueprint(
     "app_routes",
@@ -12,12 +13,20 @@ app_routes = Blueprint(
 )
 
 
-@app_routes.route("/")
+@app_routes.route("/", methods=["GET", "POST"])
 def home():
     user_id = session.get("user_id", None)
     if user_id:
+        messages = db.session.execute(
+            db.select(Message).order_by(db.desc(Message.timestamp))
+        ).scalars()
         user = db.get_or_404(User, user_id)
-        return render_template("home.html", user=user)
+        form = MessageForm()
+        if form.validate_on_submit():
+            message = Message(text=form.text.data, user_id=user.id)
+            db.session.add(message)
+            db.session.commit()
+        return render_template("home.html", user=user, form=form, messages=messages)
     return redirect(url_for("app_routes.signup"))
 
 
@@ -48,7 +57,7 @@ def login():
         )
         if user:
             session["user_id"] = user.id
-            return redirect(url_for("home"))
+            return redirect(url_for("app_routes.home"))
 
     return render_template("login.html", form=form)
 
