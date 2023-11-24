@@ -8,23 +8,26 @@
     <link href="{{ url_for('app_routes.static', filename='app.css' ) }}" rel="stylesheet" />
   </head>
   <body>
-        <nav class="navbar bg-body-tertiary sticky-top">
+        <nav class="navbar  bg-body-tertiary sticky-top">
             <div class="container-fluid navbar-right">
 
                 <a href="/"><img class="logo" src="{{ url_for('app_routes.static', filename='img/warbler-logo.png') }}" alt=""></a>
                 {% if user %}
+                <div class="nav-right">
+                     <form class="d-flex" role="search">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
 
-                <form class="d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-                 <a class="" href="/users/{{ user.id }}">
+                    <a class="nav-image" href="/users/{{ user.id }}">
                         <img src="{{ user.image_url }}" alt="" class="rounded-circle logo">
                     </a>
 
-                <form class="logout navbar-form navbar-righr" action="/logout" method="POST">
-                    <button class="btn btn-link text-muted">logout</button>
-                </form>
+                    <form class="logout navbar-form navbar-righr" action="/logout" method="POST">
+                        <button class="btn btn-link text-muted">logout</button>
+                    </form>
+
+                </div>
 
                 {% else %}
                 <div>

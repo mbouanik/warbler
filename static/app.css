@@ -125,5 +125,10 @@ nav {
 .logo {
   height: 2rem;
 }
-.navbar {
+.nav-right {
+  display: flex;
+}
+
+.nav-image {
+  padding-left: 1rem;
 }
