@@ -47,20 +47,7 @@ nav {
 
 .messages {
   border-radius: 1rem;
-
-  /* display: flex; */
-  /* flex-wrap: wrap; */
-  /* flex-direction: column; */
-  /* justify-content: center; */
-  padding-left: 3rem;
-}
-.message {
-  /* border: solid gray 0.1rem; */
-  /* display: flex; */
-  /* flex-wrap: nowrap; */
-  /* width: 30rem; */
-  /* max-height: 15rem; */
-  /* padding: 1rem; */
+  padding-left: 2rem;
 }
 
 .card-link {
@@ -108,6 +95,8 @@ nav {
 
 .card {
   background-color: #c4e0e5;
+  justify-content: center;
+  width: 25rem;
 }
 
 .search {
@@ -134,4 +123,21 @@ nav {
 .logo {
   width: 2rem;
   height: 2rem;
+}
+
+@media (max-width: 993px) {
+  .home {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: cenrer;
+    margin-top: 2rem;
+  }
+
+  .card {
+    width: auto;
+  }
+  .messages {
+    padding-top: 1rem;
+    padding-left: 0;
+  }
 }
