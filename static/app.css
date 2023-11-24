@@ -121,16 +121,17 @@ nav {
   background-color: #4ca1af;
 }
 
-.logo {
+.nav-image {
   height: 2.5rem;
   width: 2.5rem;
   border-radius: 2.5rem;
+  margin-left: 0.5rem;
 }
 .nav-right {
   display: flex;
 }
 
-.nav-image {
-  padding-left: 1rem;
+.logo {
+  width: 2rem;
   height: 2rem;
 }
