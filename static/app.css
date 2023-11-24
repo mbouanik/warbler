@@ -23,7 +23,6 @@ nav {
 .stats {
   display: flex;
   justify-content: center;
-  flex-wrap: nowrap;
   text-align: center;
   text-size: 0.1rem;
 }
@@ -33,14 +32,16 @@ nav {
 }
 
 .profile-pic {
-  max-width: 3rem;
-  max-height: 3rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 4rem;
 }
 
 .home {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
+  /* flex-wrap: wrap; */
+  flex-direction: row;
+  justify-content: cenrer;
   margin-top: 2rem;
 }
 
@@ -62,10 +63,13 @@ nav {
   /* padding: 1rem; */
 }
 
-.home-layout {
-  padding-right: 1rem;
+.card-link {
+  display: flex;
+  flex-direction: row;
 }
-
+.card-link p {
+  margin-top: 2rem;
+}
 .message-display {
   padding: 1rem;
 }
@@ -73,14 +77,12 @@ nav {
 .message-area,
 .timeline-image {
   display: inline-block;
-  width: 75%;
 }
 
 .timeline-image {
   border-radius: 3rem;
   height: 3rem;
   width: 3rem;
-  /* margin-top: -3rem; */
 }
 .timeline-image a {
   text-decoration: none;
@@ -120,7 +122,9 @@ nav {
 }
 
 .logo {
-  height: 2rem;
+  height: 2.5rem;
+  width: 2.5rem;
+  border-radius: 2.5rem;
 }
 .nav-right {
   display: flex;
