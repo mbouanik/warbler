@@ -1,7 +1,20 @@
 body {
-  /* background-color: blue; */
+  background: #4ca1af; /* fallback for old browsers */
+  background: -webkit-linear-gradient(
+    to right,
+    #c4e0e5,
+    #4ca1af
+  ); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(
+    to right,
+    #c4e0e5,
+    #4ca1af
+  ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
-
+nav {
+  background-color: #c4e0e5;
+  border: none;
+}
 #profile-pic {
   max-width: 3rem;
   max-height: 3rem;
@@ -84,7 +97,33 @@ body {
   flex-direction: row;
   flex-wrap: nowrap;
   padding: 1rem;
+  background-color: white;
 }
 .messages-list {
   border-radius: 2rem;
+}
+
+.card {
+  background-color: #c4e0e5;
+}
+
+.search {
+  background-color: white;
+}
+.search:focus {
+  background-color: white;
+}
+
+.btn-search {
+  background-color: #4ca1af;
+}
+
+.logout {
+  float: right;
+  margin: 0;
+}
+.logo {
+  height: 2rem;
+}
+.navbar {
 }
