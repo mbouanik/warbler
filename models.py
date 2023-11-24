@@ -39,7 +39,7 @@ class User(db.Model):
     image_url: Mapped[str] = mapped_column(
         Text, default="app_routes/static/img/default-pic.png"
     )
-    head_image_url: Mapped[str] = mapped_column(
+    header_image_url: Mapped[str] = mapped_column(
         Text, default="app_routes/static/img/warbler-hero.jpg"
     )
     bio: Mapped[str] = mapped_column(Text, default="")

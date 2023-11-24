@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, url_for, session
-from wtforms.i18n import messages_path
+from sqlalchemy import desc, select
 from init import db
 from models import User, Message, Follows, Likes
 from forms import LoginForm, MessageForm, UserForm
@@ -17,15 +17,16 @@ app_routes = Blueprint(
 def home():
     user_id = session.get("user_id", None)
     if user_id:
-        messages = db.session.execute(
-            db.select(Message).order_by(db.desc(Message.timestamp))
-        ).scalars()
         user = db.get_or_404(User, user_id)
         form = MessageForm()
         if form.validate_on_submit():
             message = Message(text=form.text.data, user_id=user.id)
             db.session.add(message)
             db.session.commit()
+            return redirect(url_for("app_routes.home"))
+        messages = db.session.execute(
+            select(Message).order_by(desc(Message.timestamp))
+        ).scalars()
         return render_template("home.html", user=user, form=form, messages=messages)
     return redirect(url_for("app_routes.signup"))
 
@@ -66,3 +67,9 @@ def login():
 def logout():
     session.pop("user_id")
     return redirect(url_for("app_routes.login"))
+
+
+@app_routes.route("/users/<int:user_id>")
+def show_user_profile(user_id):
+    user = db.get_or_404(User, user_id)
+    return render_template("user_profile.html", user=user)
