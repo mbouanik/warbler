@@ -1,41 +1,39 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %}
 {% block content %}
 <div class="home container">
-    <div class="home-layout">
-        <aside class="">
-            <div class="card" style="width: 25rem;">
-                <img src="{{ user.header_image_url }}" class="card-img-top" alt="...">
-                <div class="card-body">
-                    <a href="/users/{{ user.id }}" class="card-link">
-                        <img src="{{ user.image_url }}"
-                            alt="Image for {{ user.username }}"
-                            class="card-image profile-pic rounded-circle">
-                        <p>@{{ user.username }}</p>
-                    </a>
-                </div> 
-                <div class="stats">
-                    <div class="stat">
-                        <p class="text-muted">Messages</p>
-                        <p> <a href="">{{ user.messages | length}} </a> </p> 
-                    </div >
-                <div class="stat">
-                        <p class="text-muted">Following</p>
-                        <p> <a href="">{{ user.following | length}} </a> </p> 
-                    </div>
-                    <div class="stat">
-                        <p class="text-muted">Followers</p>
-                        <p> <a href="">{{ user.followers | length}} </a> </p> 
-                    </div>
-                    <div class="stat">
-                        <p class="text-muted">Likes</p>
-                        <p> <a href="">{{ user.likes | length}} </a> </p> 
-                    </div>
-
-
-                </div>
+    <aside class="">
+        <div class="card" style="width: 25rem;">
+            <img src="{{ user.header_image_url }}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <a href="/users/{{ user.id }}" class="card-link">
+                    <img src="{{ user.image_url }}"
+                        alt="Image for {{ user.username }}"
+                        class="card-image profile-pic rounded-circle">
+                    <p>@{{ user.username }}</p>
+                </a>
             </div> 
-        </aside>
-    </div>
+            <div class="stats">
+                <div class="stat">
+                    <p class="text-muted">Messages</p>
+                    <p> <a href="">{{ user.messages | length}} </a> </p> 
+                </div >
+                <div class="stat">
+                    <p class="text-muted">Following</p>
+                    <p> <a href="">{{ user.following | length}} </a> </p> 
+                </div>
+                <div class="stat">
+                    <p class="text-muted">Followers</p>
+                    <p> <a href="">{{ user.followers | length}} </a> </p> 
+                </div>
+                <div class="stat">
+                    <p class="text-muted">Likes</p>
+                    <p> <a href="">{{ user.likes | length}} </a> </p> 
+                </div>
+
+
+            </div>
+        </div> 
+    </aside>
 
 
     <div class="messages">
