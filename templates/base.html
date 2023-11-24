@@ -13,7 +13,7 @@
             <div class="container-fluid navbar-right">
 
                 <a href="/"><img class="logo" src="{{ url_for('app_routes.static', filename='img/warbler-logo.png') }}" alt=""></a>
-                {% if user %}
+                {% if g.user %}
                 <div class="nav-right">
                      <form class="d-flex" role="search">
                         <input class="form-control" type="search" placeholder="Search" aria-label="Search" id="search">
@@ -23,8 +23,8 @@
                         </button>
                     </form>
 
-                    <a class="nav-image" href="/users/{{ user.id }}">
-                        <img src="{{ user.image_url }}" alt="" class="nav-image ">
+                    <a class="nav-image" href="/users/{{ g.user.id }}">
+                        <img src="{{ g.user.image_url }}" alt="" class="nav-image ">
                     </a>
 
                     <form class="logout navbar-form navbar-righr" action="/logout" method="POST">

@@ -1,5 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for, session
-from sqlalchemy import desc, select
+from flask import Blueprint, redirect, render_template, url_for, session, g
 from init import db
 from models import User, Message, Follows, Likes
 from forms import LoginForm, MessageForm, UserForm
@@ -13,20 +12,30 @@ app_routes = Blueprint(
 )
 
 
+@app_routes.before_request
+def add_user_to_g():
+    user_id = session.get("user_id", None)
+    if user_id:
+        g.user = db.get_or_404(User, user_id)
+    else:
+        g.user = user_id
+
+
 @app_routes.route("/", methods=["GET", "POST"])
 def home():
     user_id = session.get("user_id", None)
     if user_id:
         user = db.get_or_404(User, user_id)
         form = MessageForm()
+        messages = db.session.execute(
+            db.select(Message).order_by(Message.timestamp.desc()).limit(100)
+        ).scalars()
+
         if form.validate_on_submit():
             message = Message(text=form.text.data, user_id=user.id)
             db.session.add(message)
             db.session.commit()
             return redirect(url_for("app_routes.home"))
-        messages = db.session.execute(
-            select(Message).order_by(desc(Message.timestamp))
-        ).scalars()
         return render_template("home.html", user=user, form=form, messages=messages)
     return redirect(url_for("app_routes.signup"))
 

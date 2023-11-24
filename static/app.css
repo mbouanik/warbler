@@ -28,7 +28,7 @@ nav {
 }
 
 .stat {
-  padding: 0 1rem 0 1rem;
+  padding: 1rem;
 }
 
 .profile-pic {
@@ -39,9 +39,6 @@ nav {
 
 .home {
   display: flex;
-  /* flex-wrap: wrap; */
-  flex-direction: row;
-  justify-content: cenrer;
   margin-top: 2rem;
 }
 
@@ -56,6 +53,9 @@ nav {
 }
 .card-link p {
   margin-top: 2rem;
+}
+.card-body {
+  margin-top: -3rem;
 }
 .message-display {
   padding: 1rem;
@@ -91,6 +91,7 @@ nav {
 }
 .messages-list {
   border-radius: 2rem;
+  max-width: 40rem;
 }
 
 .card {
@@ -129,15 +130,49 @@ nav {
   .home {
     display: flex;
     flex-wrap: wrap;
-    justify-content: cenrer;
     margin-top: 2rem;
+    padding: 2rem;
   }
 
   .card {
     width: auto;
+    max-width: 40rem;
   }
   .messages {
     padding-top: 1rem;
     padding-left: 0;
+    width: auto;
   }
+}
+
+.profile-stats {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  text-size: 0.1rem;
+}
+.profile-pic-bg {
+  height: 13rem;
+  width: 13rem;
+  border-radius: 13rem;
+  border: 0.3rem solid white;
+}
+
+.profile-user {
+  position: absolute;
+  /* padding-left: 3rem; */
+  /* margin-left: -50rem; */
+  margin-top: -7rem;
+}
+
+.header {
+  width: auto;
+  max-height: 15rem;
+  height: 15rem;
+}
+.messages-list-profile {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }

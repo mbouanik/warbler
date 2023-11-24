@@ -3,41 +3,39 @@
 <div class="home container">
     <div class="">
         <div class="card">
-            <img src="{{ user.header_image_url }}" class="card-img-top" alt="...">
+            <img src="{{ g.user.header_image_url }}" class="card-img-top" alt="...">
             <div class="card-body">
-                <a href="/users/{{ user.id }}" class="card-link">
-                    <img src="{{ user.image_url }}"
-                        alt="Image for {{ user.username }}"
+                <a href="/users/{{ g.user.id }}" class="card-link">
+                    <img src="{{ g.user.image_url }}"
+                        alt="Image for {{ g.user.username }}"
                         class="card-image profile-pic rounded-circle">
-                    <p>@{{ user.username }}</p>
+                    <p>@{{ g.user.username }}</p>
                 </a>
             </div> 
             <div class="stats">
                 <div class="stat">
-                    <p class="text-muted">Messages</p>
-                    <p> <a href="">{{ user.messages | length}} </a> </p> 
+                    <div class="text-muted"> <small>Message</small></div>
+                    <div> <a href="">{{ g.user.messages | length}} </a> </div> 
                 </div >
                 <div class="stat">
-                    <p class="text-muted">Following</p>
-                    <p> <a href="">{{ user.following | length}} </a> </p> 
+                    <div class="text-muted"><small>Following</small></div>
+                    <div> <a href="">{{ g.user.following | length}} </a> </div> 
                 </div>
                 <div class="stat">
-                    <p class="text-muted">Followers</p>
-                    <p> <a href="">{{ user.followers | length}} </a> </p> 
+                    <div class="text-muted"><small>Followers</small></div>
+                    <div> <a href="">{{ g.user.followers | length}} </a> </div> 
                 </div>
                 <div class="stat">
-                    <p class="text-muted">Likes</p>
-                    <p> <a href="">{{ user.likes | length}} </a> </p> 
+                    <div class="text-muted"><small>Likes</small></div>
+                    <div> <a href="">{{ g.user.likes | length}} </a> </div> 
                 </div>
-
-
             </div>
         </div> 
     </div>
 
 
-    <div class="messages">
-        <div class="messages messages-list">
+    <div class="messages-list">
+        <div class="messages">
             <div class="mb-3">
                 <form action="" method="POST">
                     {{ form.csrf_token }}

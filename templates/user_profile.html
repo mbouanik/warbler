@@ -1,4 +1,56 @@
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
 <h1>{{ user.username }}</h1>
+<div class="header">
+    <img src="{{ user.header_image_url }}" alt="r...">
+</div>
+ <div class="profile-user">
+            <img src="{{ user.image_url }}"
+                alt="Image for {{ user.username }}"
+                class="card-image profile-pic-bg rounded-circle">
+        </div>
+
+    <div class="profile-stats">
+       
+        <div class="stat">
+            <div class="text-muted"> <small>Message</small></div>
+            <div> <a href="">{{ user.messages | length}} </a> </div> 
+        </div >
+        <div class="stat">
+            <div class="text-muted"><small>Following</small></div>
+            <div> <a href="">{{ user.following | length}} </a> </div> 
+        </div>
+        <div class="stat">
+            <div class="text-muted"><small>Followers</small></div>
+            <div> <a href="">{{ user.followers | length}} </a> </div> 
+        </div>
+        <div class="stat">
+            <div class="text-muted"><small>Likes</small></div>
+            <div> <a href="">{{ user.likes | length}} </a> </div> 
+        </div>
+    </div>
+<div class="messages-list-profile">
+  <div class="messages-list">
+        <div class="messages">
+            {% for msg in user.messages %}
+            <div class="message border">
+                <div class="">
+                    <a href="/messages/{{ msg.id  }}"/>
+                    <a class="" href="/users/{{ msg.user.id }}">
+                        <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle profile-pic">
+                    </a>
+                </div>
+                <div class="message-area">
+                    <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+                    <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                    <p>{{ msg.text }}</p>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+  
 {% endblock %}
