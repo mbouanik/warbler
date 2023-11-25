@@ -33,9 +33,9 @@ nav {
 }
 
 .profile-pic {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 4rem;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 5rem;
 }
 
 .home {
@@ -196,6 +196,32 @@ nav {
   width: 40rem;
   max-width: 40rem;
 }
+
+.search-page {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding: 4rem 20rem 4rem 20rem;
+  /* padding: 30rem; */
+  /* margin: auto; */
+}
+.search-card {
+  max-width: 18rem;
+  /* flex-basis: 33.33333%; */
+}
+
+.search-header-image {
+  height: 10rem;
+  max-width: 18rem;
+  max-height: 20rem;
+}
+
+.search {
+  padding: 2rem;
+}
+
 @media (max-width: 1039px) {
   .home {
     display: flex;
@@ -257,5 +283,8 @@ nav {
     width: 12rem;
     border-radius: 12rem;
     border: 0.3rem solid white;
+  }
+  .search-page {
+    padding: 4rem;
   }
 }

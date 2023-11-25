@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% block title %} Search {% endblock %}
+{% block content %}
+<div class="search-page">
+    {% for user in users %}
+    <div class="card  search-card">
+        <img src="{{ user.header_image_url }}" class="search-header-image" alt="...">
+        <div class="card-body">
+           <a href="/users/{{user.id}}">  <img src="{{ user.image_url}}"  class="profile-pic" alt="">
+            <p class="card-text">@{{user.username}}</p></a>
+            <p class="card-text">{{user.bio}}</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+

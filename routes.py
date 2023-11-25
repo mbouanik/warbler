@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, render_template, url_for, session, g
+from flask import Blueprint, redirect, render_template, url_for, session, g, request
 from init import db
 from models import User, Message, Follows, Likes
 from forms import EditUserForm, LoginForm, MessageForm, UserForm
@@ -18,7 +18,7 @@ def add_user_to_g():
     if user_id:
         g.user = db.get_or_404(User, user_id)
     else:
-        g.user = user_id
+        g.user = None
 
 
 @app_routes.route("/", methods=["GET", "POST"])
@@ -104,9 +104,18 @@ def edit_user_profile(user_id):
 
 
 @app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
-def delete_user(user_id):
+def delete_user():
     user = db.get_or_404(User, g.user.id)
     db.session.delete(user)
     db.session.commit()
     session.pop("user_id")
     return redirect(url_for("app_routes.signup"))
+
+
+@app_routes.route("/search")
+def search():
+    name = request.args.get("search")
+    users = db.session.execute(
+        db.select(User).where(User.username.ilike(f"%{name}%"))
+    ).scalars()
+    return render_template("search.html", users=users)
