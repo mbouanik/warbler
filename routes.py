@@ -78,7 +78,13 @@ def logout():
     return redirect(url_for("app_routes.login"))
 
 
-@app_routes.route("/users/<int:user_id>")
+@app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
 def show_user_profile(user_id):
     user = db.get_or_404(User, user_id)
-    return render_template("user_profile.html", user=user)
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(text=form.text.data, user_id=user.id)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+    return render_template("user_profile.html", user=user, form=form)
