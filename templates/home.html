@@ -4,7 +4,7 @@
     <div class="">
         <div class="card homepage-card">
             <img src="{{ g.user.header_image_url }}" class="card-img-top" alt="...">
-            <div class="card-body">
+            <div class="card-body homepage-card-body">
                 <a href="/users/{{ g.user.id }}" class="card-link">
                     <img src="{{ g.user.image_url }}"
                         alt="Image for {{ g.user.username }}"
@@ -40,7 +40,7 @@
                 <form action="" method="POST">
                     {{ form.csrf_token }}
                     {{ form.text(class="form-control", placeholder="What's Happening?") }}
-                    <button class="btn btn-primary btn-sm"> Add message</button>
+                    <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
                 </form>
             </div>
             {% for msg in messages %}

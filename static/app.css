@@ -54,8 +54,8 @@ nav {
 .card-link p {
   margin-top: 2rem;
 }
-.card-body {
-  /* margin-top: -3rem; */
+.homepage-card-body {
+  margin-top: -3rem;
 }
 .message-display {
   padding: 1rem;
@@ -185,5 +185,8 @@ nav {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
+}
+.dropdown {
+  padding-right: 4rem;
 }
