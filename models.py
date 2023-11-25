@@ -45,6 +45,8 @@ class User(db.Model):
     bio: Mapped[str] = mapped_column(Text, default="")
     location: Mapped[str] = mapped_column(String, default="")
 
+    messages = Relationship("Message", backref="user", cascade="all, delete")
+
     followers = Relationship(
         "User",
         secondary="follows",
@@ -98,8 +100,6 @@ class Message(db.Model):
         DateTime, nullable=False, default=datetime.utcnow()
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-
-    user: Mapped[User] = Relationship("User", backref="messages")
 
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)

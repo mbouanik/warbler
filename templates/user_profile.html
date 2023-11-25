@@ -3,31 +3,31 @@
 <div class="header-image  card"  style="width: 100%;">
     <img class="header-img" src="{{ user.header_image_url }}" alt="r...">
 </div>
-       
-    <div class="profile-stats">
-        <div class="profile-user">
-            <img src="{{ user.image_url }}"
-                alt="Image for {{ user.username }}"
-                class="card-image profile-pic-bg rounded-circle">
-        </div>
 
-        <div class="stat profile-stat">
-            <div class="text-muted"> <b>Message</b></div>
-            <div> <a href="">{{ user.messages | length}} </a> </div> 
-        </div >
-        <div class="stat profile-stat">
-            <div class="text-muted"><b>Following</b></div>
-            <div> <a href="">{{ user.following | length}} </a> </div> 
-        </div>
-        <div class="stat profile-stat">
-            <div class="text-muted"><b>Followers</b></div>
-            <div> <a href="">{{ user.followers | length}} </a> </div> 
-        </div>
-        <div class="stat profile-stat">
-            <div class="text-muted"><b>Likes</b></div>
-            <div> <a href="">{{ user.likes | length}} </a> </div> 
-        </div>
+<div class="profile-stats">
+    <div class="profile-user">
+        <img src="{{ user.image_url }}"
+            alt="Image for {{ user.username }}"
+            class="card-image profile-pic-bg rounded-circle">
     </div>
+
+    <div class="stat profile-stat">
+        <div class="text-muted"> <b>Message</b></div>
+        <div> <a href="">{{ user.messages | length}} </a> </div> 
+    </div >
+    <div class="stat profile-stat">
+        <div class="text-muted"><b>Following</b></div>
+        <div> <a href="">{{ user.following | length}} </a> </div> 
+    </div>
+    <div class="stat profile-stat">
+        <div class="text-muted"><b>Followers</b></div>
+        <div> <a href="">{{ user.followers | length}} </a> </div> 
+    </div>
+    <div class="stat profile-stat">
+        <div class="text-muted"><b>Likes</b></div>
+        <div> <a href="">{{ user.likes | length}} </a> </div> 
+    </div>
+</div>
 <div class="profile-messages-info">
     <div class="">
         <div class="card profile-info">
@@ -41,7 +41,6 @@
             </div> 
         </div> 
     </div>
-
 
     <div class="messages-list-profile">
         <div class="messages-list">
@@ -73,5 +72,4 @@
         </div>
     </div>
 </div>
-  
 {% endblock %}

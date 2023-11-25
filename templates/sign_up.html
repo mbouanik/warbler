@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %} Sign Up {% endblock %}
 {% block content %}
-
+<div class="container">
 {% if form.errors %}
     <ul class="errors">
         {% for field_name, field_errors in form.errors|dictsort if field_errors %}
@@ -14,8 +14,10 @@
 <form action="" method="POST">
     {{ form.hidden_tag() }}
     {% for field in form if field.widget.input_type != "hidden" %}
-        {{ field.label }} {{ field }}
+        {{ field.label(class="label-control") }} {{ field(class="form-control") }}
     {% endfor %}
     <button class="btn btn-primary">Sign Up</button>
 </form>
+
+</div>
 {% endblock %}

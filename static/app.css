@@ -87,13 +87,9 @@ nav {
 .message {
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  /* flex-wrap: nowrap; */
   padding: 1rem;
   background-color: white;
-}
-.messages-list {
-  border-radius: 2rem;
-  max-width: 40rem;
 }
 
 .card {
@@ -171,12 +167,19 @@ nav {
   max-height: 30rem;
   height: 30rem;
 }
+
+.messages-list {
+  border-radius: 2rem;
+  max-width: 40rem;
+  width: 40rem;
+}
 .messages-list-profile {
   display: flex;
-  /* justify-content: center; */
+  justify-content: center;
   margin-top: 1rem;
   padding-left: 3rem;
   max-width: 40rem;
+  width: 40rem;
 }
 
 .profile-messages-info {
@@ -193,10 +196,11 @@ nav {
   width: 40rem;
   max-width: 40rem;
 }
-@media (max-width: 993px) {
+@media (max-width: 1039px) {
   .home {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     margin-top: 2rem;
   }
 
@@ -212,12 +216,12 @@ nav {
   .profile-user {
     position: absolute;
     margin-left: 0rem;
-    margin-top: -13.2rem;
+    margin-top: -13rem;
   }
   .profile-info {
     position: relative;
     padding: 1rem;
-    rargin-top: 1rem;
+    margin-top: 1rem;
     margin-left: 0rem;
   }
   .profile-form {
@@ -226,10 +230,17 @@ nav {
   }
   .messages-list-profile {
     display: flex;
-    /* justify-content: center; */
+    justify-content: center;
     margin-top: 1rem;
     padding-left: 0rem;
     max-width: 40rem;
+    /* min-width: 12rem; */
+  }
+  .messages-list {
+    border-radius: 2rem;
+    max-width: 40rem;
+    width: auto;
+    min-width: 25rem;
   }
   .header-img {
     max-height: 30rem;
@@ -238,7 +249,13 @@ nav {
   .header-image {
     width: auto;
     max-height: 30rem;
-    min-height: 13rem;
+    min-height: 12rem;
     height: auto;
+  }
+  .profile-pic-bg {
+    height: 12rem;
+    width: 12rem;
+    border-radius: 12rem;
+    border: 0.3rem solid white;
   }
 }

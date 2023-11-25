@@ -92,7 +92,7 @@ def show_user_profile(user_id):
 
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
 def edit_user_profile(user_id):
-    user = db.get_or_404(User, user_id)
+    user = db.get_or_404(User, g.user.id)
     form = EditUserForm(obj=user)
     if form.validate_on_submit():
         form.populate_obj(user)
@@ -101,3 +101,12 @@ def edit_user_profile(user_id):
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template("edit_user_profile.html", form=form)
+
+
+@app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
+def delete_user(user_id):
+    user = db.get_or_404(User, g.user.id)
+    db.session.delete(user)
+    db.session.commit()
+    session.pop("user_id")
+    return redirect(url_for("app_routes.signup"))
