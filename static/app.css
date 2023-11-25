@@ -160,16 +160,16 @@ nav {
 }
 
 .profile-user {
-  /* position: absolute; */
+  position: absolute;
   /* padding-left: 3rem; */
-  /* margin-left: -50rem; */
+  margin-left: -35rem;
   margin-top: -7rem;
 }
 
 .header {
   width: auto;
-  max-height: 15rem;
-  height: 15rem;
+  max-height: 25rem;
+  height: 25rem;
 }
 .messages-list-profile {
   display: flex;
