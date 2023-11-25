@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block title %} Edit {{ g.user.username }} Profile {% endblock %}
+{% block content %}
+{% if form.errors %}
+<ul class="errors">
+    {% for field_name, field_errors in form.errors|dictsort if field_errors %}
+    {% for error in field_errors %}
+    <li>{{ form[field_name].label }}: {{ error }}</li>
+    {% endfor %}
+    {% endfor %}
+</ul>
+{% endif %}
+<div class="container">
+<form action="" method="POST">
+    {{ form.hidden_tag() }}
+    {% for field in form if field.widget.input_type != "hidden" %}
+    {{ field.label(class="label-control") }} {{ field(class="form-control") }}
+    {% endfor %}
+    <button class="btn btn-primary">Edit</button>
+</form>
+
+</div>
+
+{% endblock %}

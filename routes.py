@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, url_for, session, g
 from init import db
 from models import User, Message, Follows, Likes
-from forms import LoginForm, MessageForm, UserForm
+from forms import EditUserForm, LoginForm, MessageForm, UserForm
 
 app_routes = Blueprint(
     "app_routes",
@@ -88,3 +88,16 @@ def show_user_profile(user_id):
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
     return render_template("user_profile.html", user=user, form=form)
+
+
+@app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+def edit_user_profile(user_id):
+    user = db.get_or_404(User, user_id)
+    form = EditUserForm(obj=user)
+    if form.validate_on_submit():
+        form.populate_obj(user)
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+
+    return render_template("edit_user_profile.html", form=form)

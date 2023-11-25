@@ -8,6 +8,9 @@ class UserForm(FlaskForm):
     email = StringField("Email", validators=[InputRequired(), Email()])
     password = PasswordField("Password", validators=[InputRequired(), Length(min=6)])
     image_url = StringField("(Optional) Image URL")
+    header_image_url = StringField("(Optional) Header Image URL")
+    bio = StringField("(Optional) Bio")
+    location = StringField("(Optional) Location")
 
 
 class LoginForm(FlaskForm):
@@ -17,3 +20,12 @@ class LoginForm(FlaskForm):
 
 class MessageForm(FlaskForm):
     text = TextAreaField("Text", validators=[InputRequired()])
+
+
+class EditUserForm(FlaskForm):
+    username = StringField("Username", validators=[InputRequired()])
+    email = StringField("Email", validators=[InputRequired(), Email()])
+    image_url = StringField("(Optional) Image URL")
+    header_image_url = StringField("(Optional) Header Image URL")
+    bio = StringField("(Optional) Bio")
+    location = StringField("(Optional) Location")

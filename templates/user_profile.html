@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
-<div class="header">
-    <img src="{{ user.header_image_url }}" alt="r...">
+<div class="header-image  card"  style="width: 100%;">
+    <img class="header-img" src="{{ user.header_image_url }}" alt="r...">
 </div>
        
     <div class="profile-stats">
