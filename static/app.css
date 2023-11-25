@@ -204,24 +204,31 @@ nav {
   flex-wrap: wrap;
   gap: 2rem;
   padding: 4rem 20rem 4rem 20rem;
-  /* padding: 30rem; */
-  /* margin: auto; */
 }
 .search-card {
   max-width: 18rem;
-  /* flex-basis: 33.33333%; */
+  min-height: 18rem;
 }
 
 .search-header-image {
-  height: 10rem;
+  height: 8rem;
   max-width: 18rem;
-  max-height: 20rem;
+  max-height: 15rem;
 }
 
 .search {
   padding: 2rem;
 }
 
+.search-profile-img {
+  margin-top: -5rem;
+}
+
+.follow-btn {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -6rem;
+}
 @media (max-width: 1039px) {
   .home {
     display: flex;
