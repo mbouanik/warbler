@@ -28,17 +28,18 @@
             <div> <a href="">{{ user.likes | length}} </a> </div> 
         </div>
     </div>
-<div class="home cantainer">
+<div class="profile-messages-info"=>
     <div class="">
-        <div class="card">
+        <div class="card profile-info">
             <div class="card-body">
+                <p class="card-text">@{{ user.username }}</p>
+                <h4 class="card-title">Bio</h4>
+                <p class="card-text">{{user.bio}}</p>
+                <h4 class="card-title">Location</h4>
+                <p class="card-text">{{ user.location}}</p>
+
             </div> 
         </div> 
-        <p>@{{ user.username }}</p>
-        <h4>Bio</h4>
-        <p>{{user.bio}}</p>
-        <h4>Location</h4>
-        <p>{{ user.location}}</p>
     </div>
 
 

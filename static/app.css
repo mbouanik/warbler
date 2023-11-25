@@ -55,7 +55,7 @@ nav {
   margin-top: 2rem;
 }
 .card-body {
-  margin-top: -3rem;
+  /* margin-top: -3rem; */
 }
 .message-display {
   padding: 1rem;
@@ -134,7 +134,7 @@ nav {
     padding: 2rem;
   }
 
-  .card {
+  .homepage-card {
     width: auto;
     max-width: 40rem;
   }
@@ -161,9 +161,13 @@ nav {
 
 .profile-user {
   position: absolute;
-  /* padding-left: 3rem; */
   margin-left: -35rem;
   margin-top: -7rem;
+}
+
+.profile-info {
+  padding: 1rem;
+  margin-top: 1rem;
 }
 
 .header {
@@ -175,4 +179,11 @@ nav {
   display: flex;
   justify-content: center;
   margin-top: 1rem;
+}
+
+.profile-messages-info {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
 }
