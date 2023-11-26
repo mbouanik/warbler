@@ -159,3 +159,10 @@ def show_user_following(user_id):
 def show_user_followers(user_id):
     user = db.get_or_404(User, user_id)
     return render_template("followers.html", user=user)
+
+
+@app_routes.route("/messages/<int:message_id>")
+def show_message(message_id):
+    msg = db.get_or_404(Message, message_id)
+
+    return render_template("message.html", msg=msg)

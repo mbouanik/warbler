@@ -45,8 +45,8 @@
             </div>
             {% for msg in messages %}
             <div class="message border">
+                <a href="/messages/{{ msg.id  }}">
                 <div class="">
-                    <a href="/messages/{{ msg.id  }}"/>
                     <a class="" href="/users/{{ msg.user.id }}">
                         <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image">
                     </a>
@@ -54,9 +54,10 @@
                 <div class="message-area">
                     <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
                     <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                    <a href="/messages"></a>
                     <p>{{ msg.text }}</p>
                 </div>
-
+                </a>
             </div>
             {% endfor %}
         </div>

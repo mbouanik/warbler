@@ -97,6 +97,10 @@ nav {
   background-color: white;
 }
 
+.message:hover {
+  background-color: #c4e0e5;
+}
+
 .card {
   background-color: #c4e0e5;
   justify-content: center;
@@ -268,6 +272,34 @@ nav {
 
 .card-text {
   min-height: 3rem;
+}
+
+.post-btn {
+  display: flex;
+  justify-content: center;
+}
+.post-btn button {
+  padding: 0 3rem 0 3rem;
+  margin-bottom: 2rem;
+}
+
+#the-count {
+  padding-right: 2rem;
+  float: right;
+}
+.modal-footer {
+  margin-top: 2rem;
+}
+
+.modal-form {
+  height: 10rem;
+}
+
+.message-page {
+  display: flex;
+  justify-content: center;
+  margin-top: 2rem;
+  width: 100%;
 }
 
 @media (max-width: 1039px) {

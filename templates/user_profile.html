@@ -52,24 +52,21 @@
                 <div class="card-text">{{user.bio}}</div>
                 <h4 class="card-title">Location</h4>
                 <div class="card-text">{{ user.location}}</div>
-
             </div> 
+            {% if g.user.id == user.id %}
+            <div class=" post-btn">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Post
+                </button>
+            </div>
+            {% endif %}
         </div> 
     </div>
 
     <div class="messages-list-profile">
         <div class="messages-list">
-            {% if g.user.id == user.id %}
-            <div class="mb-3">
-                <form action="" method="POST" class="profile-form">
-                    {{ form.csrf_token }}
-                    {{ form.text(class="form-control", placeholder="What's Happening?") }}
-                    <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
-                </form>
-            </div>
-            {% endif %}
 
-            {% for msg in user.messages %}
+            {% for msg in user.messages[::-1] %}
             <div class="message border">
                 <div class="">
                     <a href="/messages/{{ msg.id  }}"/>
@@ -87,4 +84,30 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Post a Warble</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+                <div class="modal-body">
+                    {{ form.csrf_token }}
+                    {{ form.text(class="form-control modal-form", placeholder="What's Happening?") }}
+                </div>
+                <div id="the-count">
+                    <span id="current">0</span>
+                    <span id="maximum">/ 148</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary"> Warble <i class="fa-brands fa-twitter"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
