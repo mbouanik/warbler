@@ -5,19 +5,24 @@
  {% for user in users %}
     <div class="card  search-card">
         <img src="{{ user.header_image_url }}" class="search-header-image" alt="...">
-        <div class="card-body">
-            <div class="search-profile-img">
-                <a href="/users/{{user.id}}">  <img src="{{ user.image_url}}"  class="profile-pic" alt="">
-                    <div class="card-text">@{{user.username}}</div></a>
-                <div class="card-text">{{user.bio}}</div>
-                {% if g.user.id != user.id %}
-                <div class="follow-btn">
-                    <form action="">
-                        <button class="btn btn-outline-primary btn-sm"> Follow</button>
-                    </form>
-                </div>
-                {% else %}
-                {% endif %}
+            <div class="card-body">
+                <div class="search-profile-img">
+                    <a href="/users/{{user.id}}">  <img src="{{ user.image_url}}"  class="profile-pic" alt="">
+                        <div class="card-text">@{{user.username}}</div></a>
+                    <div class="card-text">{{user.bio}}</div>
+                    {% if g.user.id != user.id %}
+                    <div class="follow-btn">
+                        {% if user in g.user.followings %}
+                        <form action="/users/unfollow/{{user.id}}" method="POST">
+                            <button class="btn btn-primary btn-sm"> Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form action="/users/follow/{{user.id}}" method="POST">
+                            <button class="btn btn-outline-primary btn-sm"> Follow</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% endif %}
             </div>
         </div>
     </div>

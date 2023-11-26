@@ -129,3 +129,19 @@ def search():
         db.select(User).where(User.username.ilike(f"%{name}%"))
     ).scalars()
     return render_template("search.html", users=users)
+
+
+@app_routes.route("/users/follow/<int:follow_id>", methods=["POST"])
+def follow_user(follow_id):
+    user = db.get_or_404(User, follow_id)
+    g.user.followings.append(user)
+    db.session.commit()
+    return redirect(url_for("app_routes.home"))
+
+
+@app_routes.route("/users/unfollow/<int:follow_id>", methods=["POST"])
+def unfollow_user(follow_id):
+    user = db.get_or_404(User, follow_id)
+    g.user.followings.remove(user)
+    db.session.commit()
+    return redirect(url_for("app_routes.home"))
