@@ -21,6 +21,16 @@ def add_user_to_g():
         g.user = None
 
 
+def do_login(id):
+    user_id = session.get("user_id", None)
+    if not user_id:
+        session["user_id"] = id
+
+
+def do_logout():
+    session.pop("user_id")
+
+
 @app_routes.route("/", methods=["GET", "POST"])
 def home():
     user_id = session.get("user_id", None)
@@ -53,7 +63,7 @@ def signup():
         )
         db.session.add(user)
         db.session.commit()
-        session["user_id"] = user.id
+        do_login(user.id)
         return redirect(url_for("app_routes.home"))
     return render_template("sign_up.html", form=form)
 
@@ -66,7 +76,7 @@ def login():
             username=form.username.data, password=form.password.data
         )
         if user:
-            session["user_id"] = user.id
+            do_login(user.id)
             return redirect(url_for("app_routes.home"))
 
     return render_template("login.html", form=form)
@@ -74,7 +84,7 @@ def login():
 
 @app_routes.route("/logout", methods=["POST"])
 def logout():
-    session.pop("user_id")
+    do_logout()
     return redirect(url_for("app_routes.login"))
 
 
@@ -105,10 +115,10 @@ def edit_user_profile(user_id):
 
 @app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
 def delete_user():
+    do_logout()
     user = db.get_or_404(User, g.user.id)
     db.session.delete(user)
     db.session.commit()
-    session.pop("user_id")
     return redirect(url_for("app_routes.signup"))
 
 
