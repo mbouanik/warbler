@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, url_for, session, g, request
 from init import db
-from models import User, Message, Follows, Likes
+from models import User, Message
 from forms import EditUserForm, LoginForm, MessageForm, UserForm
 
 app_routes = Blueprint(
@@ -28,7 +28,9 @@ def do_login(id):
 
 
 def do_logout():
-    session.pop("user_id")
+    if session.get("user_id", None):
+        del session["user_id"]
+        g.user = None
 
 
 @app_routes.route("/", methods=["GET", "POST"])
@@ -102,7 +104,7 @@ def show_user_profile(user_id):
 
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
 def edit_user_profile(user_id):
-    user = db.get_or_404(User, g.user.id)
+    user = db.get_or_404(User, user_id)
     form = EditUserForm(obj=user)
     if form.validate_on_submit():
         form.populate_obj(user)
@@ -114,9 +116,9 @@ def edit_user_profile(user_id):
 
 
 @app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
-def delete_user():
+def delete_user(user_id):
     do_logout()
-    user = db.get_or_404(User, g.user.id)
+    user = db.get_or_404(User, user_id)
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for("app_routes.signup"))
@@ -145,3 +147,15 @@ def unfollow_user(follow_id):
     g.user.followings.remove(user)
     db.session.commit()
     return redirect(url_for("app_routes.home"))
+
+
+@app_routes.route("/users/followings/<int:user_id>")
+def show_user_following(user_id):
+    user = db.get_or_404(User, user_id)
+    return render_template("followings.html", user=user)
+
+
+@app_routes.route("/users/followers/<int:user_id>")
+def show_user_followers(user_id):
+    user = db.get_or_404(User, user_id)
+    return render_template("followers.html", user=user)

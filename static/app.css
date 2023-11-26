@@ -45,6 +45,7 @@ nav {
   flex-direction: row;
   gap: 2rem;
   margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .messages {
@@ -148,15 +149,18 @@ nav {
 
 .profile-user {
   position: absolute;
-  margin-left: -45rem;
+  margin-left: -60rem;
   margin-top: -7rem;
 }
 
 .profile-info {
   /* position: absolute; */
-  padding: 1rem;
-  margin-top: 1rem;
+  /* padding: 1rem; */
+  /* margin-top: 1rem; */
   /* margin-left: -25rem; */
+  max-width: 18rem;
+  max-height: 18rem;
+  height: 18rem;
 }
 
 .header-image {
@@ -180,18 +184,30 @@ nav {
 .messages-list-profile {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
-  padding-left: 3rem;
-  max-width: 40rem;
-  width: 40rem;
+  /* margin-top: 1rem; */
+  /* padding-left: 3rem; */
+  max-width: 62rem;
+  width: 62rem;
 }
 
 .profile-messages-info {
   display: flex;
   justify-content: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
   flex-wrap: wrap;
+  gap: 2rem;
 }
+
+.profile-follows-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 .dropdown {
   padding-right: 4rem;
 }
@@ -208,6 +224,7 @@ nav {
   justify-content: center;
   /* gap: 3rem; */
   margin-top: 2rem;
+  margin-bottom: 2rem;
   /* padding: 0rer 10rem 0rem 10rem; */
   /* margin: auto; */
 }
@@ -217,6 +234,10 @@ nav {
   grid-template-columns: 1fr 1fr 1fr;
   column-gap: 3rem;
   row-gap: 3rem;
+}
+
+.follow-grid {
+  /* margin-left: 10rem; */
 }
 .search-card {
   /* align-items: stretch; */
@@ -323,5 +344,8 @@ nav {
   }
   .search-page {
     padding: 4rem;
+  }
+  .stat {
+    padding: 0.5rem;
   }
 }

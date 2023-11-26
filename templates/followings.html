@@ -43,8 +43,7 @@
         {% endif %}
     </div>
 </div>
-<div class="profile-messages-info">
-    <div class="">
+<div class="profile-follows-info">
         <div class="card profile-info">
             <div class="card-body">
                 <div class="card-text"> <b>@{{ user.username }} </b></div>
@@ -55,36 +54,40 @@
 
             </div> 
         </div> 
-    </div>
-
-    <div class="messages-list-profile">
-        <div class="messages-list">
-            {% if g.user.id == user.id %}
-            <div class="mb-3">
-                <form action="" method="POST" class="profile-form">
-                    {{ form.csrf_token }}
-                    {{ form.text(class="form-control", placeholder="What's Happening?") }}
-                    <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
-                </form>
-            </div>
-            {% endif %}
-
-            {% for msg in user.messages %}
-            <div class="message border">
-                <div class="">
-                    <a href="/messages/{{ msg.id  }}"/>
-                    <a class="" href="/users/{{ msg.user.id }}">
-                        <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle profile-pic">
-                    </a>
+    <div class="grid-card follow-grid">
+        {% for user in user.followings %}
+        <div class="card search-card">
+            <img
+                src="{{ user.header_image_url }}"
+                class="search-header-image"
+                alt="..."
+            />
+            <div class="card-body">
+                <div class="search-profile-img">
+                    <a href="/users/{{user.id}}">
+                        <img src="{{ user.image_url}}" class="profile-pic" alt="" />
+                        <div class="card-text">@{{user.username}}</div></a
+                    >
+                    <div class="card-text">{{user.bio}}</div>
+                    {% if g.user.id != user.id %}
+                    <div class="follow-btn">
+                        {% if user in g.user.followings %}
+                        <form action="/users/unfollow/{{user.id}}" method="POST">
+                            <button class="btn btn-primary btn-sm">Unfollow</button>
+                        </form>
+                        {% else %}
+                        <form action="/users/follow/{{user.id}}" method="POST">
+                            <button class="btn btn-outline-primary btn-sm">Follow</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                    {% endif %}
                 </div>
-                <div class="message-area">
-                    <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-                    <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-                    <p>{{ msg.text }}</p>
-                </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
+
 </div>
-{% endblock %}
+    {% endblock %}
+

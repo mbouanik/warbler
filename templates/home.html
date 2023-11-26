@@ -14,16 +14,16 @@
             </div> 
             <div class="stats">
                 <div class="stat">
-                    <div class="text-muted"> <small>Message</small></div>
-                    <div> <a href="">{{ g.user.messages | length}} </a> </div> 
+                    <div class="text-muted"> <small>Messages</small></div>
+                    <div> <a href="/users/{{ g.user.id}}">{{ g.user.messages | length}} </a> </div> 
                 </div >
                 <div class="stat">
                     <div class="text-muted"><small>Following</small></div>
-                    <div> <a href="">{{ g.user.followings | length}} </a> </div> 
+                    <div> <a href="/users/followings/{{ g.user.id }}">{{ g.user.followings | length}} </a> </div> 
                 </div>
                 <div class="stat">
                     <div class="text-muted"><small>Followers</small></div>
-                    <div> <a href="">{{ g.user.followers | length}} </a> </div> 
+                    <div> <a href="/users/followers/{{ g.user.id }}">{{ g.user.followers | length}} </a> </div> 
                 </div>
                 <div class="stat">
                     <div class="text-muted"><small>Likes</small></div>
