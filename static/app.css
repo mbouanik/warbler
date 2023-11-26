@@ -217,17 +217,24 @@ nav {
 }
 
 .search {
-  padding: 2rem;
+  /* padding: 2rem; */
 }
 
 .search-profile-img {
   margin-top: -5rem;
+  /* display: flex; */
+  /* flex-direction: column; */
 }
 
 .follow-btn {
   display: flex;
   justify-content: flex-end;
-  margin-top: -6rem;
+  align-self: flex-end;
+  margin-top: -6.5rem;
+}
+
+.card-text {
+  min-height: 3rem;
 }
 @media (max-width: 1039px) {
   .home {
