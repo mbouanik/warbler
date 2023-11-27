@@ -166,3 +166,11 @@ def show_message(message_id):
     msg = db.get_or_404(Message, message_id)
 
     return render_template("message.html", msg=msg)
+
+
+@app_routes.route("/messages/delete/<int:message_id>", methods=["POST"])
+def delete_message(message_id):
+    msg = db.get_or_404(Message, message_id)
+    db.session.delete(msg)
+    db.session.commit()
+    return redirect(url_for("app_routes.home"))

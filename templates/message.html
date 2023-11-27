@@ -15,6 +15,26 @@
         <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
         <p>{{ msg.text }}</p>
     </div>
+        {% if msg.user.id == g.user.id %}
+        <div>
+            <form action="/messages/delete/{{msg.id}}" method="POST">
+                <button class="btn btn-danger "> Delete</button>
+            </form>
+        </div>
+        {% else %}
+         <div class="">
+            {% if msg.user in g.user.followings %}
+            <form action="/users/unfollow/{{msg.user.id}}" method="POST">
+                <button class="btn btn-primary btn-sm"> Unfollow</button>
+            </form>
+            {% else %}
+            <form action="/users/follow/{{msg.user.id}}" method="POST">
+                <button class="btn btn-outline-primary btn-sm"> Follow</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+
 </div>
 
 </div>

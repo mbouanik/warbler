@@ -46,6 +46,10 @@
             {% for msg in messages %}
             <div class="message border">
                 <a href="/messages/{{ msg.id  }}">
+                <div>
+                    click
+                </div>
+                </a>
                 <div class="">
                     <a class="" href="/users/{{ msg.user.id }}">
                         <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image">
