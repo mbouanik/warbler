@@ -60,6 +60,7 @@ nav {
   display: flex;
   /* flex-wrap: wrap; */
 
+  /* width: 50%; */
   flex-direction: column;
   flex: 1 1 33.333%;
   /* justify-content: space-evenly; */
@@ -203,7 +204,8 @@ nav {
 .messages-list {
   border-radius: 2rem;
   max-width: 40rem;
-  width: 40rem;
+  width: -webkit-fill-available;
+  max-width: 60rem;
 }
 .messages-list-profile {
   display: flex;
@@ -228,7 +230,7 @@ nav {
   /* padding-left: 2rem; */
   /* padding-right: 2rem; */
   flex: 1 1 33.33333%;
-  /* gap: 2rem; */
+  gap: 2rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
 
@@ -268,12 +270,12 @@ nav {
   margin-right: auto;
   /* flex-wrap: wrap; */
   /* flex-direction: row; */
-  justify-content: center;
+  /* justify-content: center; */
   /* justify-content: flex-end; */
   /* padding: 2rem; */
   /* padding-left: 10rem; */
-  padding-left: 2rem;
-  padding-right: 2rem;
+  /* padding-left: 2rem; */
+  /* padding-right: 2rem; */
   flex: 1 1 33.33333%;
   gap: 2.5rem;
   margin-top: 2rem;
@@ -294,7 +296,7 @@ nav {
   flex: 1 1 33.333%;
   /* justify-content: space-evenly; */
   /* flex-basis: 5rem; */
-  justify-content: center;
+  /* justify-content: center; */
   /* flex-flow: row wrap; */
   /* justify-content: flex-end; */
   gap: 2rem;
@@ -461,12 +463,15 @@ nav {
   .messages-list {
     border-radius: 2rem;
     max-width: 40rem;
-    width: auto;
+    /* width: auto;  */
     min-width: 25rem;
+    width: -webkit-fill-available;
+    max-width: 60rem;
+
     /* padding: 2rem; */
   }
   .header-img {
-    max-height: 30rem;
+    max-height: 20rem;
     height: auto;
   }
   .header-image {
