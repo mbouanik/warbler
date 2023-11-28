@@ -29,3 +29,7 @@ class EditUserForm(FlaskForm):
     header_image_url = StringField("(Optional) Header Image URL")
     bio = StringField("(Optional) Bio")
     location = StringField("(Optional) Location")
+
+
+class CommentForm(FlaskForm):
+    text = TextAreaField("Text", validators=[InputRequired()])

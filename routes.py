@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, url_for, session, g, request
 from init import db
 from models import User, Message
-from forms import EditUserForm, LoginForm, MessageForm, UserForm
+from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
 
 app_routes = Blueprint(
     "app_routes",
@@ -167,8 +167,11 @@ def show_user_followers(user_id):
 @app_routes.route("/messages/<int:message_id>")
 def show_message(message_id):
     msg = db.get_or_404(Message, message_id)
+    form = CommentForm()
+    if form.validate_on_submit():
+        pass
 
-    return render_template("message.html", msg=msg)
+    return render_template("message.html", msg=msg, form=form)
 
 
 @app_routes.route("/messages/delete/<int:message_id>", methods=["POST"])
@@ -177,3 +180,9 @@ def delete_message(message_id):
     db.session.delete(msg)
     db.session.commit()
     return redirect(url_for("app_routes.home"))
+
+
+# @app_routes.route("/comments/new/<int:message_id>", methods=["POST"])
+# def add_comment(message_id):
+#     message = db.get_or_404(Message, message_id)
+#     return redirect(url_for("app_routes.show_message", message_id=message_id))

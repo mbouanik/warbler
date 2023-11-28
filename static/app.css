@@ -371,7 +371,9 @@ nav {
   justify-content: center;
   margin-top: 2rem;
 
-  border-radius: 2rer;
+  flex-wrap: wrap;
+  border-radius: 2rem;
+  gap: 2rem;
   /* max-width: 40rem; */
   /* min-width: 25rem; */
   /* width: -webkit-fill-available; */
