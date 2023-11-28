@@ -1,43 +1,41 @@
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     <div class="header-image  card" >
-    <img class="header-img" src="{{ user.header_image_url }}" alt="r...">
-</div>
-
-
-<ul class="nav nav-tabs" id="myTab" role="tablist">
-         <div class="profile-user">
-        <img src="{{ user.image_url }}"
-            alt="Image for {{ user.username }}"
-            class="card-image profile-pic-bg">
+        <img class="header-img" src="{{ user.header_image_url }}" alt="r...">
     </div>
-    <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Messages <div>{{ user.messages | length}}</div></button>
-    </li>
-    <li class="nav-item" role="presentation">
-            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Following <div>{{ user.followings | length}}</div></button>
-    </li>
-    <li class="nav-item" role="presentation">
-            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Followers <div> {{ user.followers | length}}</div></button>
-    </li>
-    <li class="nav-item" role="presentation">
-            <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" > Likes <div>{{ user.likes | length }}</div></button>
-    </li>
-</ul>
- r  <!-- <div class=""> -->
-        <div class="card profile-info">
-            <div class="card-body">
-                <div class="card-text"> <b>@{{ user.username }} </b></div>
-                <h4 class="card-title">Bio</h4>
-                <div class="card-text">{{user.bio}}</div>
-                <h4 class="card-title">Location</h4>
-                <div class="card-text">{{ user.location}}</div>
 
-            </div> 
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <div class="profile-user">
+            <img src="{{ user.image_url }}"
+                alt="Image for {{ user.username }}"
+                class="card-image profile-pic-bg">
+        </div>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages-tab-pane" type="button" role="tab" aria-controls="messages-tab-pane" aria-selected="true">Messages <div>{{ user.messages | length}}</div></button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="followings-tab" data-bs-toggle="tab" data-bs-target="#followings-tab-pane" type="button" role="tab" aria-controls="followings-tab-pane" aria-selected="false">Followings <div>{{ user.followings | length}}</div></button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers-tab-pane" type="button" role="tab" aria-controls="followers-tab-pane" aria-selected="false">Followers <div> {{ user.followers | length}}</div></button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes-tab-pane" type="button" role="tab" aria-controls="likes-tab-pane" aria-selected="false" > Likes <div>{{ user.likes | length }}</div></button>
+        </li>
+    </ul>
+    <div class="card profile-info">
+        <div class="card-body">
+            <div class="card-text"> <b>@{{ user.username }} </b></div>
+            <h4 class="card-title">Bio</h4>
+            <div class="card-text">{{user.bio}}</div>
+            <h4 class="card-title">Location</h4>
+            <div class="card-text">{{ user.location}}</div>
+
         </div> 
-    <!-- </div> -->
+    </div> 
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+        <div class="tab-pane fade show active" id="messages-tab-pane" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
             <ul class="list-group">
                 {% for msg in user.messages %}
                 <li class="list-group-item">
@@ -64,7 +62,7 @@
                 {% endfor %}
             </ul>
         </div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+        <div class="tab-pane fade" id="followings-tab-pane" role="tabpanel" aria-labelledby="followings-tab" tabindex="0">
             <div class="follow-grid">
                 {% for user in user.followings %}
                 <div class="card search-card">
@@ -99,7 +97,7 @@
                 {% endfor %}
             </div>
         </div>
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <div class="tab-pane fade" id="followers-tab-pane" role="tabpanel" aria-labelledby="followers-tab" tabindex="0">
             <div class="follow-grid ">
                 {% for user in user.followers %}
                 <div class="card search-card">
@@ -136,6 +134,6 @@
 
 
         </div>
-        <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+        <div class="tab-pane fade" id="likes-tab-pane" role="tabpanel" aria-labelledby="likes-tab" tabindex="0">...</div>
     </div>
-    {% endblock %}
+{% endblock %}
