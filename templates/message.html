@@ -3,18 +3,18 @@
 {% block content %}
 
 <div class="message-page">
-<div class="message border">
-    <div class="">
-        <a href="/messages/{{ msg.id  }}"/>
-        <a class="" href="/users/{{ msg.user.id }}">
-            <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle profile-pic">
-        </a>
-    </div>
-    <div class="message-area">
-        <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-        <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-        <p>{{ msg.text }}</p>
-    </div>
+    <div class="message border">
+        <div class="">
+            <a href="/messages/{{ msg.id  }}"/>
+            <a class="" href="/users/{{ msg.user.id }}">
+                <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle profile-pic">
+            </a>
+        </div>
+        <div class="message-area">
+            <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+            <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+            <p>{{ msg.text }}</p>
+        </div>
         {% if msg.user.id == g.user.id %}
         <div>
             <form action="/messages/delete/{{msg.id}}" method="POST">
@@ -22,7 +22,7 @@
             </form>
         </div>
         {% else %}
-         <div class="">
+        <div class="">
             {% if msg.user in g.user.followings %}
             <form action="/users/unfollow/{{msg.user.id}}" method="POST">
                 <button class="btn btn-primary btn-sm"> Unfollow</button>
@@ -35,7 +35,7 @@
         </div>
         {% endif %}
 
-</div>
+    </div>
 
 </div>
 {% endblock %}

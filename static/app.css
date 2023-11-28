@@ -73,6 +73,8 @@ nav {
   /* border-radius: 1rem; */
   /* padding-left: 2rem; */
   /* width: 100%; */
+  max-width: 40rem;
+  width: -webkit-fill-available;
 }
 
 .card-link {
@@ -118,6 +120,8 @@ nav {
   /* flex-wrap: nowrap; */
   padding: 1rem;
   background-color: white;
+  max-width: 60rem;
+  width: -webkit-fill-available;
 }
 
 .message:hover {
@@ -365,7 +369,12 @@ nav {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
-  width: 100%;
+
+  border-radius: 2rer;
+  /* max-width: 40rem; */
+  /* min-width: 25rem; */
+  /* width: -webkit-fill-available; */
+  /* max-width: 60rem; */
 }
 
 #messages .message-link {
