@@ -73,7 +73,7 @@ nav {
   /* border-radius: 1rem; */
   /* padding-left: 2rem; */
   /* width: 100%; */
-  max-width: 40rem;
+  max-width: 60rem;
   width: -webkit-fill-available;
 }
 
@@ -210,6 +210,7 @@ nav {
   max-width: 40rem;
   width: -webkit-fill-available;
   max-width: 60rem;
+  justify-content: center;
 }
 .messages-list-profile {
   display: flex;
@@ -223,8 +224,8 @@ nav {
 .profile-messages-info {
   display: flex;
   /* flex-flow: row wrap; */
-  margin-left: auto;
-  margin-right: auto;
+  /* margin-left: auto; */
+  /* margin-right: auto; */
   flex-wrap: wrap;
   /* flex-direction: row; */
   justify-content: center;
