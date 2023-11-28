@@ -186,3 +186,16 @@ def delete_message(message_id):
 # def add_comment(message_id):
 #     message = db.get_or_404(Message, message_id)
 #     return redirect(url_for("app_routes.show_message", message_id=message_id))
+
+
+@app_routes.route("/user/<int:user_id>", methods=["GET", "POST"])
+def one_profile(user_id):
+    user = db.get_or_404(User, user_id)
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(text=form.text.data, user_id=user.id)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.one_profile", user_id=user.id))
+
+    return render_template("one_profile.html", user=user)

@@ -425,6 +425,10 @@ nav {
   width: auto;
 }
 
+#myTab {
+  background-color: white;
+}
+
 @media (max-width: 1039px) {
   .grid-card {
     display: flex;
