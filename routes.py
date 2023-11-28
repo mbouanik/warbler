@@ -49,45 +49,48 @@ def home():
             db.session.commit()
             return redirect(url_for("app_routes.home"))
         return render_template("home.html", user=user, form=form, messages=messages)
-    return redirect(url_for("app_routes.signup"))
+    return redirect(url_for("app_routes.authenticate"))
 
 
-@app_routes.route("/signup", methods=["GET", "POST"])
-def signup():
-    form = UserForm()
+@app_routes.route("/authenticate", methods=["GET", "POST"])
+def authenticate():
+    signup_form = UserForm()
+    login_form = LoginForm()
 
-    if form and form.validate_on_submit():
+    if signup_form and signup_form.validate_on_submit():
         user = User.sign_up(
-            username=form.username.data,
-            email=form.email.data,
-            password=form.password.data,
-            image_url=form.image_url.data,
+            username=signup_form.username.data,
+            email=signup_form.email.data,
+            password=signup_form.password.data,
+            image_url=signup_form.image_url.data,
         )
         db.session.add(user)
         db.session.commit()
         do_login(user.id)
         return redirect(url_for("app_routes.home"))
-    return render_template("sign_up.html", form=form)
-
-
-@app_routes.route("/login", methods=["GET", "POST"])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
+    elif login_form.validate_on_submit():
         user = User.authenticate(
-            username=form.username.data, password=form.password.data
+            username=login_form.username.data, password=login_form.password.data
         )
         if user:
             do_login(user.id)
-            return redirect(url_for("app_routes.home"))
 
-    return render_template("login.html", form=form)
+        return redirect(url_for("app_routes.home"))
+    return render_template(
+        "authenticate.html", signup_form=signup_form, login_form=login_form
+    )
+
+
+# def login(form):
+#                     return redirect(url_for("app_routes.home"))
+#
+#     return render_template("login.html", form=form)
 
 
 @app_routes.route("/logout", methods=["POST"])
 def logout():
     do_logout()
-    return redirect(url_for("app_routes.login"))
+    return redirect(url_for("app_routes.authenticate"))
 
 
 @app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
@@ -121,7 +124,7 @@ def delete_user(user_id):
     user = db.get_or_404(User, user_id)
     db.session.delete(user)
     db.session.commit()
-    return redirect(url_for("app_routes.signup"))
+    return redirect(url_for("app_routes.authenticate"))
 
 
 @app_routes.route("/search")

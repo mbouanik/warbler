@@ -1,6 +1,6 @@
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
-<div class="header-image  card"  style="width: 100%;">
+<div class="header-image  card" >
     <img class="header-img" src="{{ user.header_image_url }}" alt="r...">
 </div>
 
@@ -8,7 +8,7 @@
     <div class="profile-user">
         <img src="{{ user.image_url }}"
             alt="Image for {{ user.username }}"
-            class="card-image profile-pic-bg rounded-circle">
+            class="card-image profile-pic-bg">
     </div>
 
     <div class="stat profile-stat">
@@ -29,7 +29,7 @@
     </div>
     <div class="stat profile-stat ">
         {% if g.user.id != user.id %}
-        <div class="">
+        <div class="profile-follow-btn">
             {% if user in g.user.followings %}
             <form action="/users/unfollow/{{user.id}}" method="POST">
                 <button class="btn btn-primary btn-sm"> Unfollow</button>
@@ -63,22 +63,28 @@
         </div> 
     </div>
 
-    <div class="messages-list-profile">
-        <div class="messages-list">
 
-            {% for msg in user.messages[::-1] %}
+    <div class="messages-listt">
+        <div class="messages">
+            {% for msg in user.messages %}
             <div class="message border">
+                <a href="/messages/{{ msg.id  }}">
+                <div>
+                    click
+                </div>
+                </a>
                 <div class="">
-                    <a href="/messages/{{ msg.id  }}"/>
                     <a class="" href="/users/{{ msg.user.id }}">
-                        <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle profile-pic">
+                        <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image">
                     </a>
                 </div>
                 <div class="message-area">
                     <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
                     <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                    <a href="/messages"></a>
                     <p>{{ msg.text }}</p>
                 </div>
+                </a>
             </div>
             {% endfor %}
         </div>

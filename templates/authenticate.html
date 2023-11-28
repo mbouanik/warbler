@@ -1,0 +1,69 @@
+{% extends "base.html" %} {% block title %} Authentification {% endblock %} 
+{% block content %} 
+
+{% if signup_form.errors %}
+<ul class="errors">
+  {% for field_name, field_errors in signup_form.errors|dictsort if field_errors %} {%
+  for error in field_errors %}
+  <li>{{ signup_form[field_name].label }}: {{ error }}</li>
+  {% endfor %} {% endfor %}
+</ul>
+{% endif %}
+
+{% if login_form.errors %}
+<ul class="errors">
+  {% for field_name, field_errors in login_form.errors|dictsort if field_errors %} {%
+  for error in field_errors %}
+  <li>{{ form[field_name].label }}: {{ error }}</li>
+  {% endfor %} {% endfor %}
+</ul>
+{% endif %}
+
+<div class="authenticate">
+
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active authenticate-top-btn" id="login-tab" data-bs-toggle="tab" data-bs-target="#login-tab-pane" type="button" role="tab" aria-controls="login-tab-pane" aria-selected="true">Login</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link authenticate-top-btn" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signup-tab-pane" type="button" role="tab" aria-controls="signup-tab-pane" aria-selected="false">Sign up</button>
+            </li>
+
+        </ul>
+        <div class="tab-content authenticate-form" id="myTabContent">
+            <div class="tab-pane fade show active" id="login-tab-pane" role="tabpanel" aria-labelledby="login-tab" tabindex="0">
+                <form action="" method="POST">
+                    {{ login_form.hidden_tag() }} 
+                    {% for field in login_form if field.widget.input_type != "hidden" %} 
+                    <div class="form-floating mb-3">
+
+                        {{ field(class="form-control", placeholder=field.label.text, id="floatingInput") }} 
+                        {{ field.label(for="floatingInput") }}
+                    </div>
+                    {% endfor %}
+                <div class="d-grid gap-1 col-3 mx-auto">
+                    <button class="btn btn-primary">Login</button>
+                </div>
+                </form>
+            </div>
+            <div class="tab-pane fade " id="signup-tab-pane" role="tabpanel" aria-labelledby="signup-tab" tabindex="0">
+                <form action="" method="POST">
+                    {{ signup_form.hidden_tag() }}
+                    {% for field in signup_form if field.widget.input_type != "hidden" %}
+                    <div class="form-floating mb-3">
+
+                        {{ field(class="form-control", placeholder=field.label.text , id="floatingInput") }}
+                        {{field.label(for="floatingInput") }}
+                    </div>
+                    {% endfor %}
+                    <div class="d-grid gap-1 col-3 mx-auto">
+                    <button class="btn btn-primary ">Sign Up</button>
+                </div>
+                </form>
+            </div>
+        </div>
+</div>
+
+
+
+{% endblock %}

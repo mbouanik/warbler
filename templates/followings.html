@@ -29,7 +29,7 @@
     </div>
     <div class="stat profile-stat ">
         {% if g.user.id != user.id %}
-        <div class="">
+        <div class="profile-follow-btn">
             {% if user in g.user.followings %}
             <form action="/users/unfollow/{{user.id}}" method="POST">
                 <button class="btn btn-primary btn-sm"> Unfollow</button>
@@ -43,7 +43,7 @@
         {% endif %}
     </div>
 </div>
-<div class="profile-follows-info">
+<div class="profile-follows-info container">
         <div class="card profile-info">
             <div class="card-body">
                 <div class="card-text"> <b>@{{ user.username }} </b></div>
@@ -54,7 +54,7 @@
 
             </div> 
         </div> 
-    <div class="grid-card follow-grid">
+    <div class="follow-grid">
         {% for user in user.followings %}
         <div class="card search-card">
             <img
