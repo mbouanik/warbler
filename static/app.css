@@ -463,7 +463,6 @@ nav {
   .messages-list {
     border-radius: 2rem;
     max-width: 40rem;
-    /* width: auto;  */
     min-width: 25rem;
     width: -webkit-fill-available;
     max-width: 60rem;
