@@ -62,33 +62,7 @@
             <div class="tab-pane fade show active" id="messages-tab-pane" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
                 <ul class="list-group">
                     {% for msg in user.messages %}
-                    <li class="list-group-item message">
-                                              <!-- <div class=""> -->
-                            <a class="" href="/users/{{ msg.user.id }}">
-                                <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
-                            </a>
-                        <!-- </div> -->
-                        <div class="message-area">
-                            <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-                            <span class="text-muted">{{ msg.timestamp.strftime('%d %b %y') }}</span>
-                            <a href="/messages"></a>
-                            <p>{{ msg.text }}</p>
-                        </div>
-                    </li>
-                     <div class="like-btn">
-                        {% if msg in g.user.likes %}
-                        <form action="/messages/{{ msg.id}}/unlike" method="POST">
-                            <button class="btn"> <i class="fa-solid fa-thumbs-up"></i> {{ msg.users | length }}</button>
-                        </form>
-                        {% else %}
-                        <form action="/messages/{{ msg.id}}/like" method="POST">
-                            <button class="btn"> <i class="fa-regular fa-thumbs-up"></i> {{ msg.users | length }}</button>
-                        </form>
-                        {% endif %}
-                        <div>
-                            <a class="btn primary" href="/messages/{{msg.id}}"><i class="fa-sharp fa-solid fa-comment"></i> {{msg.comments | length}}</a>
-                        </div>
-                    </div>
+                    {% include "components/messages.html" %}
 
                     {% endfor %}
                 </ul>

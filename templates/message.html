@@ -3,72 +3,32 @@
 {% block content %}
 
 <div class="message-page">
-    <div class="message list-group">
-        <div class="">
-            <a href="/messages/{{ msg.id  }}"/>
-            <a class="" href="/users/{{ msg.user.id }}">
-                <img src="{{ msg.user.image_url }}" alt="" class="profile-pic">
-            </a>
-        </div>
-        <div class="message-area">
-            <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-            <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-            <p>{{ msg.text }}</p>
-        </div>
-        {% if msg.user.id == g.user.id %}
-        <div>
-            <form action="/messages/delete/{{msg.id}}" method="POST">
-                <button class="btn btn-danger "> Delete</button>
+    <div class="messages">
+    <ul class="list-group">
+        {% include "components/messages.html" %} 
+    </ul>
+        <div class="mb-3">
+            <form action="" method="POST">
+                {{ form.csrf_token }}
+                {{ form.text(class="form-control", placeholder="What do you think?") }}
+                <button class="btn btn-primary btn-sm"> React  <i class="fa-brands fa-twitter"> </i></button>
             </form>
         </div>
-        {% else %}
-        <div class="">
-            {% if msg.user in g.user.following %}
-            <form action="/users/unfollow/{{msg.user.id}}" method="POST">
-                <button class="btn btn-primary btn-sm"> Unfollow</button>
-            </form>
-            {% else %}
-            <form action="/users/follow/{{msg.user.id}}" method="POST">
-                <button class="btn btn-outline-primary btn-sm"> Follow</button>
-            </form>
-            {% endif %}
-        </div>
-        {% endif %}
-    </div>
-
-    
-    <div class="messages-list">
-        <div class="messages">
-            <div class="mb-3">
-                <form action="" method="POST">
-                    {{ form.csrf_token }}
-                    {{ form.text(class="form-control", placeholder="What do you think?") }}
-                    <button class="btn btn-primary btn-sm"> React  <i class="fa-brands fa-twitter"> </i></button>
-                </form>
-            </div>
+        <ul class="list-group">
             {% for comment in msg.comments %}
-                <div>
-            <a href="/messages/{{ msg.id  }}">
-                    <div class="message border">
-                        <div class="">
-                            <a class="" href="/users/{{ comment.user.id }}">
-                                <img src="{{ comment.user.image_url }}" alt="" class="rounded-circle timeline-image">
-                            </a>
-                        </div>
-                        <div class="message-area">
-                            <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
-                            <span class="text-muted">{{ comment.timestamp.strftime('%d %B %Y') }}</span>
-                            <a href="/messages"></a>
-                            <p>{{ comment.text }}</p>
-                        </div>
-                    </div>
-            </a>
+            <li class="list-group-item message">
+                <a class="" href="/users/{{ comment.user.id }}">
+                    <img src="{{ comment.user.image_url }}" alt="" class="rounded-circle timeline-image">
+                </a>
+                <div class="message-area">
+                    <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
+                    <span class="text-muted">{{ comment.timestamp.strftime('%d %B %Y') }}</span>
+                    <p>{{ comment.text }}</p>
                 </div>
+            </li>
             {% endfor %}
-        </div>
+        </ul>
     </div>
-
-
 </div>
 {% endblock %}
 

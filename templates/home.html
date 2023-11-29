@@ -43,39 +43,12 @@
                     <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
                 </form>
             </div>
+            <ul class="list-group">
             {% for msg in messages %}
-            <div>
-                <a href="/messages/{{ msg.id  }}">
-                    <div class="message border">
-                        <div class="">
-                            <a class="" href="/users/{{ msg.user.id }}">
-                                <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image">
-                            </a>
-                        </div>
-                        <div class="message-area">
-                            <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-                            <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
-                            <a href="/messages"></a>
-                            <p>{{ msg.text }}</p>
-                        </div>
-                    </div>
-                    <div class="like-btn">
-                        {% if msg in g.user.likes %}
-                        <form action="/messages/{{ msg.id}}/unlike" method="POST">
-                            <button class="btn"> <i class="fa-solid fa-thumbs-up"></i> {{ msg.users | length }}</button>
-                        </form>
-                        {% else %}
-                        <form action="/messages/{{ msg.id}}/like" method="POST">
-                            <button class="btn"> <i class="fa-regular fa-thumbs-up"></i> {{ msg.users | length }}</button>
-                        </form>
-                        {% endif %}
-                        <div>
-                            <a class="btn primary" href="/messages/{{msg.id}}"><i class="fa-sharp fa-solid fa-comment"></i> {{msg.comments | length}}</a>
-                        </div>
-                    </div>
-                </a>
-            </div>
+
+                {% include "components/messages.html" %}
             {% endfor %}
+            </ul>
         </div>
     </div>
 </div>

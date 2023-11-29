@@ -63,6 +63,7 @@ nav {
   /* width: 50%; */
   flex-direction: column;
   flex: 1 1 33.333%;
+  gap: 2rem;
   /* justify-content: space-evenly; */
   /* flex-basis: 5rem; */
   /* justify-content: center; */
@@ -453,6 +454,8 @@ nav {
   background-color: white;
   border: none;
   max-width: 60rem;
+  /* border-bottom-left-radius: 0.3rem; */
+  /* border-bottom-right-radius: 0.3rem; */
 }
 
 @media (max-width: 1039px) {
