@@ -3,11 +3,11 @@
 {% block content %}
 
 <div class="message-page">
-    <div class="message border">
+    <div class="message list-group">
         <div class="">
             <a href="/messages/{{ msg.id  }}"/>
             <a class="" href="/users/{{ msg.user.id }}">
-                <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle profile-pic">
+                <img src="{{ msg.user.image_url }}" alt="" class="profile-pic">
             </a>
         </div>
         <div class="message-area">
@@ -23,7 +23,7 @@
         </div>
         {% else %}
         <div class="">
-            {% if msg.user in g.user.followings %}
+            {% if msg.user in g.user.following %}
             <form action="/users/unfollow/{{msg.user.id}}" method="POST">
                 <button class="btn btn-primary btn-sm"> Unfollow</button>
             </form>
@@ -46,25 +46,25 @@
                     <button class="btn btn-primary btn-sm"> React  <i class="fa-brands fa-twitter"> </i></button>
                 </form>
             </div>
-            <!-- {% for msg in messages %} -->
-            <!--     <div> -->
-            <!-- <a href="/messages/{{ msg.id  }}"> -->
-            <!--         <div class="message border"> -->
-            <!--             <div class=""> -->
-            <!--                 <a class="" href="/users/{{ msg.user.id }}"> -->
-            <!--                     <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image"> -->
-            <!--                 </a> -->
-            <!--             </div> -->
-            <!--             <div class="message-area"> -->
-            <!--                 <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a> -->
-            <!--                 <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span> -->
-            <!--                 <a href="/messages"></a> -->
-            <!--                 <p>{{ msg.text }}</p> -->
-            <!--             </div> -->
-            <!--         </div> -->
-            <!-- </a> -->
-            <!--     </div> -->
-            <!-- {% endfor %} -->
+            {% for comment in msg.comments %}
+                <div>
+            <a href="/messages/{{ msg.id  }}">
+                    <div class="message border">
+                        <div class="">
+                            <a class="" href="/users/{{ comment.user.id }}">
+                                <img src="{{ comment.user.image_url }}" alt="" class="rounded-circle timeline-image">
+                            </a>
+                        </div>
+                        <div class="message-area">
+                            <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
+                            <span class="text-muted">{{ comment.timestamp.strftime('%d %B %Y') }}</span>
+                            <a href="/messages"></a>
+                            <p>{{ comment.text }}</p>
+                        </div>
+                    </div>
+            </a>
+                </div>
+            {% endfor %}
         </div>
     </div>
 

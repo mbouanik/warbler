@@ -15,7 +15,7 @@
             <button class="nav-link active" id="messages-tab" data-bs-toggle="tab" data-bs-target="#messages-tab-pane" type="button" role="tab" aria-controls="messages-tab-pane" aria-selected="true">Messages <div>{{ user.messages | length}}</div></button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="followings-tab" data-bs-toggle="tab" data-bs-target="#followings-tab-pane" type="button" role="tab" aria-controls="followings-tab-pane" aria-selected="false">Followings <div>{{ user.followings | length}}</div></button>
+            <button class="nav-link" id="following-tab" data-bs-toggle="tab" data-bs-target="#following-tab-pane" type="button" role="tab" aria-controls="following-tab-pane" aria-selected="false">Following <div>{{ user.following | length}}</div></button>
         </li>
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="followers-tab" data-bs-toggle="tab" data-bs-target="#followers-tab-pane" type="button" role="tab" aria-controls="followers-tab-pane" aria-selected="false">Followers <div> {{ user.followers | length}}</div></button>
@@ -23,117 +23,211 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link" id="likes-tab" data-bs-toggle="tab" data-bs-target="#likes-tab-pane" type="button" role="tab" aria-controls="likes-tab-pane" aria-selected="false" > Likes <div>{{ user.likes | length }}</div></button>
         </li>
-    </ul>
-    <div class="card profile-info">
-        <div class="card-body">
-            <div class="card-text"> <b>@{{ user.username }} </b></div>
-            <h4 class="card-title">Bio</h4>
-            <div class="card-text">{{user.bio}}</div>
-            <h4 class="card-title">Location</h4>
-            <div class="card-text">{{ user.location}}</div>
+        <li class="nav-item">
+              {% if g.user.id != user.id %}
+        <div class="profile-follow-btn">
+            {% if user in g.user.following %}
+            <form action="/users/unfollow/{{user.id}}" method="POST">
+                <button class="btn btn-primary btn-sm"> Unfollow</button>
+            </form>
+            {% else %}
+            <form action="/users/follow/{{user.id}}" method="POST">
+                <button class="btn btn-outline-primary btn-sm"> Follow</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
 
+        </li>
+    </ul>
+    <div class="test">
+        <div class="card profile-info">
+            <div class="card-body">
+                <div class="card-text"> <b>@{{ user.username }} </b></div>
+                <h4 class="card-title">Bio</h4>
+                <div class="card-text">{{user.bio}}</div>
+                <h4 class="card-title">Location</h4>
+                <div class="card-text">{{ user.location}}</div>
+
+            </div> 
+              {% if g.user.id == user.id %}
+            <div class=" post-btn">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Post
+                </button>
+            </div>
+            {% endif %}
         </div> 
-    </div> 
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="messages-tab-pane" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
-            <ul class="list-group">
-                {% for msg in user.messages %}
-                <li class="list-group-item">
-                    <div class="message">
-                        <a href="/messages/{{ msg.id  }}">
-                            <div>
-                                click
-                            </div>
-                        </a>
-                        <div class="">
+        <div class="tab-content profile-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="messages-tab-pane" role="tabpanel" aria-labelledby="messages-tab" tabindex="0">
+                <ul class="list-group">
+                    {% for msg in user.messages %}
+                    <li class="list-group-item message">
+                                              <!-- <div class=""> -->
                             <a class="" href="/users/{{ msg.user.id }}">
-                                <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image">
+                                <img src="{{ msg.user.image_url }}" alt="" class="timeline-image">
                             </a>
-                        </div>
+                        <!-- </div> -->
                         <div class="message-area">
                             <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-                            <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                            <span class="text-muted">{{ msg.timestamp.strftime('%d %b %y') }}</span>
                             <a href="/messages"></a>
                             <p>{{ msg.text }}</p>
                         </div>
-                        </a>
-                    </div>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div class="tab-pane fade" id="followings-tab-pane" role="tabpanel" aria-labelledby="followings-tab" tabindex="0">
-            <div class="follow-grid">
-                {% for user in user.followings %}
-                <div class="card search-card">
-                    <img
-                        src="{{ user.header_image_url }}"
-                        class="search-header-image"
-                        alt="..."
-                    />
-                    <div class="card-body">
-                        <div class="search-profile-img">
-                            <a href="/users/{{user.id}}">
-                                <img src="{{ user.image_url}}" class="profile-pic" alt="" />
-                                <div class="card-text">@{{user.username}}</div></a
-                            >
-                            <div class="card-text">{{user.bio}}</div>
-                            {% if g.user.id != user.id %}
-                            <div class="follow-btn">
-                                {% if user in g.user.followings %}
-                                <form action="/users/unfollow/{{user.id}}" method="POST">
-                                    <button class="btn btn-primary btn-sm">Unfollow</button>
-                                </form>
-                                {% else %}
-                                <form action="/users/follow/{{user.id}}" method="POST">
-                                    <button class="btn btn-outline-primary btn-sm">Follow</button>
-                                </form>
-                                {% endif %}
-                            </div>
-                            {% endif %}
+                    </li>
+                     <div class="like-btn">
+                        {% if msg in g.user.likes %}
+                        <form action="/messages/{{ msg.id}}/unlike" method="POST">
+                            <button class="btn"> <i class="fa-solid fa-thumbs-up"></i> {{ msg.users | length }}</button>
+                        </form>
+                        {% else %}
+                        <form action="/messages/{{ msg.id}}/like" method="POST">
+                            <button class="btn"> <i class="fa-regular fa-thumbs-up"></i> {{ msg.users | length }}</button>
+                        </form>
+                        {% endif %}
+                        <div>
+                            <a class="btn primary" href="/messages/{{msg.id}}"><i class="fa-sharp fa-solid fa-comment"></i> {{msg.comments | length}}</a>
                         </div>
                     </div>
-                </div>
-                {% endfor %}
+
+                    {% endfor %}
+                </ul>
             </div>
-        </div>
-        <div class="tab-pane fade" id="followers-tab-pane" role="tabpanel" aria-labelledby="followers-tab" tabindex="0">
-            <div class="follow-grid ">
-                {% for user in user.followers %}
-                <div class="card search-card">
-                    <img
-                        src="{{ user.header_image_url }}"
-                        class="search-header-image"
-                        alt="..."
-                    />
-                    <div class="card-body">
-                        <div class="search-profile-img">
-                            <a href="/users/{{user.id}}">
-                                <img src="{{ user.image_url}}" class="profile-pic" alt="" />
-                                <div class="card-text">@{{user.username}}</div></a
-                            >
-                            <div class="card-text">{{user.bio}}</div>
-                            {% if g.user.id != user.id %}
-                            <div class="follow-btn">
-                                {% if user in g.user.followings %}
-                                <form action="/users/unfollow/{{user.id}}" method="POST">
-                                    <button class="btn btn-primary btn-sm">Unfollow</button>
-                                </form>
-                                {% else %}
-                                <form action="/users/follow/{{user.id}}" method="POST">
-                                    <button class="btn btn-outline-primary btn-sm">Follow</button>
-                                </form>
+            <div class="tab-pane fade" id="following-tab-pane" role="tabpanel" aria-labelledby="following-tab" tabindex="0">
+                <div class="follow-grid">
+                    {% for user in user.following %}
+                    <div class="card search-card">
+                        <img
+                            src="{{ user.header_image_url }}"
+                            class="search-header-image"
+                            alt="..."
+                        />
+                        <div class="card-body">
+                            <div class="search-profile-img">
+                                <a href="/users/{{user.id}}">
+                                    <img src="{{ user.image_url}}" class="profile-pic" alt="" />
+                                    <div class="card-text">@{{user.username}}</div></a
+                                >
+                                <div class="card-text">{{user.bio}}</div>
+                                {% if g.user.id != user.id %}
+                                <div class="follow-btn">
+                                    {% if user in g.user.following %}
+                                    <form action="/users/unfollow/{{user.id}}" method="POST">
+                                        <button class="btn btn-primary btn-sm">Unfollow</button>
+                                    </form>
+                                    {% else %}
+                                    <form action="/users/follow/{{user.id}}" method="POST">
+                                        <button class="btn btn-outline-primary btn-sm">Follow</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
                                 {% endif %}
                             </div>
-                            {% endif %}
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
+            <div class="tab-pane fade" id="followers-tab-pane" role="tabpanel" aria-labelledby="followers-tab" tabindex="0">
+                <div class="follow-grid ">
+                    {% for user in user.followers %}
+                    <div class="card search-card">
+                        <img
+                            src="{{ user.header_image_url }}"
+                            class="search-header-image"
+                            alt="..."
+                        />
+                        <div class="card-body">
+                            <div class="search-profile-img">
+                                <a href="/users/{{user.id}}">
+                                    <img src="{{ user.image_url}}" class="profile-pic" alt="" />
+                                    <div class="card-text">@{{user.username}}</div></a
+                                >
+                                <div class="card-text">{{user.bio}}</div>
+                                {% if g.user.id != user.id %}
+                                <div class="follow-btn">
+                                    {% if user in g.user.following %}
+                                    <form action="/users/unfollow/{{user.id}}" method="POST">
+                                        <button class="btn btn-primary btn-sm">Unfollow</button>
+                                    </form>
+                                    {% else %}
+                                    <form action="/users/follow/{{user.id}}" method="POST">
+                                        <button class="btn btn-outline-primary btn-sm">Follow</button>
+                                    </form>
+                                    {% endif %}
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab-pane fade" id="likes-tab-pane" role="tabpanel" aria-labelledby="likes-tab" tabindex="0">
+                <ul class="list-group">
+                    {% for msg in user.likes %}
+                    <li class="list-group-item message">
+                        <div class="message ">
+                            <div class="">
+                                <a class="" href="/users/{{ msg.user.id }}">
+                                    <img src="{{ msg.user.image_url }}" alt="" class="rounded-circle timeline-image">
+                                </a>
+                            </div>
+                            <div class="message-area">
+                                <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+                                <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
+                                <a href="/messages"></a>
+                                <p>{{ msg.text }}</p>
 
+                            </div>
+                        </div>
+                    </li>
 
+                        <div class="like-btn">
+                            {% if msg in g.user.likes %}
+                            <form action="/messages/{{ msg.id}}/unlike" method="POST">
+                                <button class="btn"> <i class="fa-solid fa-thumbs-up"></i> {{ msg.users | length }}</button>
+                            </form>
+                            {% else %}
+                            <form action="/messages/{{ msg.id}}/like" method="POST">
+                                <button class="btn"> <i class="fa-regular fa-thumbs-up"></i> {{ msg.users | length }}</button>
+                            </form>
+                            {% endif %}
+                            <div>
+                                <a class="btn primary" href="/messages/{{msg.id}}"><i class="fa-sharp fa-solid fa-comment"></i> {{msg.comments | length}}</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <div class="tab-pane fade" id="likes-tab-pane" role="tabpanel" aria-labelledby="likes-tab" tabindex="0">...</div>
     </div>
-{% endblock %}
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Post a Warble</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST">
+                <div class="modal-body">
+                    {{ form.csrf_token }}
+                    {{ form.text(class="form-control modal-form", placeholder="What's Happening?") }}
+                </div>
+                <div id="the-count">
+                    <span id="current">0</span>
+                    <span id="maximum">/ 148</span>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary"> Warble <i class="fa-brands fa-twitter"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    {% endblock %}

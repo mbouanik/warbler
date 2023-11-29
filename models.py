@@ -54,7 +54,7 @@ class User(db.Model):
         secondary="follows",
         primaryjoin=(Follows.user_being_followed_id == id),
         secondaryjoin=(Follows.user_following_id == id),
-        backref="followings",
+        backref="following",
     )
 
     # following = Relationship(
@@ -103,5 +103,24 @@ class Message(db.Model):
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
+    comments = Relationship("Comment", backref="message")
+
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
+
+
+class Comment(db.Model):
+    __tablename__ = "comments"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    text: Mapped[str] = mapped_column(String(140), nullable=False)
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime, nullable=False, default=datetime.utcnow()
+    )
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+
+    user = Relationship("User")
+
+    def __init__(self, **kwargs) -> None:
+        super(Comment, self).__init__(**kwargs)

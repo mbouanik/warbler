@@ -304,7 +304,8 @@ nav {
   /* justify-content: center; */
   /* flex-flow: row wrap; */
   /* justify-content: flex-end; */
-  gap: 2rem;
+  gap: 3rem;
+  max-width: 60rem;
   /* flex-shrink: 1; */
   /* padding-left: 9rem; */
   /* padding-right: 9rem; */
@@ -427,6 +428,31 @@ nav {
 
 #myTab {
   background-color: white;
+}
+
+.profile-content {
+  /* display: flex; */
+  /* justify-content: center; */
+  /* gap: 2rem; */
+  flex: 1;
+}
+
+.test {
+  display: flex;
+  /* justify-content: center; */
+  flex-flow: row wrap;
+  gap: 3rem;
+  margin-top: 2rem;
+  padding-left: 5rem;
+  padding-right: 5rem;
+}
+
+.like-btn {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  border: none;
+  max-width: 60rem;
 }
 
 @media (max-width: 1039px) {

@@ -17,7 +17,7 @@
     </div >
     <div class="stat profile-stat">
         <div class="text-muted"><b>Following</b></div>
-        <div> <a href="/users/followings/{{ user.id }}">{{ user.followings | length}} </a> </div> 
+        <div> <a href="/users/following/{{ user.id }}">{{ user.following | length}} </a> </div> 
     </div>
     <div class="stat profile-stat">
         <div class="text-muted"><b>Followers</b></div>
@@ -30,7 +30,7 @@
     <div class="stat profile-stat ">
         {% if g.user.id != user.id %}
         <div class="profile-follow-btn">
-            {% if user in g.user.followings %}
+            {% if user in g.user.following %}
             <form action="/users/unfollow/{{user.id}}" method="POST">
                 <button class="btn btn-primary btn-sm"> Unfollow</button>
             </form>
@@ -55,7 +55,7 @@
             </div> 
         </div> 
     <div class="follow-grid">
-        {% for user in user.followings %}
+        {% for user in user.following %}
         <div class="card search-card">
             <img
                 src="{{ user.header_image_url }}"
@@ -71,7 +71,7 @@
                     <div class="card-text">{{user.bio}}</div>
                     {% if g.user.id != user.id %}
                     <div class="follow-btn">
-                        {% if user in g.user.followings %}
+                        {% if user in g.user.following %}
                         <form action="/users/unfollow/{{user.id}}" method="POST">
                             <button class="btn btn-primary btn-sm">Unfollow</button>
                         </form>
