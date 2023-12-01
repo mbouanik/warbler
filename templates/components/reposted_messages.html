@@ -1,5 +1,5 @@
 <li class="list-group-item">
-  {% if msg in g.user.reposted %} {% if user.id == g.user.id %}
+  {% if msg in user.reposted %} {% if user.id == g.user.id %}
   <span>You reposted <i class="fa-solid fa-retweet"></i> </span>
   {% else %}
   <span>{{ user.username}} reposted <i class="fa-solid fa-retweet"></i> </span>

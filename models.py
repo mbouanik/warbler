@@ -3,6 +3,10 @@ from sqlalchemy.orm import Mapped, Relationship, mapped_column
 from init import db, bcrypt
 from datetime import datetime
 
+DEFAULT_IMG_URL = "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5024af8d-d5bc-49d0-a1b7-25c50838f6d9/df0oao0-ea61c72c-21d3-4248-95bf-35faa261dfbd.jpg/v1/fit/w_828,h_1104,q_70,strp/battle_droid_commander_by_riccardofasoli_df0oao0-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTcwNyIsInBhdGgiOiJcL2ZcLzUwMjRhZjhkLWQ1YmMtNDlkMC1hMWI3LTI1YzUwODM4ZjZkOVwvZGYwb2FvMC1lYTYxYzcyYy0yMWQzLTQyNDgtOTViZi0zNWZhYTI2MWRmYmQuanBnIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.KELWv9slPr-oEQ9xHoTfDhFi-Fb_T0q5HOSa7C9M_s0"
+
+DEFAULT_HEAD_IMG_URL = "https://img.freepik.com/free-photo/glowing-spaceship-orbits-planet-starry-galaxy-generated-by-ai_188544-9655.jpg?w=1480&t=st=1700941711~exp=1700942311~hmac=fe6bbf22f45bbddd98dd7c6e93c48477b10be41e2059b9fb733e7072d76782d9 "
+
 
 class Follows(db.Model):
     __tablename__ = "follows"
@@ -38,11 +42,11 @@ class User(db.Model):
     password: Mapped[str] = mapped_column(Text, nullable=False)
     image_url: Mapped[str] = mapped_column(
         Text,
-        default="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/5024af8d-d5bc-49d0-a1b7-25c50838f6d9/df0oao0-ea61c72c-21d3-4248-95bf-35faa261dfbd.jpg/v1/fit/w_828,h_1104,q_70,strp/battle_droid_commander_by_riccardofasoli_df0oao0-414w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTcwNyIsInBhdGgiOiJcL2ZcLzUwMjRhZjhkLWQ1YmMtNDlkMC1hMWI3LTI1YzUwODM4ZjZkOVwvZGYwb2FvMC1lYTYxYzcyYy0yMWQzLTQyNDgtOTViZi0zNWZhYTI2MWRmYmQuanBnIiwid2lkdGgiOiI8PTEyODAifV1dLCJhdWQiOlsidXJuOnNlcnZpY2U6aW1hZ2Uub3BlcmF0aW9ucyJdfQ.KELWv9slPr-oEQ9xHoTfDhFi-Fb_T0q5HOSa7C9M_s0",
+        default=DEFAULT_IMG_URL,
     )
     header_image_url: Mapped[str] = mapped_column(
         Text,
-        default="https://img.freepik.com/free-photo/glowing-spaceship-orbits-planet-starry-galaxy-generated-by-ai_188544-9655.jpg?w=1480&t=st=1700941711~exp=1700942311~hmac=fe6bbf22f45bbddd98dd7c6e93c48477b10be41e2059b9fb733e7072d76782d9",
+        default=DEFAULT_HEAD_IMG_URL,
     )
     bio: Mapped[str] = mapped_column(Text, default="")
     location: Mapped[str] = mapped_column(String, default="")
@@ -109,7 +113,8 @@ class Message(db.Model):
 
     # repost = Relationship("Repost", secondary="users", backref="reposted")
     # repost = Relationship("User", secondary="reposts", backref="reposted")
-    comments = Relationship("Comment", backref="message")
+    # reposted = Relationship("Repost", secondary="users", backref="message")
+    comments = Relationship("Comment", backref="message", cascade="all, delete")
 
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
