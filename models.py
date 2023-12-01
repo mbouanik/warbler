@@ -66,6 +66,8 @@ class User(db.Model):
 
     likes = Relationship("Message", secondary="likes", backref="users")
 
+    reposted = Relationship("Message", secondary="reposts", backref="reposted")
+
     def __init__(self, **kwargs) -> None:
         super(User, self).__init__(**kwargs)
 
@@ -99,10 +101,14 @@ class Message(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(140), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(
-        DateTime, nullable=False, default=datetime.utcnow()
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
+    # repost = Relationship("Repost", secondary="users", backref="reposted")
+    # repost = Relationship("User", secondary="reposts", backref="reposted")
     comments = Relationship("Comment", backref="message")
 
     def __init__(self, **kwargs) -> None:
@@ -115,7 +121,7 @@ class Comment(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(140), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(
-        DateTime, nullable=False, default=datetime.utcnow()
+        DateTime, nullable=False, default=datetime.utcnow
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
@@ -124,3 +130,15 @@ class Comment(db.Model):
 
     def __init__(self, **kwargs) -> None:
         super(Comment, self).__init__(**kwargs)
+
+
+class Repost(db.Model):
+    __tablename__ = "reposts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime, nullable=False, default=datetime.utcnow
+    )
+
+    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))

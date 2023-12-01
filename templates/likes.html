@@ -4,13 +4,13 @@
 <div class="profile-messages-info">
    {% include "components/info_card.html" %}
 
-        <ul class="list-group messages"> 
-        {% for msg in messages %}
-        {% include "components/reposted_messages.html" %}
+        <ul class="list-group messages">
+        {% for msg in user.likes %}
+        {% include "components/messages.html" %}
         {% endfor %}
         </ul>
 </div>
 
-{% include "components/modal_post_form.html" %}
-
+        {% include "components/modal_post_form.html" %}
 {% endblock %}
+

@@ -4,10 +4,10 @@
 
 <div class="message-page">
     <div class="messages">
-    <ul class="list-group">
-        {% include "components/messages.html" %} 
-    </ul>
-        <div class="mb-3">
+        <ul class="list-group">
+            {% include "components/messages.html" %} 
+        </ul>
+        <div class="mb-3 mt-3">
             <form action="" method="POST">
                 {{ form.csrf_token }}
                 {{ form.text(class="form-control", placeholder="What do you think?") }}

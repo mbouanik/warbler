@@ -60,16 +60,13 @@ nav {
   display: flex;
   /* flex-wrap: wrap; */
 
-  /* width: 50%; */
   flex-direction: column;
   flex: 1 1 33.333%;
-  gap: 2rem;
-  /* justify-content: space-evenly; */
+  /* gap: 2rem; */
   /* flex-basis: 5rem; */
   /* justify-content: center; */
   /* flex-flow: row wrap; */
   /* justify-content: flex-end; */
-  /* gap: 2rem; */
 
   /* border-radius: 1rem; */
   /* padding-left: 2rem; */
@@ -126,7 +123,7 @@ nav {
 }
 
 .message:hover {
-  background-color: #c4e0e5;
+  rbackground-color: #c4e0e5;
 }
 
 .card {
@@ -236,7 +233,7 @@ nav {
   /* padding-left: 2rem; */
   /* padding-right: 2rem; */
   flex: 1 1 33.33333%;
-  gap: 2rem;
+  gap: 3rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
 
@@ -372,10 +369,10 @@ nav {
   display: flex;
   justify-content: center;
   margin-top: 2rem;
-
+  /* flex-direction: column; */
   flex-wrap: wrap;
   border-radius: 2rem;
-  gap: 2rem;
+  gap: 3rem;
   /* max-width: 40rem; */
   /* min-width: 25rem; */
   /* width: -webkit-fill-available; */
@@ -450,12 +447,16 @@ nav {
 
 .like-btn {
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   background-color: white;
   border: none;
   max-width: 60rem;
   /* border-bottom-left-radius: 0.3rem; */
   /* border-bottom-right-radius: 0.3rem; */
+}
+
+.top {
+  height: 6rem;
 }
 
 @media (max-width: 1039px) {

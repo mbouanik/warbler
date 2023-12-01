@@ -1,0 +1,21 @@
+<div class="card profile-info">
+  <div class="card-body">
+    <div class="card-text"><b>@{{ user.username }} </b></div>
+    <h4 class="card-title">Bio</h4>
+    <div class="card-text">{{user.bio}}</div>
+    <h4 class="card-title">Location</h4>
+    <div class="card-text">{{ user.location}}</div>
+  </div>
+  {% if g.user.id == user.id %}
+  <div class="post-btn">
+    <button
+      type="button"
+      class="btn btn-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#exampleModal"
+    >
+      Post
+    </button>
+  </div>
+  {% endif %}
+</div>

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="home container">
     <div class="">
-        <div class="card homepage-card">
+        <div class="card homepage-card sticky-top">
             <img src="{{ g.user.header_image_url }}" class="card-img-top" alt="...">
             <div class="card-body homepage-card-body">
                 <a href="/users/{{ g.user.id }}" class="card-link">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="stat">
                     <div class="text-muted"><small>Likes</small></div>
-                    <div> <a href="">{{ g.user.likes | length}} </a> </div> 
+                    <div> <a href="/users/messages/likes/{{ user.id }}">{{ g.user.likes | length}} </a> </div> 
                 </div>
             </div>
         </div> 

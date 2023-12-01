@@ -1,7 +1,7 @@
 from flask import Blueprint, redirect, render_template, url_for, session, g, request
-from wtforms.validators import url
+from sqlalchemy import desc
 from init import db
-from models import Comment, User, Message
+from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
 
 app_routes = Blueprint(
@@ -94,29 +94,43 @@ def logout():
     return redirect(url_for("app_routes.authenticate"))
 
 
-@app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
-def one_profile(user_id):
-    user = db.get_or_404(User, user_id)
-    form = MessageForm()
-    if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        db.session.add(message)
-        db.session.commit()
-        return redirect(url_for("app_routes.one_profile", user_id=user.id))
-
-    return render_template("one_profile.html", user=user, form=form)
-
-
 # @app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
-# def show_user_profile(user_id):
+# def one_profile(user_id):
 #     user = db.get_or_404(User, user_id)
 #     form = MessageForm()
 #     if form.validate_on_submit():
 #         message = Message(text=form.text.data, user_id=user.id)
 #         db.session.add(message)
 #         db.session.commit()
-#         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
-#     return render_template("user_profile.html", user=user, form=form)
+#         return redirect(url_for("app_routes.one_profile", user_id=user.id))
+#
+#     return render_template("one_profile.html", user=user, form=form)
+
+
+@app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
+def show_user_profile(user_id):
+    user = db.get_or_404(User, user_id)
+    all_messages_id = db.session.execute(
+        db.select(Message.id, Message.text, Message.timestamp)
+        .where(Message.user_id == user_id)
+        .union(
+            db.select(Message.id, Message.text, Repost.timestamp)
+            .join(Repost, Repost.message_id == Message.id)
+            .where(Repost.user_id == user_id)
+        )
+        .order_by(db.desc("timestamp"))
+    ).scalars()
+    messages = []
+    for id in all_messages_id:
+        print(id)
+        messages.append(db.get_or_404(Message, id))
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(text=form.text.data, user_id=user.id)
+        g.user.messages.append(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+    return render_template("user_profile.html", user=user, form=form, messages=messages)
 
 
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
@@ -127,7 +141,7 @@ def edit_user_profile(user_id):
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for("app_routes.one_profile", user_id=user.id))
+        # return redirect(url_for("app_routes.one_profile", user_id=user.id))
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template("edit_user_profile.html", form=form)
@@ -170,13 +184,40 @@ def unfollow_user(follow_id):
 @app_routes.route("/users/following/<int:user_id>")
 def show_user_following(user_id):
     user = db.get_or_404(User, user_id)
-    return render_template("following.html", user=user)
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(text=form.text.data, user_id=user.id)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+
+    return render_template("following.html", user=user, form=form)
 
 
 @app_routes.route("/users/followers/<int:user_id>")
 def show_user_followers(user_id):
     user = db.get_or_404(User, user_id)
-    return render_template("followers.html", user=user)
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(text=form.text.data, user_id=user.id)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+
+    return render_template("followers.html", user=user, form=form)
+
+
+@app_routes.route("/users/messages/likes/<int:user_id>")
+def show_liked_messagess(user_id):
+    user = db.get_or_404(User, user_id)
+    form = MessageForm()
+    if form.validate_on_submit():
+        message = Message(text=form.text.data, user_id=user.id)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+
+    return render_template("likes.html", user=user, form=form)
 
 
 @app_routes.route("/messages/<int:message_id>", methods=["GET", "POST"])
@@ -217,3 +258,14 @@ def unlike_message(message_id):
     g.user.likes.remove(message)
     db.session.commit()
     return redirect(url_for("app_routes.home", user_id=g.user.id))
+
+
+@app_routes.route("/messages/<int:message_id>/repost", methods=["POST"])
+def respost_message(message_id):
+    # message = db.get_or_404(Message, message_id)
+    repost = Repost()
+    repost.user_id = g.user.id
+    repost.message_id = message_id
+    db.session.add(repost)
+    db.session.commit()
+    return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))

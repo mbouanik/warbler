@@ -1,4 +1,10 @@
 <li class="list-group-item">
+  {% if msg in g.user.reposted %} {% if user.id == g.user.id %}
+  <span>You reposted <i class="fa-solid fa-retweet"></i> </span>
+  {% else %}
+  <span>{{ user.username}} reposted <i class="fa-solid fa-retweet"></i> </span>
+  {% endif %} {%endif %}
+
   <div class="message">
     <a class="" href="/users/{{ msg.user.id }}">
       <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
@@ -10,6 +16,7 @@
     </div>
   </div>
 </li>
+
 <div class="like-btn">
   {% if msg in g.user.likes %}
   <form action="/messages/{{ msg.id}}/unlike" method="POST">
