@@ -111,13 +111,23 @@ class Message(db.Model):
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
-    # repost = Relationship("Repost", secondary="users", backref="reposted")
-    # repost = Relationship("User", secondary="reposts", backref="reposted")
-    # reposted = Relationship("Repost", secondary="users", backref="message")
+    reposts = Relationship("Repost", backref="messages")
     comments = Relationship("Comment", backref="message", cascade="all, delete")
 
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
+
+
+class Repost(db.Model):
+    __tablename__ = "reposts"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime, nullable=False, default=datetime.utcnow
+    )
+
+    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
 
 class Comment(db.Model):
@@ -135,15 +145,3 @@ class Comment(db.Model):
 
     def __init__(self, **kwargs) -> None:
         super(Comment, self).__init__(**kwargs)
-
-
-class Repost(db.Model):
-    __tablename__ = "reposts"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    timestamp: Mapped[DateTime] = mapped_column(
-        DateTime, nullable=False, default=datetime.utcnow
-    )
-
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))

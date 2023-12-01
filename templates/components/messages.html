@@ -5,7 +5,7 @@
     </a>
     <div class="message-area">
       <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-      <span class="text-muted">{{ msg.timestamp.strftime('%d %b %y') }}</span>
+      <span class="text-muted">{{ msg.timestamp.strftime('%b %d, rY') }}</span>
       <p>{{ msg.text }}</p>
     </div>
   </div>

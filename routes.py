@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, url_for, session, g, request
-from sqlalchemy import text
+from sqlalchemy import desc, or_, text
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
@@ -111,27 +111,17 @@ def logout():
 def show_user_profile(user_id):
     user = db.get_or_404(User, user_id)
     all_messages_id = db.session.execute(
-        db.select(Message.id, Message.user_id, Message.text, Message.timestamp)
+        db.select(Message.id, Message.timestamp)
         .where(Message.user_id == user_id)
         .union(
-            db.select(Message.id, Message.user_id, Message.text, Repost.timestamp)
-            .join(Repost, Repost.message_id == Message.id)
+            db.select(Message.id, Repost.timestamp)
+            .join(Repost)
             .where(Repost.user_id == user_id)
         )
         .order_by(db.desc("timestamp"))
     ).scalars()
-    q = text(
-        f""" SELECT * FROM ( SELECT messages.id, messages.text, messages.timestamp FROM messages WHERE user_id = {user_id} 
-        UNION SELECT messages.id, messages.text, reposts.timestamp FROM messages INNER JOIN reposts ON reposts.message_id = messages.id 
-        WHERE reposts.user_id = {user_id} ) a  ORDER BY timestamp  DESC;"""
-    )
-    msgs = db.session.scalars(q).all()
-    for m in msgs:
-        print(m)
-    messages = []
-    for id in all_messages_id:
-        # print(id)
-        messages.append(db.get_or_404(Message, id))
+
+    messages = [db.get_or_404(Message, id) for id in all_messages_id]
     form = MessageForm()
     if form.validate_on_submit():
         message = Message(text=form.text.data, user_id=user.id)

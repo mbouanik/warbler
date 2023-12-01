@@ -22,7 +22,7 @@
                 </a>
                 <div class="message-area">
                     <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
-                    <span class="text-muted">{{ comment.timestamp.strftime('%d %B %Y') }}</span>
+                    <span class="text-muted">{{ comment.timestamp.strftime('%b %d, %Y') }}</span>
                     <p>{{ comment.text }}</p>
                 </div>
             </li>
