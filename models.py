@@ -33,6 +33,17 @@ class Likes(db.Model):
         super(Likes, self).__init__(**kwargs)
 
 
+class Notification(db.Model):
+    __tablename__ = "notifications"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    content: Mapped[str] = mapped_column(
+        String,
+    )
+
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    from_user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+
+
 class User(db.Model):
     __tablename__ = "users"
 

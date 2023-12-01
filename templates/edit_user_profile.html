@@ -10,13 +10,17 @@
 </ul>
 {% endif %}
 <div class="container">
-<form action="" method="POST">
-    {{ form.hidden_tag() }}
-    {% for field in form if field.widget.input_type != "hidden" %}
-    {{ field.label(class="label-control") }} {{ field(class="form-control") }}
-    {% endfor %}
-    <button class="btn btn-primary">Edit</button>
-</form>
+    <form action="" method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form if field.widget.input_type != "hidden" %}
+        {{ field.label(class="label-control") }} {{ field(class="form-control") }}
+        {% endfor %}
+        <button class="btn btn-primary">Edit</button>
+    </form>
+    <form class="logout navbar-form ravbar-right" action="/users/{{g.user.id}}/delete" method="POST">
+        <button class="btn btn-danger">Delete</button>
+    </form>
+
 
 </div>
 

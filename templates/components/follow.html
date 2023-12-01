@@ -10,6 +10,8 @@
         <img src="{{ user.image_url}}" class="profile-pic" alt="" />
         <div class="card-text">@{{user.username}}</div></a
       >
+      <small>Following <span>{{ user.following | length }}</span></small>
+      <small>Followers <span>{{ user.followers | length }}</span></small>
       <div class="card-text">{{user.bio}}</div>
       {% if g.user.id != user.id %}
       <div class="follow-btn">
