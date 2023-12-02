@@ -1,4 +1,35 @@
 <li class="list-group-item">
+  <div class="m">
+    <button
+      type="button"
+      class="btn"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="fa-solid fa-ellipsis"></i>
+    </button>
+
+    <ul class="dropdown-menu">
+      <li class="dropdown-item">
+        {% if msg.user.id == g.user.id %}
+        <form action="/messages/{{ msg.id }}/delete" method="POST">
+          <button class="btn btn-link">Delete</button>
+        </form>
+        {% endif %}
+      </li>
+      <li class="dropdown-item">
+        {% if msg.user.id != g.user.id %} {% if msg.user in g.user.following %}
+        <form action="/users/unfollow/{{msg.user.id}}" method="POST">
+          <button class="btn btn-link btn-sm">Unfollow</button>
+        </form>
+        {% else %}
+        <form action="/users/follow/{{msg.user.id}}" method="POST">
+          <button class="btn btn-link">Follow</button>
+        </form>
+        {% endif %} {% endif %}
+      </li>
+    </ul>
+  </div>
   <div class="message">
     <a class="" href="/users/{{ msg.user.id }}">
       <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
@@ -14,7 +45,7 @@
   {% if msg in g.user.likes %}
   <form action="/messages/{{ msg.id}}/unlike" method="POST">
     <button class="btn">
-      <i class="fa-solid fa-thumbs-up"></i> {{ msg.users | length }}
+      <i class="fa-solid fa-thumbs-up liked"></i> {{ msg.users | length }}
     </button>
   </form>
   {% else %}
@@ -30,9 +61,20 @@
       {{ msg.comments | length }}
     </a>
   </div>
-  <form action="/messages/{{ msg.id}}/repost" method="POST">
+
+  {% if msg in g.user.reposted %}
+  <form action="/messages/{{ msg.id}}/unpost" method="POST">
     <button class="btn">
-      <i class="fa-solid fa-retweet"></i> {{ msg.reposted | length }}
+      <i class="fa-solid fa-retweet reposted"></i>
+      {{ msg.reposted | length }}
     </button>
   </form>
+  {% else %}
+  <form action="/messages/{{ msg.id}}/repost" method="POST">
+    <button class="btn">
+      <i class="fa-solid fa-retweet"></i>
+      {{ msg.reposted | length }}
+    </button>
+  </form>
+  {% endif %}
 </div>

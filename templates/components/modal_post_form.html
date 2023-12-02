@@ -16,7 +16,7 @@
           aria-label="Close"
         ></button>
       </div>
-      <form action="" method="POST">
+      <form action="/users/{{user.id}}" method="POST">
         <div class="modal-body">
           {{ form.csrf_token }} {{ form.text(class="form-control modal-form",
           placeholder="What's Happening?") }}

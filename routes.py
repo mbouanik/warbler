@@ -1,5 +1,14 @@
-from flask import Blueprint, redirect, render_template, url_for, session, g, request
-from sqlalchemy import desc, or_, text
+from flask import (
+    Blueprint,
+    flash,
+    redirect,
+    render_template,
+    url_for,
+    session,
+    g,
+    request,
+)
+from sqlalchemy import and_, desc, or_, text
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
@@ -123,12 +132,19 @@ def show_user_profile(user_id):
 
     messages = [db.get_or_404(Message, id) for id in all_messages_id]
     form = MessageForm()
+    edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
         message = Message(text=form.text.data, user_id=user.id)
         g.user.messages.append(message)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
-    return render_template("user_profile.html", user=user, form=form, messages=messages)
+    return render_template(
+        "user_profile.html",
+        user=user,
+        form=form,
+        messages=messages,
+        edit_form=edit_form,
+    )
 
 
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
@@ -234,9 +250,17 @@ def show_message(message_id):
     return render_template("message.html", msg=msg, form=form)
 
 
-@app_routes.route("/messages/delete/<int:message_id>", methods=["POST"])
+@app_routes.route("/messages/<int:message_id>/delete", methods=["POST"])
 def delete_message(message_id):
     msg = db.get_or_404(Message, message_id)
+    repost = db.session.execute(
+        db.select(Repost).where(
+            Repost.user_id == g.user.id, Repost.message_id == message_id
+        )
+    ).scalar_one_or_none()
+    print(repost)
+    if repost:
+        db.session.delete(repost)
     db.session.delete(msg)
     db.session.commit()
     return redirect(url_for("app_routes.home"))
@@ -261,9 +285,31 @@ def unlike_message(message_id):
 @app_routes.route("/messages/<int:message_id>/repost", methods=["POST"])
 def respost_message(message_id):
     # message = db.get_or_404(Message, message_id)
+    if db.session.execute(
+        db.select(Repost).where(
+            Repost.message_id == message_id and Repost.user_id == g.user.id
+        )
+    ).scalar_one_or_none():
+        flash(
+            "Already reposted",
+            category="p-3 text-warning-emphasis bg-warning-subtle border border-warnig-subtle rounded-3",
+        )
+        return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
     repost = Repost()
     repost.user_id = g.user.id
     repost.message_id = message_id
     db.session.add(repost)
+    db.session.commit()
+    return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
+
+
+@app_routes.route("/messages/<int:message_id>/unpost", methods=["POST"])
+def unpost_message(message_id):
+    repost = db.session.execute(
+        db.select(Repost).where(
+            Repost.user_id == g.user.id, Repost.message_id == message_id
+        )
+    ).scalar_one_or_none()
+    db.session.delete(repost)
     db.session.commit()
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))

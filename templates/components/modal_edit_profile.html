@@ -1,0 +1,46 @@
+<div
+  class="modal fade"
+  id="edit-profile"
+  tabindex="-1"
+  aria-labelledby="edit-profile"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="#edit-profile">Edit Profile</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <form action="/users/{{user.id}}/edit" method="POST">
+        <div class="modal-body">
+          {{ edit_form.hidden_tag() }} {% for field in edit_form if
+          field.widget.input_type != "hidden" %} {{
+          field.label(class="label-control") }} {{ field(class="form-control")}}
+          {% endfor %}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <button class="btn btn-primary">Edit</button>
+          <form
+            class="logout navbar-form ravbar-right"
+            action="/users/{{g.user.id}}/delete"
+            method="POST"
+          >
+            <button class="btn btn-danger">Delete</button>
+          </form>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

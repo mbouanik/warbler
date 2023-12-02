@@ -81,7 +81,9 @@ class User(db.Model):
 
     likes = Relationship("Message", secondary="likes", backref="users")
 
-    reposted = Relationship("Message", secondary="reposts", backref="reposted")
+    reposted = Relationship(
+        "Message", secondary="reposts", backref="reposted", cascade="all, delete"
+    )
 
     def __init__(self, **kwargs) -> None:
         super(User, self).__init__(**kwargs)
@@ -122,7 +124,7 @@ class Message(db.Model):
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
-    reposts = Relationship("Repost", backref="messages")
+    reposts = Relationship("Repost", backref="messages", cascade="all,delete")
     comments = Relationship("Comment", backref="message", cascade="all, delete")
 
     def __init__(self, **kwargs) -> None:
@@ -132,13 +134,17 @@ class Message(db.Model):
 class Repost(db.Model):
     __tablename__ = "reposts"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    # id: Mapped[int] = mapped_column(Integer, primary_key=True)
     timestamp: Mapped[DateTime] = mapped_column(
         DateTime, nullable=False, default=datetime.utcnow
     )
 
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    message_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("messages.id"), primary_key=True
+    )
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), primary_key=True
+    )
 
 
 class Comment(db.Model):
