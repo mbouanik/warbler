@@ -124,10 +124,6 @@ nav {
   width: -webkit-fill-available;
 }
 
-.message:hover {
-  rbackground-color: #c4e0e5;
-}
-
 .card {
   background-color: #c4e0e5;
   justify-content: center;
@@ -419,6 +415,26 @@ nav {
   max-width: 40rem;
   padding: 2rem;
 }
+.edit-modal-form {
+  /* background-color: #c4e0e5; */
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.modal-content {
+  flex: 1;
+  text-align: crnter;
+  border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+h1 {
+  flex: 1;
+  text-align: center;
+}
+.top-authentificate {
+  border-top-left-radius: 1rem;
+  border-top-right-radius: 1rem;
+}
 
 .authenticate-form button {
   justify-content: flex-end;
@@ -502,6 +518,16 @@ nav {
 
 .liked {
   color: #318ce7;
+}
+
+.dropdown-item {
+  padding: 0;
+}
+.dropdown-menu {
+  padding: 0;
+}
+.dropdown-menu[data-bs-popper] {
+  left: -4.1rem;
 }
 
 @media (max-width: 1039px) {

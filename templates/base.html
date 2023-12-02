@@ -23,18 +23,18 @@
                     <a class="nav-image" href="/users/{{ g.user.id }}">
                         <img src="{{ g.user.image_url }}" alt="" class="nav-image profile-pic ">
                     </a>
-                    <div class="dropdown">
+                    <div class="dropdown ">
                         <button class="btn btn-link dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{g.user.username}}
                         </button>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu nav-menu">
                             <li class="dropdown-item">
                                 <form class="logout navbar-form navbar-right" action="/logout" method="POST">
                                     <button class="btn btn-link text-muted link-underline-opacity-0">Logout</button>
                                 </form>
                             </li>
                             <li class="dropdown-item">
-                                <a class="dropdown-item" href="/users/{{g.user.id}}/edit">Edit</a>
+                                <a class="btn btn-link text-muted" href="/users/{{g.user.id}}/edit">Edit</a>
 
                             </li>
                         </ul>

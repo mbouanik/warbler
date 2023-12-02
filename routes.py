@@ -1,3 +1,4 @@
+from functools import reduce
 from flask import (
     Blueprint,
     flash,
@@ -8,7 +9,6 @@ from flask import (
     g,
     request,
 )
-from sqlalchemy import and_, desc, or_, text
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
@@ -29,6 +29,13 @@ def add_user_to_g():
         g.user = db.get_or_404(User, user_id)
     else:
         g.user = None
+
+
+#
+# @app_routes.before_app_request
+# def login():
+#     if not g.get("user", None):
+#         return redirect(url_for("app_routes.authenticate"))
 
 
 def do_login(id):

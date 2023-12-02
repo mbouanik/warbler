@@ -9,6 +9,7 @@
     {% endfor %}
 </ul>
 {% endif %}
+
 <div class="authenticate">
     <div class="authenticate-top-btn edit-top-btn">
         Edit
@@ -23,7 +24,7 @@
                     {{ field(class="form-control", placeholder=field.label.text , id="floatingInput") }}
                     {{field.label(for="floatingInput") }}
                 </div>
-                {% endfor %}
+{% endfor %}
                 <div class="d-grid gap-1 col-3 mx-auto">
                     <button class="btn btn-primary ">Edit</button>
                     <form class="mb-3" action="/users/{{g.user.id}}/delete" method="POST">

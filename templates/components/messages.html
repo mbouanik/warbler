@@ -2,7 +2,7 @@
   <div class="m">
     <button
       type="button"
-      class="btn"
+      class="btn btn-sm"
       data-bs-toggle="dropdown"
       aria-expanded="false"
     >
@@ -13,18 +13,18 @@
       <li class="dropdown-item">
         {% if msg.user.id == g.user.id %}
         <form action="/messages/{{ msg.id }}/delete" method="POST">
-          <button class="btn btn-link">Delete</button>
+          <button class="btn btn-link text-muted">Delete</button>
         </form>
         {% endif %}
       </li>
       <li class="dropdown-item">
         {% if msg.user.id != g.user.id %} {% if msg.user in g.user.following %}
         <form action="/users/unfollow/{{msg.user.id}}" method="POST">
-          <button class="btn btn-link btn-sm">Unfollow</button>
+          <button class="btn btn-link text-muted">Unfollow</button>
         </form>
         {% else %}
         <form action="/users/follow/{{msg.user.id}}" method="POST">
-          <button class="btn btn-link">Follow</button>
+          <button class="btn btn-link text-muted">Follow</button>
         </form>
         {% endif %} {% endif %}
       </li>
