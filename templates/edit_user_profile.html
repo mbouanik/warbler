@@ -14,27 +14,28 @@
     <div class="authenticate-top-btn edit-top-btn">
         Edit
     </div>
-        <div class=" authenticate-form">
-        <div>
-            <form action="" method="POST">
-                {{ form.hidden_tag() }}
-                {% for field in form if field.widget.input_type != "hidden" %}
-                <div class="form-floating mb-3">
+    <div class=" authenticate-form">
+        <form action="" method="POST">
+            {{ form.hidden_tag() }}
+            {% for field in form if field.widget.input_type != "hidden" %}
+            <div class="form-floating mb-3">
 
-                    {{ field(class="form-control", placeholder=field.label.text , id="floatingInput") }}
-                    {{field.label(for="floatingInput") }}
-                </div>
-{% endfor %}
-                <div class="d-grid gap-1 col-3 mx-auto">
-                    <button class="btn btn-primary ">Edit</button>
-                    <form class="mb-3" action="/users/{{g.user.id}}/delete" method="POST">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-
-                </div>
-                </form>
+                {{ field(class="form-control", placeholder=field.label.text , id="floatingInput") }}
+                {{field.label(for="floatingInput") }}
             </div>
+            {% endfor %}
+            <div class="d-grid gap-1 col-3 mx-auto">
+                <button class="btn btn-primary ">Edit</button>
+
+            </div>
+        </form>
+        <div class="modal-footer">
+            <form class="mb-3" action="/users/{{g.user.id}}/delete" method="POST">
+            <button class="btn btn-danger">Delete</button>
+        </form>
+
         </div>
+          </div>
 </div>
 
 

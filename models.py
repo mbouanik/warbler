@@ -25,9 +25,13 @@ class Follows(db.Model):
 class Likes(db.Model):
     __tablename__ = "likes"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    # id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), primary_key=True
+    )
+    message_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("messages.id"), primary_key=True
+    )
 
     def __init__(self, **kwargs) -> None:
         super(Likes, self).__init__(**kwargs)
@@ -81,6 +85,7 @@ class User(db.Model):
 
     likes = Relationship("Message", secondary="likes", backref="users")
 
+    comments = Relationship("Message", secondary="comments", backref="user_comments")
     reposted = Relationship(
         "Message", secondary="reposts", backref="reposted", cascade="all, delete"
     )

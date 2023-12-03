@@ -1,7 +1,7 @@
-from functools import reduce
 from flask import (
     Blueprint,
     flash,
+    jsonify,
     redirect,
     render_template,
     url_for,
@@ -56,15 +56,20 @@ def home():
     if user_id:
         user = db.get_or_404(User, user_id)
         form = MessageForm()
-        messages = db.session.execute(
-            db.select(Message).order_by(Message.timestamp.desc()).limit(100)
-        ).scalars()
+        messages = (
+            db.session.execute(
+                db.select(Message).order_by(Message.timestamp.desc()).limit(100)
+            )
+            .scalars()
+            .all()
+        )
 
         if form.validate_on_submit():
             message = Message(text=form.text.data, user_id=user.id)
             db.session.add(message)
             db.session.commit()
             return redirect(url_for("app_routes.home"))
+
         return render_template("home.html", user=user, form=form, messages=messages)
     return redirect(url_for("app_routes.authenticate"))
 
@@ -273,50 +278,62 @@ def delete_message(message_id):
     return redirect(url_for("app_routes.home"))
 
 
-@app_routes.route("/messages/<int:message_id>/like", methods=["POST"])
-def like_message(message_id):
-    message = db.get_or_404(Message, message_id)
-    g.user.likes.append(message)
+@app_routes.route("/messages/like/", methods=["POST"])
+def like_message():
+    if request.json:
+        message_id = request.json["message_id"]
+    message = db.get_or_404(Message, int(message_id))
+    if message in g.user.likes:
+        g.user.likes.remove(message)
+    else:
+        g.user.likes.append(message)
     db.session.commit()
+    return jsonify(response={"response": 200})
     return redirect(url_for("app_routes.home", user_id=g.user.id))
 
+    # @app_routes.route("/messages/unlike", methods=["POST"])
+    # def unlike_message():
+    #     if request.json:
+    #         message_id = request.json["message_id"]
+    #     message = db.get_or_404(Message, int(message_id))
 
-@app_routes.route("/messages/<int:message_id>/unlike", methods=["POST"])
-def unlike_message(message_id):
-    message = db.get_or_404(Message, message_id)
     g.user.likes.remove(message)
     db.session.commit()
+    return jsonify(response={"response": 200})
     return redirect(url_for("app_routes.home", user_id=g.user.id))
 
 
-@app_routes.route("/messages/<int:message_id>/repost", methods=["POST"])
-def respost_message(message_id):
-    # message = db.get_or_404(Message, message_id)
-    if db.session.execute(
-        db.select(Repost).where(
-            Repost.message_id == message_id and Repost.user_id == g.user.id
-        )
-    ).scalar_one_or_none():
-        flash(
-            "Already reposted",
-            category="p-3 text-warning-emphasis bg-warning-subtle border border-warnig-subtle rounded-3",
-        )
-        return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
-    repost = Repost()
-    repost.user_id = g.user.id
-    repost.message_id = message_id
-    db.session.add(repost)
-    db.session.commit()
-    return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
-
-
-@app_routes.route("/messages/<int:message_id>/unpost", methods=["POST"])
-def unpost_message(message_id):
+@app_routes.route("/messages/repost", methods=["POST"])
+def respost_message():
+    if request.json:
+        message_id = request.json["message_id"]
     repost = db.session.execute(
         db.select(Repost).where(
-            Repost.user_id == g.user.id, Repost.message_id == message_id
+            Repost.message_id == message_id, Repost.user_id == g.user.id
         )
     ).scalar_one_or_none()
-    db.session.delete(repost)
+    if repost:
+        db.session.delete(repost)
+    else:
+        repost = Repost()
+        repost.user_id = g.user.id
+        repost.message_id = message_id
+        db.session.add(repost)
+
     db.session.commit()
+    return jsonify(response={"response": 200})
+
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
+    return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
+
+
+# @app_routes.route("/messages/<int:message_id>/unpost", methods=["POST"])
+# def unpost_message(message_id):
+#     repost = db.session.execute(
+#         db.select(Repost).where(
+#             Repost.user_id == g.user.id, Repost.message_id == message_id
+#         )
+#     ).scalar_one_or_none()
+# db.session.delete(repost)
+#     db.session.commit()
+#     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))

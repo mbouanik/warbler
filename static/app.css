@@ -483,6 +483,10 @@ h1 {
   /* border-bottom-right-radius: 0.3rem; */
 }
 
+.like-btn button {
+  border: none;
+}
+
 .top {
   height: 6rem;
 }
@@ -520,16 +524,35 @@ h1 {
   color: #318ce7;
 }
 
+.not-liked:hover {
+  color: #318ce7;
+}
+
+.not-commented:hover {
+  color: #318ce7;
+}
+
+.not-reposted:hover {
+  color: #00a86b;
+}
 .dropdown-item {
   padding: 0;
 }
 .dropdown-menu {
   padding: 0;
+  z-index: 10;
 }
 .dropdown-menu[data-bs-popper] {
   left: -4.1rem;
 }
-
+.interaction {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+}
+.interaction a {
+  border: none;
+}
 @media (max-width: 1039px) {
   .grid-card {
     display: flex;
