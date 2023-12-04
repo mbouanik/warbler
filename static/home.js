@@ -15,20 +15,21 @@ forms_list.addEventListener("submit", (evt) => {
     msgs.forEach((msg) => {
       msg.remove();
     });
-  } else if (evt.target.classList.contains("follows")) {
-    console.log("DOOR", evt.target.id);
-    follow_user(evt);
-    console.log();
-    stat_following = document.querySelector(".stat-following");
-    console.log(stat_following);
-    if (evt.target[0].innerText == "Follow") {
-      evt.target[0].innerText = "Unfollow";
-      stat_following.innerText = `${parseInt(stat_following.innerText) + 1}`;
-    } else {
-      evt.target[0].innerText = "Follow";
-      stat_following.innerText = `${parseInt(stat_following.innerText) - 1}`;
-    }
   }
+  // else if (evt.target.classList.contains("follows")) {
+  //   console.log("DOOR", evt.target.id);
+  //   // follow_user(evt);
+  //   console.log();
+  //   stat_following = document.querySelector(".stat-following");
+  //   console.log(stat_following);
+  //   if (evt.target[0].innerText == "Follow") {
+  //     // evt.target[0].innerText = "Unfollow" ;
+  //     stat_following.innerText = `${parseInt(stat_following.innerText) + 1}`;
+  //   } else {
+  //     // evt.target[0].innerText = "Follow";
+  //     stat_following.innerText = `${parseInt(stat_following.innerText) - 1}`;
+  //   }
+  // }
 });
 
 async function follow_user(evt) {

@@ -5,12 +5,15 @@ follow_form.addEventListener("submit", (evt) => {
     console.log("ClAIM", evt.target.id);
     follow_user(evt);
     if (evt.target[0].innerText == "Follow") {
-      evt.target[0].innerText = "Unfollow";
+      evt.target[0].innerText = "Following";
       evt.target[0].classList.remove("btn-outline-primary");
       evt.target[0].classList.add("btn-primary");
+      evt.target[0].classList.add("unfollow");
+      evt.target[0].setAttribute("data-hover", "Unfollow");
     } else {
       evt.target[0].innerText = "Follow";
       evt.target[0].classList.remove("btn-primary");
+      evt.target[0].classList.remove("unfollow");
       evt.target[0].classList.add("btn-outline-primary");
     }
   }

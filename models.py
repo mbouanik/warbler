@@ -73,15 +73,14 @@ class User(db.Model):
         secondary="follows",
         primaryjoin=(Follows.user_being_followed_id == id),
         secondaryjoin=(Follows.user_following_id == id),
-        backref="following",
     )
 
-    # following = Relationship(
-    #     "User",
-    #     secondary="follows",
-    #     primaryjoin=(Follows.user_following_id == id),
-    #     secondaryjoin=(Follows.user_being_followed == id),
-    # )
+    following = Relationship(
+        "User",
+        secondary="follows",
+        primaryjoin=(Follows.user_following_id == id),
+        secondaryjoin=(Follows.user_being_followed_id == id),
+    )
 
     likes = Relationship("Message", secondary="likes", backref="users")
 

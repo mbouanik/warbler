@@ -12,7 +12,7 @@
                     <p> @{{ g.user.username }}</p>
                 </a>
             </div> 
-            <div class="stats">
+            <div class="stats profile-stat-follow-form">
                 <div class="stat">
                     <div class="text-muted"> <small>Messages</small></div>
                     <div> <a class="stat-msg" href="/users/{{ g.user.id}}">{{ g.user.messages | length}} </a> </div> 
@@ -45,7 +45,6 @@
             </div>
             <ul class="list-group forms-list">
             {% for msg in messages %}
-
                 {% include "components/messages.html" %}
             {% endfor %}
             </ul>

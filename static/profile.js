@@ -15,15 +15,6 @@ forms_list.addEventListener("submit", (evt) => {
     msgs.forEach((msg) => {
       msg.remove();
     });
-  } else if (evt.target.classList.contains("follows")) {
-    console.log("DOOR", evt.target.id);
-    follow_user(evt);
-    console.log();
-    if (evt.target[0].innerText == "Follow") {
-      evt.target[0].innerText = "Unfollow";
-    } else {
-      evt.target[0].innerText = "Follow";
-    }
   }
 });
 

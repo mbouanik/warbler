@@ -234,7 +234,13 @@ def show_user_following(user_id):
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
-    return render_template("following.html", user=user, form=form, edit_form=edit_form)
+    return render_template(
+        "follow_page.html",
+        user=user,
+        form=form,
+        edit_form=edit_form,
+        follows=user.following,
+    )
 
 
 @app_routes.route("/users/followers/<int:user_id>")
@@ -248,7 +254,13 @@ def show_user_followers(user_id):
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
-    return render_template("followers.html", user=user, form=form, edit_form=edit_form)
+    return render_template(
+        "follow_page.html",
+        user=user,
+        form=form,
+        edit_form=edit_form,
+        follows=user.followers,
+    )
 
 
 @app_routes.route("/messages/", methods=["POST"])

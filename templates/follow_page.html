@@ -4,7 +4,7 @@
 <div class="profile-follows-info container">
     {% include "components/info_card.html" %}
     <div class="follow-grid">
-        {% for user in user.following %}
+        {% for user in follows %}
         {% include "components/follow.html" %}
         {% endfor %}
     </div>
@@ -13,6 +13,6 @@
 {% include "components/modal_post_form.html" %}
 {% include "components/modal_edit_profile.html" %}
 
-<script src=" {{ url_for('app_routes.static', filename='following.js' ) }} "></script>
+<script src=" {{ url_for('app_routes.static', filename='follow.js' ) }} "></script>
 {% endblock %}
 

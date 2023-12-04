@@ -2,66 +2,73 @@
   <img class="header-img" src="{{ user.header_image_url }}" alt="r..." />
 </div>
 
-<div class="profile-stats">
-  <div class="profile-user">
+<ul class="profile-stats list-group list-group-horizontal">
+  <li class="profile-user list-group-itr">
     <img
       src="{{ user.image_url }}"
       alt="Image for {{ user.username }}"
       class="card-image profile-pic-bg rounded-circle"
     />
-  </div>
+  </li>
 
-  <div class="stat profile-stat">
+  <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Messages</b></div>
     <div>
       <a class="stat-msg" href="/users/{{ user.id }}"
         >{{ user.messages | length}}
       </a>
     </div>
-  </div>
-  <div class="stat profile-stat">
+  </li>
+  <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Following</b></div>
     <div>
       <a class="stat-following" href="/users/following/{{ user.id }}"
         >{{ user.following | length}}
       </a>
     </div>
-  </div>
-  <div class="stat profile-stat">
+  </li>
+  <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Followers</b></div>
     <div>
       <a class="stat-followers" href="/users/followers/{{ user.id }}"
         >{{ user.followers | length}}
       </a>
     </div>
-  </div>
-  <div class="stat profile-stat">
+  </li>
+  <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Likes</b></div>
     <div>
       <a class="stat-likes" href="/users/messages/likes/{{user.id}}"
         >{{ user.likes | length}}
       </a>
     </div>
-  </div>
-  <div class="stat profile-stat">
+  </li>
+  <li class="stat profile-stat profile-stat-follow-form">
     <p></p>
     {% if g.user.id != user.id %}
-    <div class="profile-follow-btn">
+    <!-- <li class="profile-follow-btn"> -->
+    <form id="{{user.id}}" class="follows-stat" method="POST">
       {% if user in g.user.following %}
-      <form action="/users/unfollow/{{user.id}}" method="POST">
-        <button class="btn btn-primary btn-sm">Unfollow</button>
-      </form>
+      <button
+        class="btn btn-primary btn-sm stat-follow-btn unfollow profile-stat-btn"
+        data-hover="Unfollow"
+      >
+        Following
+      </button>
       {% else %}
-      <form action="/users/follow/{{user.id}}" method="POST">
-        <button class="btn btn-outline-primary btn-sm">Follow</button>
-      </form>
+      <button
+        class="btn btn-outline-primary btn-sm stat-follow-btn profile-stat-btn"
+      >
+        Follow
+      </button>
       {% endif %}
-    </div>
+    </form>
+    <!-- </li> -->
     {% else %}
-    <div class="edit-btn profile-edit-btn">
+    <div class="edit-btn profile-stat-btn stat-follow-btn">
       <button
         type="button"
-        class="btn btn-primary btn-sm"
+        class="btn btn-primary"
         data-bs-toggle="modal"
         data-bs-target="#edit-profile"
       >
@@ -69,5 +76,5 @@
       </button>
     </div>
     {% endif %}
-  </div>
-</div>
+  </li>
+</ul>
