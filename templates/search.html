@@ -12,15 +12,13 @@
                     <div class="card-text">{{user.bio}}</div>
                     {% if g.user.id != user.id %}
                     <div class="follow-btn">
-                        {% if user in g.user.followings %}
-                        <form action="/users/unfollow/{{user.id}}" method="POST">
+                        <form id="{{user.id}}" class="follows" method="POST">
+                        {% if user in g.user.following %}
                             <button class="btn btn-primary btn-sm"> Unfollow</button>
-                        </form>
                         {% else %}
-                        <form action="/users/follow/{{user.id}}" method="POST">
                             <button class="btn btn-outline-primary btn-sm"> Follow</button>
-                        </form>
                         {% endif %}
+                        </form>
                     </div>
                     {% endif %}
             </div>
@@ -30,5 +28,6 @@
 
     </div>
    </div>
+        <script src=" {{ url_for('app_routes.static', filename='search.js' ) }} "></script>
 {% endblock %}
 
