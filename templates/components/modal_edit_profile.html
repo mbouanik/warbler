@@ -1,3 +1,11 @@
+{% if edit_form.errors %}
+<ul class="errors">
+  {% for field_name, field_errors in edit_form.errors|dictsort if field_errors
+  %} {% for error in field_errors %}
+  <li>{{ edit_form[field_name].label }}: {{ error }}</li>
+  {% endfor %} {% endfor %}
+</ul>
+{% endif %}
 <div
   class="modal fade"
   id="edit-profile"
@@ -30,10 +38,12 @@
           </div>
 
           {% endfor %}
+          <div class="modal-footer">
+            <button class="btn btn-primary">Edit</button>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary">Edit</button>
         <form
           class="logout navbar-form ravbar-right"
           action="/users/{{g.user.id}}/delete"

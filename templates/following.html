@@ -10,8 +10,9 @@
     </div>
 
 </div>
-        {% include "components/modal_post_form.html" %}
+{% include "components/modal_post_form.html" %}
+{% include "components/modal_edit_profile.html" %}
 
-        <script src=" {{ url_for('app_routes.static', filename='following.js' ) }} "></script>
+<script src=" {{ url_for('app_routes.static', filename='following.js' ) }} "></script>
 {% endblock %}
 

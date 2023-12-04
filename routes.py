@@ -227,26 +227,28 @@ def follow_user():
 def show_user_following(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
+    edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
         message = Message(text=form.text.data, user_id=user.id)
         db.session.add(message)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
-    return render_template("following.html", user=user, form=form)
+    return render_template("following.html", user=user, form=form, edit_form=edit_form)
 
 
 @app_routes.route("/users/followers/<int:user_id>")
 def show_user_followers(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
+    edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
         message = Message(text=form.text.data, user_id=user.id)
         db.session.add(message)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
-    return render_template("followers.html", user=user, form=form)
+    return render_template("followers.html", user=user, form=form, edit_form=edit_form)
 
 
 @app_routes.route("/messages/", methods=["POST"])
@@ -285,13 +287,14 @@ def add_post():
 def show_liked_messagess(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
+    edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
         message = Message(text=form.text.data, user_id=user.id)
         db.session.add(message)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
-    return render_template("likes.html", user=user, form=form)
+    return render_template("likes.html", user=user, form=form, edit_form=edit_form)
 
 
 @app_routes.route("/messages/<int:message_id>", methods=["GET", "POST"])

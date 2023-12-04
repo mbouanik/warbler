@@ -11,8 +11,10 @@
         </ul>
 </div>
 
-        {% include "components/modal_post_form.html" %}
-            <script src=" {{ url_for('app_routes.static', filename='likes.js' ) }} "></script>
+{% include "components/modal_post_form.html" %}
+{% include "components/modal_edit_profile.html" %}
+
+<script src=" {{ url_for('app_routes.static', filename='likes.js' ) }} "></script>
 
 {% endblock %}
 
