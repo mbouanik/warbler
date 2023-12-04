@@ -13,7 +13,11 @@
 
   <div class="stat profile-stat">
     <div class="text-muted"><b>Messages</b></div>
-    <div><a href="/users/{{ user.id }}">{{ user.messages | length}} </a></div>
+    <div>
+      <a class="stat-msg" href="/users/{{ user.id }}"
+        >{{ user.messages | length}}
+      </a>
+    </div>
   </div>
   <div class="stat profile-stat">
     <div class="text-muted"><b>Following</b></div>

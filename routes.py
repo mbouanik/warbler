@@ -9,7 +9,6 @@ from flask import (
     g,
     request,
 )
-from werkzeug.wrappers import response
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm

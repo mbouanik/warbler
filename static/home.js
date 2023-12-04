@@ -80,7 +80,6 @@ async function like(msg_id) {
     });
 }
 
-// console.log(repost_forms);
 function repost_form(evt) {
   evt.preventDefault();
   const msg_id = parseInt(evt.target.id);
@@ -114,7 +113,7 @@ async function delete_msg(evt) {
   data = {
     message_id: msg_id,
   };
-  await axios.post("messages/delete", data);
+  await axios.post("/messages/delete", data);
   stat_msg = document.querySelector(".stat-msg");
   stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
 }
