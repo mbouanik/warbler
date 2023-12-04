@@ -7,7 +7,7 @@
         <ul class="list-group">
             {% include "components/messages.html" %} 
         </ul>
-        <div class="mb-3 mt-3">
+        <div id="post-form" class="mb-3 mt-3">
             <form action="" method="POST">
                 {{ form.csrf_token }}
                 {{ form.text(class="form-control", placeholder="What do you think?") }}
@@ -30,5 +30,6 @@
         </ul>
     </div>
 </div>
+<script src=" {{ url_for('app_routes.static', filename='message.js' ) }} "></script>
 {% endblock %}
 

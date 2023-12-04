@@ -1,4 +1,4 @@
-<li class="list-group-item">
+<li id="msg{{msg.id}}" class="list-group-item">
   <div class="m">
     <button
       type="button"
@@ -12,21 +12,22 @@
     <ul class="dropdown-menu">
       <li class="dropdown-item">
         {% if msg.user.id == g.user.id %}
-        <form action="/messages/{{ msg.id }}/delete" method="POST">
+        <form id="{{msg.id}}" class="delete-msg" method="POST">
           <button class="btn btn-link text-muted">Delete</button>
         </form>
         {% endif %}
       </li>
       <li class="dropdown-item">
-        {% if msg.user.id != g.user.id %} {% if msg.user in g.user.following %}
-        <form action="/users/unfollow/{{msg.user.id}}" method="POST">
+        {% if msg.user.id != g.user.id %}
+        <form id="{{msg.user.id}}" class="follows" method="POST">
+          {% if msg.user in g.user.following %}
+
           <button class="btn btn-link text-muted">Unfollow</button>
-        </form>
-        {% else %}
-        <form action="/users/follow/{{msg.user.id}}" method="POST">
+          {% else %}
           <button class="btn btn-link text-muted">Follow</button>
+          {% endif %}
         </form>
-        {% endif %} {% endif %}
+        {% endif %}
       </li>
     </ul>
   </div>
@@ -36,22 +37,22 @@
     </a>
     <div class="message-area">
       <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-      <span class="text-muted">{{ msg.timestamp.strftime('%b %d, %Y') }}</span>
+      <span class="text-muted">{{ msg.timestamp.strftime('%b %-d, %Y') }}</span>
       <p>{{ msg.text }}</p>
     </div>
   </div>
 </li>
-<div class="like-btn">
+<div id="msg{{msg.id}}" class="like-btn">
   <div class="interaction">
     <form id="{{msg.id}}" class="like_form" method="POST">
       <button class="btn">
         {% if msg in g.user.likes %}
         <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked">
-          <small id="likes_count"> {{ msg.users | length }} </small>
+          {{ msg.users | length }}
         </i>
         {% else %}
         <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked">
-          <small id="likes_count"> {{ msg.users | length }} </small>
+          {{ msg.users | length }}
         </i>
         {% endif %}
       </button>
@@ -75,11 +76,11 @@
       <button class="btn">
         {% if msg in g.user.reposted %}
         <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted">
-          <small id="repost_count"> {{ msg.reposted | length }} </small>
+          {{ msg.reposted | length }}
         </i>
         {% else %}
         <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet not-reposted">
-          <small id="repost_count"> {{ msg.reposted | length }} </small>
+          {{ msg.reposted | length }}
         </i>
         {% endif %}
       </button>

@@ -2,7 +2,7 @@
 {% block content %}
 <div class="home container">
     <div class="">
-        <div class="card homepage-card sticky-top">
+        <div class="card homepage-card">
             <img src="{{ g.user.header_image_url }}" class="card-img-top" alt="...">
             <div class="card-body homepage-card-body">
                 <a href="/users/{{ g.user.id }}" class="card-link">
@@ -15,7 +15,7 @@
             <div class="stats">
                 <div class="stat">
                     <div class="text-muted"> <small>Messages</small></div>
-                    <div> <a href="/users/{{ g.user.id}}">{{ g.user.messages | length}} </a> </div> 
+                    <div> <a class="stat-msg" href="/users/{{ g.user.id}}">{{ g.user.messages | length}} </a> </div> 
                 </div >
                 <div class="stat">
                     <div class="text-muted"><small>Following</small></div>
@@ -27,7 +27,7 @@
                 </div>
                 <div class="stat">
                     <div class="text-muted"><small>Likes</small></div>
-                    <div> <a href="/users/messages/likes/{{ user.id }}">{{ g.user.likes | length}} </a> </div> 
+                    <div> <a class="stat-likes" href="/users/messages/likes/{{ user.id }}">{{ g.user.likes | length}} </a> </div> 
                 </div>
             </div>
         </div> 
@@ -37,13 +37,13 @@
     <div class="messages-list">
         <div class="messages">
             <div class="mb-3">
-                <form action="" method="POST">
+                <form id="post-form" action="" method="POST">
                     {{ form.csrf_token }}
                     {{ form.text(class="form-control", placeholder="What's Happening?") }}
                     <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
                 </form>
             </div>
-            <ul class="list-group">
+            <ul class="list-group forms-list">
             {% for msg in messages %}
 
                 {% include "components/messages.html" %}
@@ -52,4 +52,6 @@
         </div>
     </div>
 </div>
+        <script src=" {{ url_for('app_routes.static', filename='home.js' ) }} "></script>
+
     {% endblock %}

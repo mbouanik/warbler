@@ -18,19 +18,25 @@
   <div class="stat profile-stat">
     <div class="text-muted"><b>Following</b></div>
     <div>
-      <a href="/users/following/{{ user.id }}">{{ user.following | length}} </a>
+      <a class="stat-following" href="/users/following/{{ user.id }}"
+        >{{ user.following | length}}
+      </a>
     </div>
   </div>
   <div class="stat profile-stat">
     <div class="text-muted"><b>Followers</b></div>
     <div>
-      <a href="/users/followers/{{ user.id }}">{{ user.followers | length}} </a>
+      <a class="stat-followers" href="/users/followers/{{ user.id }}"
+        >{{ user.followers | length}}
+      </a>
     </div>
   </div>
   <div class="stat profile-stat">
     <div class="text-muted"><b>Likes</b></div>
     <div>
-      <a href="/users/messages/likes/{{user.id}}">{{ user.likes | length}} </a>
+      <a class="stat-likes" href="/users/messages/likes/{{user.id}}"
+        >{{ user.likes | length}}
+      </a>
     </div>
   </div>
   <div class="stat profile-stat">

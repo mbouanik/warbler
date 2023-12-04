@@ -9,6 +9,7 @@ from flask import (
     g,
     request,
 )
+from werkzeug.wrappers import response
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
@@ -191,20 +192,36 @@ def search():
     return render_template("search.html", users=users)
 
 
-@app_routes.route("/users/follow/<int:follow_id>", methods=["POST"])
-def follow_user(follow_id):
-    user = db.get_or_404(User, follow_id)
-    g.user.following.append(user)
-    db.session.commit()
-    return redirect(url_for("app_routes.home"))
+# @app_routes.route("/users/follow/", methods=["POST"])
+# def follow_user(follow_id):
+#     user = db.get_or_404(User, follow_id)
+#     g.user.following.append(user)
+#     db.session.commit()
+#     return redirect(url_for("app_routes.home"))
 
 
-@app_routes.route("/users/unfollow/<int:follow_id>", methods=["POST"])
-def unfollow_user(follow_id):
-    user = db.get_or_404(User, follow_id)
-    g.user.following.remove(user)
-    db.session.commit()
-    return redirect(url_for("app_routes.home"))
+@app_routes.route("/users/follow", methods=["POST"])
+def follow_user():
+    if request.json:
+        follow_id = request.json["follow_id"]
+        user = db.get_or_404(User, follow_id)
+        if user in g.user.following:
+            print("unfollow")
+            g.user.following.remove(user)
+        else:
+            g.user.following.append(user)
+            print("follow")
+        db.session.commit()
+        return jsonify(response={"response": 200})
+    return jsonify(response={"response": "failed"})
+
+
+# @app_routes.route("/users/unfollow/<int:follow_id>", methods=["POST"])
+# def unfollow_user(follow_id):
+#     user = db.get_or_404(User, follow_id)
+#     g.user.following.remove(user)
+#     db.session.commit()
+#     return redirect(url_for("app_routes.home"))
 
 
 @app_routes.route("/users/following/<int:user_id>")
@@ -231,6 +248,38 @@ def show_user_followers(user_id):
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template("followers.html", user=user, form=form)
+
+
+@app_routes.route("/messages/", methods=["POST"])
+def add_post():
+    data = request.json
+    print(data)
+    form = MessageForm(obj=data)
+    print(form.text.data)
+    print(form.validate())
+    if form.validate():
+        message = Message()
+        form.populate_obj(message)
+        # print(message.text)
+        # message.user_id = g.user.id
+        g.user.messages.append(message)
+        # db.session.add(message)
+        db.session.commit()
+        response = {
+            "user": {
+                "id": g.user.id,
+                "username": g.user.username,
+                "image_url": g.user.image_url,
+            },
+            "message": {
+                "id": message.id,
+                "timestamp": message.timestamp,
+                "text": message.text,
+            },
+        }
+
+        return jsonify(response)
+    return jsonify(response={"response": "failed"})
 
 
 @app_routes.route("/users/messages/likes/<int:user_id>")
@@ -262,8 +311,11 @@ def show_message(message_id):
     return render_template("message.html", msg=msg, form=form)
 
 
-@app_routes.route("/messages/<int:message_id>/delete", methods=["POST"])
-def delete_message(message_id):
+@app_routes.route("/messages/delete", methods=["POST"])
+def delete_message():
+    if request.json:
+        message_id = request.json["message_id"]
+
     msg = db.get_or_404(Message, message_id)
     repost = db.session.execute(
         db.select(Repost).where(
