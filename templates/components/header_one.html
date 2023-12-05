@@ -22,7 +22,10 @@
   <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Following</b></div>
     <div>
-      <a class="stat-following" href="/users/following/{{ user.id }}"
+      <a
+        id="{{user.id}}"
+        class="stat-following"
+        href="/users/following/{{ user.id }}"
         >{{ user.following | length}}
       </a>
     </div>
@@ -65,7 +68,7 @@
     </form>
     <!-- </li> -->
     {% else %}
-    <div class="edit-btn profile-stat-btn stat-follow-btn">
+    <div class="edit-btn profile-stat-btn">
       <button
         type="button"
         class="btn btn-primary"

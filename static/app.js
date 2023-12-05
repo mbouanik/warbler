@@ -41,19 +41,22 @@ forms_list.addEventListener("submit", (evt) => {
     console.log("DOOR", evt.target.id);
     follow_user(evt);
     const stat_follow_btn = document.querySelector(".stat-follow-btn");
-    if (stat_follow_btn.innerText == "Follow") {
-      stat_follow_btn.innerText = "Following";
-      stat_follow_btn.classList.add("btn-primary");
-      stat_follow_btn.classList.remove("btn-outline-primary");
-      stat_follow_btn.classList.add("unfollow");
-      stat_follow_btn.setAttribute("data-hover", "Unfollow");
-    } else {
-      stat_follow_btn.innerText = "Follow";
-      stat_follow_btn.classList.remove("btn-primary");
-      stat_follow_btn.classList.remove("unfollow");
-      stat_follow_btn.classList.add("btn-outline-primary");
+    const stat_following = document.querySelector(".stat-following");
+    if (stat_follow_btn) {
+      if (stat_follow_btn.innerText == "Follow") {
+        stat_follow_btn.innerText = "Following";
+        stat_follow_btn.classList.add("btn-primary");
+        stat_follow_btn.classList.remove("btn-outline-primary");
+        stat_follow_btn.classList.add("unfollow");
+        stat_follow_btn.setAttribute("data-hover", "Unfollow");
+      } else {
+        stat_follow_btn.innerText = "Follow";
+        stat_follow_btn.classList.remove("btn-primary");
+        stat_follow_btn.classList.remove("unfollow");
+        stat_follow_btn.classList.add("btn-outline-primary");
+      }
     }
-    console.log(stat_follow_btn);
+    // console.log(stat_follow_btn);
 
     // console.log();
     // if (evt.target[0].innerText == "Follow") {
@@ -61,14 +64,30 @@ forms_list.addEventListener("submit", (evt) => {
     // } else {
     //   evt.target[0].innerText = "Follow";
     // }
+    const user_id = document.querySelector(".nav-img");
+    console.log();
+
+    if (
+      stat_following &&
+      stat_following.attributes[0].value == user_id.attributes[0].value
+    ) {
+      if (evt.target[0].innerText == "Unfollow") {
+        console.log(evt.target.id);
+        stat_following.innerText = `${parseInt(stat_following.innerText) - 1}`;
+      } else {
+        stat_following.innerText = `${parseInt(stat_following.innerText) + 1}`;
+      }
+    }
+    console.log(evt.target[0].innerText);
     menus = document.querySelectorAll(".follows");
     menus.forEach((menu) => {
       // console.log(menu.id);
       // console.log(evt.target.id);
-      console.log(menu.children[0]);
+      // console.log(menu.children[0]);
       if (menu.id == evt.target.id)
         if (menu.children[0].innerText == "Follow") {
           menu.children[0].innerText = "Unfollow";
+
           // memu.children[0].classList.value.add("unfollow");
         } else {
           // memu.children[0].classList.value.remove("unfollow");
