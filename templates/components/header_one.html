@@ -41,7 +41,10 @@
   <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Likes</b></div>
     <div>
-      <a class="stat-likes" href="/users/messages/likes/{{user.id}}"
+      <a
+        id="{{user.id}}"
+        class="stat-likes"
+        href="/users/messages/likes/{{user.id}}"
         >{{ user.likes | length}}
       </a>
     </div>
