@@ -5,7 +5,7 @@
    {% include "components/info_card.html" %}
 
         <ul class="list-group messages forms-list">
-        {% for msg in user.likes %}
+        {% for msg in user.likes[::-1] %}
         {% include "components/messages.html" %}
         {% endfor %}
         </ul>

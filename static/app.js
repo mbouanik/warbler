@@ -33,6 +33,8 @@ profile_stat_follow_form.addEventListener("submit", (evt) => {
     });
   } else if (evt.target.classList.contains("like_form")) {
     console.log("HELLO WORLD ", evt.target.id);
+    evt.preventDefault();
+
     like_form(evt);
   }
 });
@@ -144,4 +146,18 @@ function like_form(evt) {
       stat_likes.innerText = `${parseInt(stat_likes.innerText) - 1}`;
     }
   }
+}
+
+async function like(msg_id) {
+  const data = {
+    message_id: parseInt(msg_id),
+  };
+  const rest = await axios
+    .post(`/messages/like`, data)
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 }
