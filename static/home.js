@@ -67,20 +67,20 @@ async function follow_user(evt) {
 //   }
 // }
 
-async function like(msg_id) {
-  const data = {
-    message_id: parseInt(msg_id),
-  };
-  const rest = await axios
-    .post(`/messages/like`, data)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
+// async function like(msg_id) {
+//   const data = {
+//     message_id: parseInt(msg_id),
+//   };
+//   const rest = await axios
+//     .post(`/messages/like`, data)
+//     .then(function (response) {
+//       console.log(response);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// }
+//
 function repost_form(evt) {
   evt.preventDefault();
   const msg_id = parseInt(evt.target.id);
