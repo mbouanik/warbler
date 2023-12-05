@@ -10,6 +10,7 @@ profile_stat_follow_form.addEventListener("submit", (evt) => {
       evt.target[0].classList.remove("btn-outline-primary");
       evt.target[0].classList.add("btn-primary");
       evt.target[0].classList.add("unfollow");
+      evt.target[0].setAttribute("data-hover", "Unfollow");
     } else {
       evt.target[0].innerText = "Follow";
       evt.target[0].classList.remove("btn-primary");
@@ -39,6 +40,21 @@ forms_list.addEventListener("submit", (evt) => {
   if (evt.target.classList.contains("follows")) {
     console.log("DOOR", evt.target.id);
     follow_user(evt);
+    const stat_follow_btn = document.querySelector(".stat-follow-btn");
+    if (stat_follow_btn.innerText == "Follow") {
+      stat_follow_btn.innerText = "Following";
+      stat_follow_btn.classList.add("btn-primary");
+      stat_follow_btn.classList.remove("btn-outline-primary");
+      stat_follow_btn.classList.add("unfollow");
+      stat_follow_btn.setAttribute("data-hover", "Unfollow");
+    } else {
+      stat_follow_btn.innerText = "Follow";
+      stat_follow_btn.classList.remove("btn-primary");
+      stat_follow_btn.classList.remove("unfollow");
+      stat_follow_btn.classList.add("btn-outline-primary");
+    }
+    console.log(stat_follow_btn);
+
     // console.log();
     // if (evt.target[0].innerText == "Follow") {
     //   evt.target[0].innerText = "Unfollow";

@@ -17,11 +17,14 @@
       <div class="follow-btn">
         <form id="{{user.id}}" class="follows" method="POST">
           {% if user in g.user.following %}
-          <button class="btn btn-primary btn-sm unfollow" data-hover="Unfollow">
+          <button
+            class="btn btn-primary btn-sm unfollow f-btn"
+            data-hover="Unfollow"
+          >
             Following
           </button>
           {% else %}
-          <button class="btn btn-outline-primary btn-sm">Follow</button>
+          <button class="btn btn-outline-primary btn-sm f-btn">Follow</button>
           {% endif %}
         </form>
       </div>

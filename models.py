@@ -126,6 +126,7 @@ class Message(db.Model):
         nullable=False,
         default=datetime.utcnow,
     )
+    img = mapped_column(String)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     reposts = Relationship("Repost", backref="messages", cascade="all,delete")

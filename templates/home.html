@@ -40,8 +40,11 @@
                 <form id="post-form" action="" method="POST">
                     {{ form.csrf_token }}
                     {{ form.text(class="form-control", placeholder="What's Happening?") }}
-                    <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
+                   
+                            <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
                 </form>
+
+
             </div>
             <ul class="list-group forms-list">
             {% for msg in messages %}

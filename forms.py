@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import Email, InputRequired, Length
+from flask_wtf.file import FileField
 
 
 class UserForm(FlaskForm):
@@ -20,6 +21,10 @@ class LoginForm(FlaskForm):
 
 class MessageForm(FlaskForm):
     text = TextAreaField("Text", validators=[InputRequired()])
+
+
+class UploadForm(FlaskForm):
+    image = FileField("Image File")
 
 
 class EditUserForm(FlaskForm):

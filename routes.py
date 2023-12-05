@@ -56,6 +56,7 @@ def home():
     if user_id:
         user = db.get_or_404(User, user_id)
         form = MessageForm()
+
         messages = (
             db.session.execute(
                 db.select(Message).order_by(Message.timestamp.desc()).limit(100)
@@ -268,8 +269,6 @@ def add_post():
     data = request.json
     print(data)
     form = MessageForm(obj=data)
-    print(form.text.data)
-    print(form.validate())
     if form.validate():
         message = Message()
         form.populate_obj(message)
