@@ -1,10 +1,10 @@
 <div class="card profile-info">
   <div class="card-body">
     <div class="card-text"><b>@{{ user.username }} </b></div>
-    <h4 class="card-title">Bio</h4>
     <div class="card-text">{{user.bio}}</div>
-    <h4 class="card-title">Location</h4>
-    <div class="card-text">{{ user.location}}</div>
+    <small class="card-text">
+      <i class="fa-solid fa-location-dot"></i> {{ user.location}}
+    </small>
   </div>
   {% if g.user.id == user.id %}
   <div class="post-btn">

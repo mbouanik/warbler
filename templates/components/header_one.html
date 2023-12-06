@@ -3,11 +3,11 @@
 </div>
 
 <ul class="profile-stats list-group list-group-horizontal">
-  <li class="profile-user list-group-itr">
+  <li class="profile-user list-group-item">
     <img
       src="{{ user.image_url }}"
       alt="Image for {{ user.username }}"
-      class="card-image profile-pic-bg rounded-circle"
+      class="card-image profile-pic-bg"
     />
   </li>
 
@@ -49,7 +49,9 @@
       </a>
     </div>
   </li>
-  <li class="stat profile-stat profile-stat-follow-form">
+  <li
+    class="stat profile-stat profile-stat-follow-form list-group-item stat-btn"
+  >
     <p></p>
     {% if g.user.id != user.id %}
     <!-- <li class="profile-follow-btn"> -->

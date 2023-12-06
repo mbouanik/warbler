@@ -1,38 +1,7 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %}
 {% block content %}
 <div class="home container">
-    <div class="">
-        <div class="card homepage-card">
-            <img src="{{ g.user.header_image_url }}" class="card-img-top" alt="...">
-            <div class="card-body homepage-card-body">
-                <a href="/users/{{ g.user.id }}" class="card-link">
-                    <img src="{{ g.user.image_url }}"
-                        alt="Image for {{ g.user.username }}"
-                        class="card-image profile-pic ">
-                    <p> @{{ g.user.username }}</p>
-                </a>
-            </div> 
-            <div class="stats profile-stat-follow-form">
-                <div class="stat">
-                    <div class="text-muted"> <small>Messages</small></div>
-                    <div> <a class="stat-msg" href="/users/{{ g.user.id}}">{{ g.user.messages | length}} </a> </div> 
-                </div >
-                <div class="stat">
-                    <div class="text-muted"><small>Following</small></div>
-                    <div> <a id="{{g.user.id}}" class="stat-following" href="/users/following/{{ g.user.id }}">{{ g.user.following | length}} </a> </div> 
-                </div>
-                <div class="stat">
-                    <div class="text-muted"><small>Followers</small></div>
-                    <div> <a href="/users/followers/{{ g.user.id }}">{{ g.user.followers | length}} </a> </div> 
-                </div>
-                <div class="stat">
-                    <div class="text-muted"><small>Likes</small></div>
-                    <div> <a id="{{user.id}}" class="stat-likes" href="/users/messages/likes/{{ user.id }}">{{ g.user.likes | length}} </a> </div> 
-                </div>
-            </div>
-        </div> 
-    </div>
-
+   
 
     <div class="messages-list">
         <div class="messages">
@@ -41,7 +10,7 @@
                     {{ form.csrf_token }}
                     {{ form.text(class="form-control", placeholder="What's Happening?") }}
                    
-                            <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
+                    <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
                 </form>
 
 
@@ -54,6 +23,7 @@
         </div>
     </div>
 </div>
+{% include "components/modal_post_form.html" %}
         <script src=" {{ url_for('app_routes.static', filename='home.js' ) }} "></script>
 
     {% endblock %}

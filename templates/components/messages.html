@@ -13,7 +13,9 @@
       <li class="dropdown-item">
         {% if msg.user.id == g.user.id %}
         <form id="{{msg.id}}" class="delete-msg" method="POST">
-          <button class="btn btn-link text-muted">Delete</button>
+          <button class="btn btn-link text-danger">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
         </form>
         {% endif %}
       </li>

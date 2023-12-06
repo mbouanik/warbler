@@ -214,8 +214,11 @@ async function post_message(text) {
   </div>
 
   `;
-  const div = document.createElement("div");
+  const template = document.createElement("template");
 
-  div.innerHTML = content;
-  ul.prepend(div);
+  template.innerHTML = content;
+  const t = template.content.children;
+  console.log(t);
+  ul.insertBefore(t[1], ul.firstChild);
+  ul.insertBefore(t[0], ul.firstChild);
 }

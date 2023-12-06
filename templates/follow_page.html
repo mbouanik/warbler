@@ -1,15 +1,15 @@
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     {% include "components/header_one.html" %}
-<div class="profile-follows-info container">
-    {% include "components/info_card.html" %}
-    <div class="follow-grid">
+<!-- <div class="profile-follows-info container"> -->
+    <!-- {% include "components/info_card.html" %} -->
+    <ul class="follow-grid list-group">
         {% for user in follows %}
         {% include "components/follow.html" %}
         {% endfor %}
-    </div>
+    </ul>
 
-</div>
+<!-- </div> -->
 {% include "components/modal_post_form.html" %}
 {% include "components/modal_edit_profile.html" %}
 
