@@ -509,6 +509,9 @@ h1 {
   .nav-left-side nav {
     display: none;
   }
+  .nav-left-side {
+    display: none;
+  }
   .grid-card {
     display: flex;
     flex-flow: wrap;
