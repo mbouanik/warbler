@@ -2,9 +2,8 @@
 
 {% block content %}
 
-<div class="message-page">
-    <div class="messages">
-        <ul class="list-group">
+    <div class="messages  profile-message-info">
+        <ul class="list-group messages">
             {% include "components/messages.html" %} 
         </ul>
         <div id="post-form" class="mb-3 mt-3">
@@ -14,11 +13,11 @@
                 <button class="btn btn-primary btn-sm"> React  <i class="fa-brands fa-twitter"> </i></button>
             </form>
         </div>
-        <ul class="list-group">
+        <ul class="list-group messages">
             {% for comment in msg.comments %}
             <li class="list-group-item message">
                 <a class="" href="/users/{{ comment.user.id }}">
-                    <img src="{{ comment.user.image_url }}" alt="" class="rounded-circle timeline-image">
+                    <img src="{{ comment.user.image_url }}" alt="" class="timeline-image">
                 </a>
                 <div class="message-area">
                     <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
@@ -29,7 +28,6 @@
             {% endfor %}
         </ul>
     </div>
-</div>
 <script src=" {{ url_for('app_routes.static', filename='message.js' ) }} "></script>
 {% endblock %}
 

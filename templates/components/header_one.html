@@ -52,9 +52,7 @@
   <li
     class="stat profile-stat profile-stat-follow-form list-group-item stat-btn"
   >
-    <p></p>
     {% if g.user.id != user.id %}
-    <!-- <li class="profile-follow-btn"> -->
     <form id="{{user.id}}" class="follows-stat" method="POST">
       {% if user in g.user.following %}
       <button
@@ -71,7 +69,6 @@
       </button>
       {% endif %}
     </form>
-    <!-- </li> -->
     {% else %}
     <div class="edit-btn profile-stat-btn">
       <button

@@ -6,19 +6,19 @@
   <!-- /> -->
   <div style="display: flex; gap: 1rem">
     <a href="/users/{{user.id}}">
-      <img src="{{ user.image_url}}" class="profile-pic" alt="" />
+      <img src="{{ user.image_url}}" class="timeline-image" alt="" />
     </a>
     <div>
       <a class="">@{{user.username}}</a>
 
       {% if g.user in user.following %}
-      <small> Follows you</small>
+      <small class="text-muted"> Follows you</small>
       {%endif%}
-      <p>
-        <small>Following <span>{{ user.following | length }}</span></small>
-        <small>Followers <span>{{ user.followers | length }}</span></small>
-      </p>
-      <p>{{user.bio}}</p>
+      <br />
+      <small>Following <span>{{ user.following | length }}</span></small>
+      <small>Followers <span>{{ user.followers | length }}</span></small>
+      <br />
+      {{user.bio}}
     </div>
   </div>
 

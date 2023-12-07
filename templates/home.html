@@ -1,6 +1,5 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %}
 {% block content %}
-<div class="home container">
    
 
     <div class="messages-list">
@@ -9,11 +8,8 @@
                 <form id="post-form" action="" method="POST">
                     {{ form.csrf_token }}
                     {{ form.text(class="form-control", placeholder="What's Happening?") }}
-                   
                     <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
                 </form>
-
-
             </div>
             <ul class="list-group forms-list">
             {% for msg in messages %}
@@ -22,7 +18,6 @@
             </ul>
         </div>
     </div>
-</div>
 {% include "components/modal_post_form.html" %}
         <script src=" {{ url_for('app_routes.static', filename='home.js' ) }} "></script>
 

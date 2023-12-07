@@ -13,7 +13,7 @@
 
 
         <div class="sidebar">
-            <nav class="d-flex flex-column flex-shrink-0 p-3 text-white  sticky-top" style="width: 280px;">
+            <nav class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dar sticky-top nav-left-side" style="width: 280px;">
                 <!-- <a href="/"><img class="logo" src="{{ url_for('app_routes.static', filename='img/warbler-logo.png') }}" alt=""> </a> -->
 
                 <hr>
@@ -74,18 +74,34 @@
                         <li class="dropdown-item">
                             <form class="logout navbar-form navbar-right" action="/logout" method="POST">
                                 <button class="btn btn-link text-white link-underline-opacity-0">Log out {{g.user.username}}</button>
-                            </form>
-                        </li>
+                                </form>
+                            </li>
                     </ul>
                 </div>
             </nav>
 
+
+
+
+
+
+
+
             <div class="main-content pt-3">
                 <hr class="text-white">
-                {% block content %} {% endblock %}
+                    <div class="d-flex" style="height:100vh" </div>
+                    <div class="vr text-white" style="border-width: 1.5rem"></div>
+                    <div>
+                    {% block content %} {% endblock %}
+
+                </div>
+                                    </div>
+
+
             </div>
 
-                <nav class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top" style="width: 280px;">
+
+                <nav class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dar sticky-top nav-right-side" style="width: 280px;">
                     <hr>
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">

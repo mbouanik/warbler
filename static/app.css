@@ -19,10 +19,11 @@ nav {
   height: 100vh;
 }
 .nav-left-side {
-  border-right: 0.3rem solid white;
+  border-right: 0.1rem solid white;
+  /* max-width: 20rem; */
 }
 .nav-right-side {
-  border-left: 0.3rem solid white;
+  /* border-left: 0.3rem solid white; */
 }
 .nav-link:hover {
   background-color: #318ce7;
@@ -31,29 +32,25 @@ nav {
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
 }
-.page {
-  /* border-left: 0.3rem solid white; */
-  /* border-right: 0.3rem solid white; */
-  /* height: 100vh; */
-  /* border-left: 0.3rem solid #c4e0e5; */
-  /* border-right: 0.3rem solid #c4e0e5; */
-  /* min-width: 30rem; */
-  /* width: 50vw; */
-  /* height: 10rvh; */
+
+.main-content {
+  flex: 1;
+  max-width: 50rem;
+  justify-content: centerr;
+  /* margin-top: 3rem; */
 }
 .sidebar {
   display: flex;
   flex-direction: row;
-  /* justify-content: center; */
+  justify-content: center;
   /* gap: 5rem; */
   /* width: 20rem; */
-  /* max-height: 100vh; */
 
   /* padding: 5rem; */
   /* flex-flow: column wrap; */
   /* width: 20rem; */
   /* background-color: #c4ere5; */
-  rackground-color: #7cb9e8;
+  background-color: #7cb9e8;
 
   /* flex: 1; */
 }
@@ -154,7 +151,7 @@ nav {
   /* border-radius: 1rem; */
   /* padding-left: 2rem; */
   /* width: 100%; */
-  max-width: 60rem;
+  /* max-width: 60rem; */
   width: -webkit-fill-available;
 }
 
@@ -174,7 +171,7 @@ nav {
 
 .message-area,
 .timeline-image {
-  display: inline-block;
+  display: inline-blockr;
 }
 
 .timeline-image {
@@ -203,16 +200,14 @@ nav {
   /* flex-wrap: nowrap; */
   /* padding: 1rem; */
   background-color: white;
-  max-width: 60rem;
+  /* max-width: 60rem; */
   width: -webkit-fill-available;
 }
 
 .card {
   color: white;
   background-color: #7cb9e8;
-  justify-content: center;
-  width: 25rem;
-  /* border: 0.2rem solid #c4e0e5; */
+  /* width: 25rem; */
   border: none;
 }
 
@@ -221,10 +216,6 @@ nav {
 }
 .search:focus {
   background-color: white;
-}
-
-.btn-search {
-  background-color: #4ca1af;
 }
 
 .nav-image {
@@ -287,22 +278,23 @@ nav {
   object-position: 50% 10%;
   max-height: 15rem;
   height: auto;
+  border-top: 0.1rem solid #c4e0e5;
 }
 
 .messages-list {
   border-radius: 2rem;
-  max-width: 40rem;
+  /* max-width: 40rem; */
   width: -webkit-fill-available;
-  max-width: 60rem;
+  /* max-width: 60rem; */
   justify-content: center;
 }
 .messages-list-profile {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   /* margin-top: 1rem; */
   /* padding-left: 3rem; */
   max-width: 62rem;
-  width: 40rem;
+  /* width: 40rem; */
 }
 
 .profile-messages-info {
@@ -310,15 +302,15 @@ nav {
   /* flex-flow: row wrap; */
   /* margin-left: auto; */
   /* margin-right: auto; */
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   /* flex-direction: row; */
-  justify-content: center;
+  /* justify-content: center; */
   /* justify-content: flex-end; */
   /* padding: 2rem; */
   /* padding-left: 10rem; */
   /* padding-left: 2rem; */
   /* padding-right: 2rem; */
-  flex: 1 1 33.33333%;
+  /* flex: 1; */
   gap: 3rem;
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -353,22 +345,15 @@ nav {
 }
 
 .profile-follows-info {
-  display: flex;
-  flex-flow: row wrap;
-  margin-left: auto;
-  margin-right: auto;
-  /* flex-wrap: wrap; */
-  /* flex-direction: row; */
-  /* justify-content: center; */
-  /* justify-content: flex-end; */
-  /* padding: 2rem; */
-  /* padding-left: 10rem; */
-  /* padding-left: 2rem; */
-  /* padding-right: 2rem; */
-  flex: 1 1 33.33333%;
-  gap: 2.5rem;
   margin-top: 2rem;
-  margin-bottom: 2rem;
+  /* display: flex; */
+  /* flex-flow: row wrap; */
+  /* margin-left: auto; */
+  /* margin-right: auto; */
+  /* flex: 1 1 33.33333%; */
+  /* gap: 2.5rem; */
+  /* margin-top: 2rem; */
+  /* margin-bottom: 2rem; */
 }
 
 .grid-card {
@@ -464,11 +449,12 @@ nav {
 
 .message-page {
   display: flex;
-  justify-content: center;
+  flex: 1;
+  /* justify-content: center; */
   margin-top: 2rem;
   /* flex-direction: column; */
-  flex-wrap: wrap;
-  border-radius: 2rem;
+  /* flex-wrap: wrap; */
+  /* border-radius: 2rem; */
   gap: 3rem;
   /* max-width: 40rem; */
   /* min-width: 25rem; */
@@ -572,7 +558,7 @@ h1 {
   justify-content: space-evenly;
   background-color: white;
   border: none;
-  max-width: 60rem;
+  /* max-widt?: 60rem; */
   /* border-bottom-left-radius: 0.3rem; */
   /* border-bottom-right-radius: 0.3rem; */
 }
@@ -663,13 +649,13 @@ h1 {
   .home {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    margin-top: 2rem;
+    /* justify-content: center; */
+    /* margin-top: 2rem; */
   }
 
   .homepage-card {
     width: auto;
-    max-width: 40rem;
+    /* max-width: 40rem; */
   }
   .messages {
     /* padding: 2rem; */
@@ -680,13 +666,13 @@ h1 {
   .profile-user {
     position: absolute;
     margin-left: 0rem;
-    margin-top: -13rem;
+    margin-top: -10.5rem;
   }
   .profile-info {
     /* position: relative; */
-    padding: 1rem;
+    /* padding: 1rem; */
     /* margin-top: 1rem; */
-    margin-left: 0rem;
+    /* margin-left: 0rem; */
   }
   .profile-form {
     width: 25rem;
@@ -697,7 +683,7 @@ h1 {
     justify-content: center;
     margin-top: 1rem;
     /* padding: 2rem; */
-    max-width: 40rem;
+    /* max-width: 40rem; */
     /* min-width: 12rem; */
   }
   .messages-list {
@@ -705,12 +691,12 @@ h1 {
     max-width: 40rem;
     min-width: 25rem;
     width: -webkit-fill-available;
-    max-width: 60rem;
+    /* max-width: 60rem; */
 
     /* padding: 2rem; */
   }
   .header-img {
-    max-height: 10rem;
+    max-height: 12rem;
     height: auto;
   }
   .header-image {
@@ -720,9 +706,9 @@ h1 {
     height: auto;
   }
   .profile-pic-bg {
-    height: 10rem;
-    width: 10rem;
-    border-radius: 10rem;
+    height: 7rem;
+    width: 7rem;
+    border-radius: 7rem;
     border: 0.3rem solid white;
   }
   .profile-follow-btn {
@@ -734,7 +720,7 @@ h1 {
   .profile-stat-btn {
     position: absolute;
     margin-left: -14rem;
-    margin-top: -4rem;
+    margin-top: -3rem;
     border: none;
     background-color: #0d6efd;
     color: white;

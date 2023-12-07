@@ -1,8 +1,14 @@
+{% if user %}
 <div class="card profile-info">
   <div class="card-body">
-    <div class="card-text"><b>@{{ user.username }} </b></div>
-    <div class="card-text">{{user.bio}}</div>
-    <small class="card-text">
+    <div class="card-tex">
+      <b>@{{ user.username }} </b>
+      {% if g.user in user.following %}
+      <small class="text-muted"> Follows you</small>
+      {%endif%}
+    </div>
+    <p class="card-tex">{{user.bio}}</p>
+    <small class="">
       <i class="fa-solid fa-location-dot"></i> {{ user.location}}
     </small>
   </div>
@@ -19,3 +25,4 @@
   </div>
   {% endif %}
 </div>
+{% endif %}
