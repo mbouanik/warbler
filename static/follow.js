@@ -6,7 +6,7 @@ follow_form.addEventListener("submit", (evt) => {
   if (evt.target.classList.contains("follows")) {
     console.log("ClAIM", evt.target.id);
     follow_user(evt);
-    console.log(evt);
+    // console.log(evt.target.id);
     if (evt.target[0].innerText == "Follow") {
       evt.target[0].innerText = "Following";
       evt.target[0].classList.remove("btn-outline-primary");
@@ -18,6 +18,19 @@ follow_form.addEventListener("submit", (evt) => {
       evt.target[0].classList.remove("btn-primary");
       evt.target[0].classList.remove("unfollow");
       evt.target[0].classList.add("btn-outline-primary");
+    }
+    const stat_following = document.querySelector(".stat-following");
+    const user_id = document.querySelector(".logout");
+    console.log(stat_following.attributes[0].value);
+    if (
+      stat_following &&
+      stat_following.attributes[0].value == user_id.attributes[0].value
+    ) {
+      if (evt.target[0].innerText == "Follow") {
+        stat_following.innerText = `${parseInt(stat_following.innerText) - 1}`;
+      } else {
+        stat_following.innerText = `${parseInt(stat_following.innerText) + 1}`;
+      }
     }
 
     // follow_card = document.querySelector(`#user_follow${evt.target.id}`);

@@ -72,7 +72,7 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li class="dropdown-item">
-                            <form class="logout navbar-form navbar-right" action="/logout" method="POST">
+                            <form id="{{g.user.id}}" class="logout navbar-form navbar-right" action="/logout" method="POST">
                                 <button class="btn btn-link text-white link-underline-opacity-0">Log out {{g.user.username}}</button>
                             </form>
                         </li>

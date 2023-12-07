@@ -35,38 +35,38 @@ async function follow_user(evt) {
 
 // function like_form(evt) {
 //   evt.preventDefault();
-//   // console.log(evt.target.id);
+//   console.log(evt.target.id);
 //   const msg_id = parseInt(evt.target.id);
 //   const res = like(msg_id);
 //   const like_icon = document.querySelector(`#like_icon${msg_id}`);
 //   const stat_likes = document.querySelector(".stat-likes");
-//   // const stat_likes = document.querySelector(".stat-likes");
+//   const stat_likes = document.querySelector(".stat-likes");
 //   const user_id = document.querySelector(".nav-img");
 //
 //   if (like_icon.classList.contains("fa-regular")) {
 //     like_icon.classList.remove("fa-regular");
 //     like_icon.classList.add("fa-solid");
 //     like_icon.classList.add("liked");
-//     // console.log(like_icon.innerText);
+//     console.log(like_icon.innerText);
 //     like_icon.innerText = ` ${parseInt(like_icon.innerText) + 1}`;
 //     if (stat_likes.attributes[0].value == user_id.attributes[0].value) {
 //       stat_likes.innerText = `${parseInt(stat_likes.innerText) + 1}`;
 //     }
 //
-//     // stat_likes.innerText = `${parseInt(stat_likes.innerText) + 1}`; /
+//     stat_likes.innerText = `${parseInt(stat_likes.innerText) + 1}`;
 //   } else {
 //     like_icon.classList.remove("fa-solid");
 //     like_icon.classList.add("fa-regular");
 //     like_icon.classList.remove("liked");
-//     // console.log(like_icon.innerText);
-//     // stat_likes.innerText = `${parseInt(stat_likes.innerText) - 1}`;
+//     console.log(like_icon.innerText);
+//     stat_likes.innerText = `${parseInt(stat_likes.innerText) - 1}`;
 //     like_icon.innerText = ` ${parseInt(like_icon.innerText) - 1}`;
 //     if (stat_likes.attributes[0].value == user_id.attributes[0].value) {
 //       stat_likes.innerText = `${parseInt(stat_likes.innerText) - 1}`;
 //     }
 //   }
 // }
-
+//
 // async function like(msg_id) {
 //   const data = {
 //     message_id: parseInt(msg_id),
@@ -80,7 +80,7 @@ async function follow_user(evt) {
 //       console.log(error);
 //     });
 // }
-//
+
 function repost_form(evt) {
   evt.preventDefault();
   const msg_id = parseInt(evt.target.id);

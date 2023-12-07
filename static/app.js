@@ -18,11 +18,14 @@ profile_stat_follow_form.addEventListener("submit", (evt) => {
       evt.target[0].classList.add("btn-outline-primary");
     }
     menus = document.querySelectorAll(".follows");
+    console.log(menus);
     menus.forEach((menu) => {
       // console.log(menu.id);
       // console.log(evt.target.id);
-      console.log(menu.children[0].classList.value);
-      if (menu.id == evt.target.id)
+      // console.log(menu.id);
+      // console.log(evt.target.id);
+      // console.log(menu.children[0].innerText)
+      if (menu.id == evt.target.id) {
         if (menu.children[0].innerText == "Follow") {
           menu.children[0].innerText = "Unfollow";
           // memu.children[0].classList.value.add("unfollow");
@@ -30,6 +33,7 @@ profile_stat_follow_form.addEventListener("submit", (evt) => {
           menu.children[0].innerText = "Follow";
           // memu.children[0].classList.value.remove("unfollow");
         }
+      }
     });
   } else if (evt.target.classList.contains("like_form")) {
     console.log("HELLO WORLD ", evt.target.id);
@@ -47,6 +51,7 @@ forms_list.addEventListener("submit", (evt) => {
     follow_user(evt);
     const stat_follow_btn = document.querySelector(".stat-follow-btn");
     const stat_following = document.querySelector(".stat-following");
+    const user_id = document.querySelector(".logout");
     if (stat_follow_btn) {
       if (stat_follow_btn.innerText == "Follow") {
         stat_follow_btn.innerText = "Following";
@@ -61,6 +66,7 @@ forms_list.addEventListener("submit", (evt) => {
         stat_follow_btn.classList.add("btn-outline-primary");
       }
     }
+
     // console.log(stat_follow_btn);
 
     // console.log();
@@ -69,9 +75,10 @@ forms_list.addEventListener("submit", (evt) => {
     // } else {
     //   evt.target[0].innerText = "Follow";
     // }
-    const user_id = document.querySelector(".nav-img");
-    console.log();
+    // console.log(user_id.attributes[0].value);
+    // console.log(stat_following.attributes[0].value);
 
+    //
     if (
       stat_following &&
       stat_following.attributes[0].value == user_id.attributes[0].value
@@ -86,16 +93,16 @@ forms_list.addEventListener("submit", (evt) => {
     console.log(evt.target[0].innerText);
     menus = document.querySelectorAll(".follows");
     menus.forEach((menu) => {
-      // console.log(menu.id);
-      // console.log(evt.target.id);
-      // console.log(menu.children[0]);
+      console.log(menu.id);
+      console.log(evt.target.id);
+      console.log(menu.children[0].classList);
       if (menu.id == evt.target.id)
         if (menu.children[0].innerText == "Follow") {
           menu.children[0].innerText = "Unfollow";
 
-          // memu.children[0].classList.value.add("unfollow");
+          // memu.children[0].classList.add("unfollow");
         } else {
-          // memu.children[0].classList.value.remove("unfollow");
+          // memu.children[0].classList.remove("unfollor");
           menu.children[0].innerText = "Follow";
         }
     });
@@ -124,12 +131,15 @@ function like_form(evt) {
   const res = like(msg_id);
   const like_icon = document.querySelector(`#like_icon${msg_id}`);
   const stat_likes = document.querySelector(".stat-likes");
-  const user_id = document.querySelector(".nav-img");
+  const user_id = document.querySelector(".logout");
   if (like_icon.classList.contains("fa-regular")) {
     like_icon.classList.remove("fa-regular");
     like_icon.classList.add("fa-solid");
     like_icon.classList.add("liked");
     // console.log(like_icon.innerText);
+    console.log(stat_likes.attributes[0].value);
+    // console.log(evt.target.id);
+    console.log(user_id.attributes[0].value);
     like_icon.innerText = ` ${parseInt(like_icon.innerText) + 1}`;
 
     if (stat_likes.attributes[0].value == user_id.attributes[0].value) {
