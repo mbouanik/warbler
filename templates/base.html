@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <title>{% block title %} {% endblock %}</title>
@@ -13,12 +13,11 @@
 
 
         <div class="sidebar">
-            <nav class="d-flex flex-column flex-shrink-0 p-3 text-white  sticky-top" style="width: 280px;">
+            <nav class="d-flex flex-column flex-shrink-0 p-3 text-white  sticky-top nav-left-side" style="width: 280px;">
                 <!-- <a href="/"><img class="logo" src="{{ url_for('app_routes.static', filename='img/warbler-logo.png') }}" alt=""> </a> -->
-
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
-
+                    {% if g.user %}
                     <li class="nav-item">
                         <a href="/" class="nav-link text-white" aria-current="page">
                             <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"/></svg>
@@ -50,15 +49,13 @@
                         </a>
                     </li>
 
-                 
                     <li>
-                            {% include "components/info_card.html" %}
-
+                        {% include "components/info_card.html" %}
                     </li>
+                    {% endif %}
                 </ul>
-
-
                 <hr>
+                    {% if  g.user %}
                 <div class="dropdown">
                     <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
                         <img src="{{ g.user.image_url}}" alt="" width="32" height="32" class="rounded-circle me-2">
@@ -68,40 +65,44 @@
 
                         <li class="dropdown-item">
                             <a class="btn btn-link text-white" href="/users/{{g.user.id}}/edit">Edit</a>
-
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li class="dropdown-item">
-                            <form id="{{g.user.id}}" class="logout navbar-form navbar-right" action="/logout" method="POST">
+                            <form  id="{{g.user.id}}" class="logout navbar-form navbar-right" action="/logout" method="POST">
                                 <button class="btn btn-link text-white link-underline-opacity-0">Log out {{g.user.username}}</button>
                             </form>
                         </li>
                     </ul>
                 </div>
+                    {% endif %}
             </nav>
-
             <div class="main-content pt-3">
                 <hr class="text-white">
-                {% block content %} {% endblock %}
+                <div class="d-flex" style="min-height:100vh">
+                    <div class="vr text-white"></div>
+                    <div style="flex:1;">
+                        {% block content %} {% endblock %}
+
+                    </div>
+                </div>
             </div>
+            <nav class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top" style="width: 280px;">
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                    {% if g.user%}
+                    <li class="nav-item">
+                        <form action="/search" class="d-flex" role="search">
+                            <input class="form-control" type="search" name="search" placeholder="search" aria-label="search" id="search">
+                            <button class="btn btn-default" type="submit"> <span class="fa fa-search"></span></button>
+                        </form>
+                    </li>
+                    {% endif %}
 
-                <nav class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top" style="width: 280px;">
-                    <hr>
-                    <ul class="nav nav-pills flex-column mb-auto">
-                        <li class="nav-item">
-                            <form action="/search" class="d-flex" role="search">
-                                <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search" id="search">
-                                <button class="btn btn-default" type="submit"> <span class="fa fa-search"></span></button>
-                            </form>
-                        </li>
-                        <li class="nav-item">
+                </ul>
 
-                    </ul>
-
-
-                    <hr>
-                </nav>
-            </div> 
+                <hr>
+            </nav>
+        </div> 
 
        
               <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
