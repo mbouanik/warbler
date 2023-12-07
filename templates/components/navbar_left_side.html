@@ -1,0 +1,96 @@
+<nav
+  class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top nav-left-side"
+>
+  <!-- <a href="/"><img class="logo" src="{{ url_for('app_routes.static', filename='img/warbler-logo.png') }}" alt=""> </a> -->
+  <hr />
+  <ul class="nav nav-pills flex-column mb-auto">
+    {% if g.user %}
+    <li class="nav-item">
+      <a href="/" class="nav-link text-white" aria-current="page">
+        <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#home" />
+        </svg>
+        <i class="fa-solid fa-house"></i> Home
+      </a>
+    </li>
+    <li>
+      <a href="/users/{{g.user.id}}" class="nav-link text-white">
+        <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#speedometer2" />
+        </svg>
+        <i class="fa-solid fa-user"></i> Profile
+      </a>
+    </li>
+    <li>
+      <a href="/users/following/{{g.user.id}}" class="nav-link text-white">
+        <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#speedometer2" />
+        </svg>
+        <i class="fa-solid fa-user-group"></i> Following
+      </a>
+    </li>
+    <li>
+      <a href="/users/followers/{{g.user.id}}" class="nav-link text-white">
+        <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#speedometer2" />
+        </svg>
+        <i class="fa-solid fa-users"></i> Followers
+      </a>
+    </li>
+    <li>
+      <a href="/users/messages/likes/{{g.user.id}}" class="nav-link text-white">
+        <svg class="bi me-2" width="16" height="16">
+          <use xlink:href="#speedometer2" />
+        </svg>
+        <i class="fa-solid fa-heart"></i> Liked
+      </a>
+    </li>
+
+    <li>{% include "components/info_card.html" %}</li>
+    {% endif %}
+  </ul>
+  <hr />
+  {% if g.user %}
+  <div class="dropdown">
+    <a
+      href="#"
+      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+      id="dropdownUser1"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <img
+        src="{{ g.user.image_url}}"
+        alt=""
+        width="32"
+        height="32"
+        class="rounded-circle me-2"
+      />
+      <strong>{{ g.user.username }}</strong>
+    </a>
+    <ul
+      class="dropdown-menu dropdown-menu-dark text-small shadow"
+      aria-labelledby="dropdownUser1"
+    >
+      <li class="dropdown-item">
+        <a class="btn btn-link text-white" href="/users/{{g.user.id}}/edit"
+          >Edit</a
+        >
+      </li>
+      <li><hr class="dropdown-divider" /></li>
+      <li class="dropdown-item">
+        <form
+          id="{{g.user.id}}"
+          class="logout navbar-form navbar-right"
+          action="/logout"
+          method="POST"
+        >
+          <button class="btn btn-link text-white link-underline-opacity-0">
+            Log out {{g.user.username}}
+          </button>
+        </form>
+      </li>
+    </ul>
+  </div>
+  {% endif %}
+</nav>

@@ -13,44 +13,36 @@
 
   <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Messages</b></div>
-    <div>
-      <a class="stat-msg" href="/users/{{ user.id }}"
-        >{{ user.messages | length}}
-      </a>
-    </div>
+    <a class="stat-msg" href="/users/{{ user.id }}"
+      >{{ user.messages | length}}
+    </a>
   </li>
   <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Following</b></div>
-    <div>
-      <a
-        id="{{user.id}}"
-        class="stat-following"
-        href="/users/following/{{ user.id }}"
-        >{{ user.following | length}}
-      </a>
-    </div>
+    <a
+      id="{{user.id}}"
+      class="stat-following"
+      href="/users/following/{{ user.id }}"
+      >{{ user.following | length}}
+    </a>
   </li>
   <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Followers</b></div>
-    <div>
-      <a class="stat-followers" href="/users/followers/{{ user.id }}"
-        >{{ user.followers | length}}
-      </a>
-    </div>
+    <a class="stat-followers" href="/users/followers/{{ user.id }}"
+      >{{ user.followers | length}}
+    </a>
   </li>
   <li class="stat profile-stat list-group-item">
     <div class="text-muted"><b>Likes</b></div>
-    <div>
-      <a
-        id="{{user.id}}"
-        class="stat-likes"
-        href="/users/messages/likes/{{user.id}}"
-        >{{ user.likes | length}}
-      </a>
-    </div>
+    <a
+      id="{{user.id}}"
+      class="stat-likes"
+      href="/users/messages/likes/{{user.id}}"
+      >{{ user.likes | length}}
+    </a>
   </li>
   <li
-    class="stat profile-stat profile-stat-follow-form list-group-item stat-btn"
+    class="stat profile-stat profile-stat-follow-form list-group-item stat-btn mt-2"
   >
     {% if g.user.id != user.id %}
     <form id="{{user.id}}" class="follows-stat" method="POST">
@@ -70,16 +62,17 @@
       {% endif %}
     </form>
     {% else %}
-    <div class="edit-btn profile-stat-btn">
-      <button
-        type="button"
-        class="btn btn-primary"
-        data-bs-toggle="modal"
-        data-bs-target="#edit-profile"
-      >
-        Edit
-      </button>
-    </div>
+    <!-- <div class="edit-btn profile-statrbtn"> -->
+    <button
+      type="button"
+      class="btn btn-primary btn-sm"
+      style="width: 6rem"
+      data-bs-toggle="modal"
+      data-bs-target="#edit-profile"
+    >
+      Edit
+    </button>
+    <!-- </div> -->
     {% endif %}
   </li>
 </ul>

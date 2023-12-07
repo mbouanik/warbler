@@ -1,44 +1,24 @@
 body {
   margin: 0;
   padding: 0;
-  /* background: #7cb9e8; */
-  /* background: -webkit-linear-gradient(to right, #c4e0e5, #7cb9e8); */
-  /* background: linear-gradient(to right, #c4e0e5, #7cb9e8); */
-
-  /* background-color: #c4e0e5; */
   background-color: #7cb9e8;
 }
 nav {
-  /* border-right: 0.3rem solid white; */
-  /* text-align: center; */
-
-  /* border-left: 0.3rem solid #c4e0e5; */
-  /* border-right: 0.3rem solid #c4e0e5; */
   background-color: #7cb9e8;
-  /* width: 20rem; */
   height: 100vh;
 }
-.nav-left-side {
-  /* border-right: 0.1rem solid white; */
-  /* max-width: 20rem; */
-}
+
 .nav-right-side {
   /* border-left: 0.3rem solid white; */
 }
 .nav-link:hover {
   background-color: #318ce7;
 }
-.new-element {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
-}
-
 .main-content {
   flex: 1;
-  max-width: 44rem;
+  max-width: 45rem;
   justify-content: center;
   margin-left: 1rem;
-  /* margin-top: 3rem; */
 }
 .vr {
   padding: 0.1rem;
@@ -108,16 +88,16 @@ nav {
 /* } */
 
 .stats {
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  text-size: 0.1rem;
+  /* display: flexr */
+  /* justify-content: center; */
+  /* text-align: center; */
+  /* text-size: 0.1rem; */
 }
 
 .stat {
-  padding: 0.2rem 1rem 0.5rem 1rem;
+  /* padding: 0.2rem 1rem 0.5rem 1rem; */
   font-weight: bold;
-  font-size: 1rem;
+  /* font-size: 1rem; */
 }
 .stat-btn {
   border: none;
@@ -135,20 +115,20 @@ nav {
   object-position: 50% 10%;
   max-height: 10rem;
 }
-.home {
-  display: flex;
-  flex-direction: row;
-  gap: 2rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
+/* .home { */
+/*   display: flex; */
+/*   flex-direction: row; */
+/*   gap: 2rem; */
+/*   margin-top: 2rem; */
+/*   margin-bottom: 2rem; */
+/* } */
 
 .messages {
   display: flex;
   /* flex-wrap: wrap; */
 
   flex-direction: column;
-  flex: 1 1 33.333%;
+  /* flex: 1 1 33.333%; */
   /* gap: 2rem; */
   /* flex-basis: 5rem; */
   /* justify-content: center; */
@@ -159,7 +139,7 @@ nav {
   /* padding-left: 2rem; */
   /* width: 100%; */
   /* max-width: 60rem; */
-  width: -webkit-fill-available;
+  /* width: -webkit-fill-available; */
 }
 
 .card-link {
@@ -167,18 +147,18 @@ nav {
   flex-direction: row;
 }
 .card-link p {
-  margin-top: 4rem;
+  /* margin-top: 4rem; */
 }
 .homepage-card-body {
-  margin-top: -5rem;
+  /* margin-top: -5rem; */
 }
 .message-display {
-  padding: 1rem;
+  /* padding: 1rem; */
 }
 
 .message-area,
 .timeline-image {
-  display: inline-blockr;
+  /* display: inline-blockr; */
 }
 
 .timeline-image {
@@ -192,23 +172,20 @@ nav {
   text-decoration: none;
 }
 .message-area {
-  margin-left: 1rem;
-  flex: 1;
-}
-
-.image-link {
-  text-decoration: none;
+  /* margin-left: 1rem; */
+  /* flexr 1; */
 }
 
 .message {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   margin-top: -1rem;
+  gap: 1rem;
   /* flex-wrap: nowrap; */
   /* padding: 1rem; */
-  background-color: white;
+  /* background-color: white; */
   /* max-width: 60rem; */
-  width: -webkit-fill-available;
+  /* width: -webkit-fill-available; */
 }
 
 .card {
@@ -219,31 +196,16 @@ nav {
 }
 
 .search {
-  background-color: white;
+  /* background-color: whrte; */
 }
 .search:focus {
-  background-color: white;
-}
-
-.nav-image {
-  height: 2.5rem;
-  width: 2.5rem;
-  border-radius: 2.5rem;
-  margin-left: 0.5rem;
-}
-.nav-right {
-  display: flex;
-}
-
-.logo {
-  width: 2rem;
-  height: 2rem;
+  /* background-color: whrte; */
 }
 
 .profile-stats {
   background-color: white;
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
   text-align: center;
   text-size: 0.1rem;
 }
@@ -269,13 +231,13 @@ nav {
 }
 
 .profile-info {
-  max-width: 15rem;
+  /* max-width: 15rem; */
   max-height: 18rem;
   height: 18rem;
 }
 
 .header-image {
-  width: auto;
+  /* width: auto; */
   max-height: 20rem;
   height: auto;
 }
@@ -288,71 +250,17 @@ nav {
   border-top: 0.1rem solid #c4e0e5;
 }
 
-.messages-list {
-  border-radius: 2rem;
-  /* max-width: 40rem; */
-  width: -webkit-fill-available;
-  /* max-width: 60rem; */
-  justify-content: center;
-}
-.messages-list-profile {
-  display: flex;
-  /* justify-content: center; */
-  /* margin-top: 1rem; */
-  /* padding-left: 3rem; */
-  max-width: 62rem;
-  /* width: 40rem; */
-}
-
 .profile-messages-info {
-  display: flex;
-  /* flex-flow: row wrap; */
-  /* margin-left: auto; */
-  /* margin-right: auto; */
-  /* flex-wrap: wrap; */
-  /* flex-direction: row; */
-  /* justify-content: center; */
-  /* justify-content: flex-end; */
-  /* padding: 2rem; */
-  /* padding-left: 10rem; */
-  /* padding-left: 2rem; */
-  /* padding-right: 2rem; */
-  /* flex: 1; */
-  gap: 3rem;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-
-  /* display: flex; */
-  /* justify-content: center; */
   /* margin-top: 2rem; */
-  /* margin-bottom: 2rem; */
-  /* flex-wrap: wrap; */
-  /* gap: 2rem; */
-}
-
-.home-menu {
-  margin-right: 12rem;
 }
 
 .profile-form {
-  width: 40rem;
-  max-width: 40rem;
-}
-
-.search-page {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: flex-start;
-  justify-content: center;
-  /* gap: 3rem; */
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-  /* padding: 0rer 10rem 0rem 10rem; */
-  /* margin: auto; */
+  /* width: 40rem; */
+  /* max-width: 40rem; */
 }
 
 .profile-follows-info {
-  margin-top: 2rem;
+  /* margin-top: 2rem; */
   /* display: flex; */
   /* flex-flow: row wrap; */
   /* margin-left: auto; */
@@ -376,43 +284,16 @@ nav {
 .follow-grid {
   display: flex;
   flex-wrap: column;
-  /* flex-direction: row; */
-  /* flex: 1 1 33.333%; */
-  flex: 1;
-  /* justify-content: space-evenly; */
-  /* flex-basis: 5rem; */
-  /* justify-content: center; */
-  /* flex-flow: row wrap; */
-  /* justify-content: flex-end; */
-  /* gap: 3rem; */
-  /* max-width: 60rem; */
-  /* flex-shrink: 1; */
-  /* padding-left: 9rem; */
-  /* padding-right: 9rem; */
-  /* margin-left: 10rem; */
 }
 .search-card {
-  /* align-items: stretch; */
-  max-width: 18rem;
   min-height: 18rem;
 }
 
 .search-header-image {
   height: 8rem;
-  max-width: 18rem;
   max-height: 15rem;
   border-top-left-radius: 0.3rem;
   border-top-right-radius: 0.3rem;
-}
-
-.search {
-  /* padding: 2rem; */
-}
-
-.search-profile-img {
-  margin-top: -5rem;
-  /* display: flex; */
-  /* flex-direction: column; */
 }
 
 .follow-btn {
@@ -420,7 +301,6 @@ nav {
   justify-content: flex-end;
   align-self: flex-end;
   margin-top: -8rem;
-  /* width: 6rem; */
 }
 
 .card-text {
@@ -456,27 +336,10 @@ nav {
 
 .message-page {
   display: flex;
-  flex: 1;
-  /* justify-content: center; */
-  margin-top: 2rem;
-  /* flex-direction: column; */
-  /* flex-wrap: wrap; */
-  /* border-radius: 2rem; */
+  /* flex: 1; */
+  /* margin-top: 2rem; */
   gap: 3rem;
-  /* max-width: 40rem; */
-  /* min-width: 25rem; */
-  /* width: -webkit-fill-available; */
-  /* max-width: 60rem; */
 }
-
-/* #messages .message-link { */
-/*   position: absolute; */
-/*   top: 0; */
-/*   bottom: 0; */
-/*   left: 0; */
-/*   right: 0; */
-/*   z-index: 1; */
-/* } */
 
 .authenticate {
   display: flex;
@@ -547,9 +410,10 @@ h1 {
   /* display: flex; */
   /* justify-content: center; */
   /* gap: 2rem; */
-  flex: 1;
+  /* flex: 1; */
 }
 
+/* button below messages */
 .test {
   display: flex;
   /* justify-content: center; */
@@ -565,9 +429,6 @@ h1 {
   justify-content: space-evenly;
   background-color: white;
   border: none;
-  /* max-widt?: 60rem; */
-  /* border-bottom-left-radius: 0.3rem; */
-  /* border-bottom-right-radius: 0.3rem; */
 }
 
 .like-btn button {
@@ -575,7 +436,7 @@ h1 {
 }
 
 .top {
-  height: 6rem;
+  /* height: 6rem; */
 }
 
 .m {
@@ -643,10 +504,11 @@ h1 {
 .f-btn {
   width: 5rem;
 }
-#upload_img {
-  display: none;
-}
+
 @media (max-width: 993px) {
+  .nav-left-side nav {
+    display: none;
+  }
   .grid-card {
     display: flex;
     flex-flow: wrap;
@@ -668,7 +530,7 @@ h1 {
     /* padding: 2rem; */
     /* padding-top: 1rem; */
     /* padding-left: 0; */
-    width: auto;
+    /* width: auto; */
   }
   .profile-user {
     position: absolute;
@@ -695,9 +557,9 @@ h1 {
   }
   .messages-list {
     border-radius: 2rem;
-    max-width: 40rem;
-    min-width: 25rem;
-    width: -webkit-fill-available;
+    /* max-width: 40rem; */
+    /* min-width: 25rem; */
+    /* width: -webkit-fill-available; */
     /* max-width: 60rem; */
 
     /* padding: 2rem; */

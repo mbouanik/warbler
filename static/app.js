@@ -148,6 +148,7 @@ function like_form(evt) {
   } else {
     like_icon.classList.remove("fa-solid");
     like_icon.classList.add("fa-regular");
+    like_icon.classList.add("not-liked");
     like_icon.classList.remove("liked");
     // console.log(like_icon.innerText);
     like_icon.innerText = ` ${parseInt(like_icon.innerText) - 1}`;

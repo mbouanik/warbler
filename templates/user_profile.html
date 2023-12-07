@@ -1,6 +1,7 @@
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
     {% include "components/header_one.html" %}
+    <hr class="text-white">
 <div class="profile-messages-info">
         <ul class="list-group messages forms-list"> 
         {% for msg in messages %}
