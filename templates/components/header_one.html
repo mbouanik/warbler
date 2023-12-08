@@ -7,7 +7,7 @@
     <img
       src="{{ user.image_url }}"
       alt="Image for {{ user.username }}"
-      class="card-image profile-pic-bg"
+      class="profile-pic-bg"
     />
   </li>
 
@@ -32,7 +32,7 @@
       >{{ user.followers | length}}
     </a>
   </li>
-  <li class="stat profile-stat list-group-item">
+  <li class="stat profile-stat list-group-item" style="border-right: none">
     <div class="text-muted"><b>Likes</b></div>
     <a
       id="{{user.id}}"
