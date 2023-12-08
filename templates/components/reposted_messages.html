@@ -49,7 +49,7 @@
     </a>
     <div class="message-area">
       <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-      <span class="text-muted">{{ msg.timestamp.strftime('%d %b %y') }}</span>
+      <span class="text-muted">{{ msg.timestamp.strftime('%b %-d, %Y') }}</span>
       <p>{{ msg.text }}</p>
     </div>
   </div>
@@ -74,11 +74,11 @@
     <div class="interaction">
       <a class="btn primary" href="/messages/{{ msg.id }}">
         {% if msg in g.user.comments %}
-        <i class="fa-sharp fa-solid fa-comment liked">
+        <i class="fa-sharp fa-solid fa-comments liked">
           <small id="comments_count"> {{ msg.comments | length }} </small>
         </i>
         {% else %}
-        <i class="fa-sharp fa-regular fa-comment not-commented">
+        <i class="fa-sharp fa-regular fa-comments not-commented">
           <small id="comments_count"> {{ msg.comments | length }} </small>
         </i>
         {% endif %}

@@ -1,48 +1,50 @@
-const profile_stat_follow_form = document.querySelector(
-  ".profile-stat-follow-form",
-);
-profile_stat_follow_form.addEventListener("submit", (evt) => {
-  if (evt.target.classList.contains("follows-stat")) {
-    evt.preventDefault();
-    follow_user(evt);
-    if (evt.target[0].innerText == "Follow") {
-      evt.target[0].innerText = "Following";
-      evt.target[0].classList.remove("btn-outline-primary");
-      evt.target[0].classList.add("btn-primary");
-      evt.target[0].classList.add("unfollow");
-      evt.target[0].setAttribute("data-hover", "Unfollow");
-    } else {
-      evt.target[0].innerText = "Follow";
-      evt.target[0].classList.remove("btn-primary");
-      evt.target[0].classList.remove("unfollow");
-      evt.target[0].classList.add("btn-outline-primary");
-    }
-    menus = document.querySelectorAll(".follows");
-    console.log(menus);
-    menus.forEach((menu) => {
-      // console.log(menu.id);
-      // console.log(evt.target.id);
-      // console.log(menu.id);
-      // console.log(evt.target.id);
-      // console.log(menu.children[0].innerText)
-      if (menu.id == evt.target.id) {
-        if (menu.children[0].innerText == "Follow") {
-          menu.children[0].innerText = "Unfollow";
-          // memu.children[0].classList.value.add("unfollow");
-        } else {
-          menu.children[0].innerText = "Follow";
-          // memu.children[0].classList.value.remove("unfollow");
-        }
-      }
-    });
-  } else if (evt.target.classList.contains("like_form")) {
-    console.log("HELLO WORLD ", evt.target.id);
-    evt.preventDefault();
-
-    like_form(evt);
-  }
-});
+// const profile_stat_follow_form = document.querySelector(
+//   ".profile-stat-follow-form",
+// );
+// profile_stat_follow_form.addEventListener("submit", (evt) => {
+//   if (evt.target.classList.contains("follows-stat")) {
+//     evt.preventDefault();
+//     follow_user(evt);
+//     if (evt.target[0].innerText == "Follow") {
+//       evt.target[0].innerText = "Following";
+//       evt.target[0].classList.remove("btn-outline-primary");
+//       evt.target[0].classList.add("btn-primary");
+//       evt.target[0].classList.add("unfollow");
+//       evt.target[0].setAttribute("data-hover", "Unfollow");
+//     } else {
+//       evt.target[0].innerText = "Follow";
+//       evt.target[0].classList.remove("btn-primary");
+//       evt.target[0].classList.remove("unfollow");
+//       evt.target[0].classList.add("btn-outline-primary");
+//     }
+//     menus = document.querySelectorAll(".follows");
+//     console.log(menus);
+//     menus.forEach((menu) => {
+//       // console.log(menu.id);
+//       // console.log(evt.target.id);
+//       // console.log(menu.id);
+//       // console.log(evt.target.id);
+//       // console.log(menu.children[0].innerText)
+//       if (menu.id == evt.target.id) {
+//         if (menu.children[0].innerText == "Follow") {
+//           menu.children[0].innerText = "Unfollow";
+//           // memu.children[0].classList.value.add("unfollow");
+//         } else {
+//           menu.children[0].innerText = "Follow";
+//           // memu.children[0].classList.value.remove("unfollow");
+//         }
+//       }
+//     });
+//   } else if (evt.target.classList.contains("like_form")) {
+//     console.log("HELLO WORLD ", evt.target.id);
+//     evt.preventDefault();
+//
+//     like_form(evt);
+//   }
+// });
 // const forms_list = document.querySelector(".forms-list");
+
+const forms_list = document.querySelector(".forms-list");
 
 forms_list.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -67,18 +69,6 @@ forms_list.addEventListener("submit", (evt) => {
       }
     }
 
-    // console.log(stat_follow_btn);
-
-    // console.log();
-    // if (evt.target[0].innerText == "Follow") {
-    //   evt.target[0].innerText = "Unfollow";
-    // } else {
-    //   evt.target[0].innerText = "Follow";
-    // }
-    // console.log(user_id.attributes[0].value);
-    // console.log(stat_following.attributes[0].value);
-
-    //
     if (
       stat_following &&
       stat_following.attributes[0].value == user_id.attributes[0].value
@@ -105,6 +95,13 @@ forms_list.addEventListener("submit", (evt) => {
           // memu.children[0].classList.remove("unfollor");
           menu.children[0].innerText = "Follow";
         }
+    });
+  } else if (evt.target.classList.contains("delete-msg")) {
+    console.log("MOUNTAIN", evt.target.id);
+    delete_msg(evt);
+    msgs = document.querySelectorAll(`#msg${evt.target.id}`);
+    msgs.forEach((msg) => {
+      msg.remove();
     });
   }
 });
@@ -171,4 +168,14 @@ async function like(msg_id) {
     .catch(function (error) {
       console.log(error);
     });
+}
+
+async function delete_msg(evt) {
+  const msg_id = parseInt(evt.target.id);
+  data = {
+    message_id: msg_id,
+  };
+  const res = await axios.post("/messages/delete", data);
+  stat_msg = document.querySelector(".stat-msg");
+  stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
 }
