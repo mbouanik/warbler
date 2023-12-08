@@ -1,45 +1,44 @@
-const forms_list = document.querySelector(".forms-list");
-console.log(forms_list);
-forms_list.addEventListener("submit", (evt) => {
-  evt.preventDefault();
-  if (evt.target.classList.contains("like_form")) {
-    console.log("HELLO WORLD ", evt.target.id);
-    like_form(evt);
-  } else if (evt.target.classList.contains("repost_form")) {
-    repost_form(evt);
-    console.log("Azzur ", evt.target.id);
-  } else if (evt.target.classList.contains("delete-msg")) {
-    console.log("MOUNTAIN", evt.target.id);
-    delete_msg(evt);
-    msgs = document.querySelectorAll(`#msg${evt.target.id}`);
-    msgs.forEach((msg) => {
-      msg.remove();
-    });
-  }
-});
-
-async function follow_user(evt) {
-  follow_id = evt.target.id;
-  data = {
-    follow_id: parseInt(follow_id),
-  };
-  res = await axios
-    .post("/users/follow", data)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
+// const forms_list = document.querySelector(".forms-list");
+// console.log(forms_list);
+// forms_list.addEventListener("submit", (evt) => {
+//   evt.preventDefault();
+//   if (evt.target.classList.contains("like_form")) {
+//     console.log("HELLO WORLD ", evt.target.id);
+//     like_form(evt);
+//   } else if (evt.target.classList.contains("repost_form")) {
+//     repost_form(evt);
+//     console.log("Azzur ", evt.target.id);
+//   } else if (evt.target.classList.contains("delete-msg")) {
+//     console.log("MOUNTAIN", evt.target.id);
+//     delete_msg(evt);
+//     msgs = document.querySelectorAll(`#msg${evt.target.id}`);
+//     msgs.forEach((msg) => {
+//       msg.remove();
+//     });
+//   }
+// });
+//
+// async function follow_user(evt) {
+//   follow_id = evt.target.id;
+//   data = {
+//     follow_id: parseInt(follow_id),
+//   };
+//   res = await axios
+//     .post("/users/follow", data)
+//     .then(function (response) {
+//       console.log(response);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// }
+//
 // function like_form(evt) {
 //   evt.preventDefault();
 //   console.log(evt.target.id);
 //   const msg_id = parseInt(evt.target.id);
 //   const res = like(msg_id);
 //   const like_icon = document.querySelector(`#like_icon${msg_id}`);
-//   const stat_likes = document.querySelector(".stat-likes");
 //   const stat_likes = document.querySelector(".stat-likes");
 //   const user_id = document.querySelector(".nav-img");
 //
@@ -80,45 +79,20 @@ async function follow_user(evt) {
 //       console.log(error);
 //     });
 // }
+//
+//
 
-function repost_form(evt) {
-  evt.preventDefault();
-  const msg_id = parseInt(evt.target.id);
-  repost(msg_id);
-  const repost_icon = document.querySelector(`#repost_icon${msg_id}`);
-  if (repost_icon.classList.contains("reposted")) {
-    repost_icon.classList.remove("reposted");
-    repost_icon.innerText = ` ${parseInt(repost_icon.innerText) - 1}`;
-  } else {
-    repost_icon.classList.add("reposted");
-    repost_icon.innerText = ` ${parseInt(repost_icon.innerText) + 1}`;
-  }
-}
-
-async function repost(msg_id) {
-  const data = {
-    message_id: msg_id,
-  };
-  res = await axios
-    .post("/messages/repost", data)
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
-
-async function delete_msg(evt) {
-  const msg_id = evt.target.id;
-  data = {
-    message_id: msg_id,
-  };
-  await axios.post("/messages/delete", data);
-  stat_msg = document.querySelector(".stat-msg");
-  stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
-}
-
+//
+// async function delete_msg(evt) {
+//   const msg_id = evt.target.id;
+//   data = {
+//     message_id: msg_id,
+//   };
+//   await axios.post("/messages/delete", data);
+//   stat_msg = document.querySelector(".stat-msg");
+//   stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
+// }
+//
 const ul = document.querySelector(".list-group");
 const post_form = document.querySelector("#post-form");
 // console.log(post_form);
@@ -128,8 +102,8 @@ post_form.addEventListener("submit", async (evt) => {
   post_message(text.value);
   text.value = "";
 
-  stat_msg = document.querySelector(".stat-msg");
-  stat_msg.innerText = `${parseInt(stat_msg.innerText) + 1}`;
+  // stat_msg = document.querySelector(".stat-msg");
+  // stat_msg.innerText = `${parseInt(stat_msg.innerText) + 1}`;
 });
 
 async function post_message(text) {
@@ -180,8 +154,8 @@ async function post_message(text) {
         <p>${data.data.message.text}</p>
       </div>
     </div>
-  </li>
-  <div id="msg${data.data.message.id}" class="like-btn">
+    <hr class="message-hr" />
+    <div id="msg${data.data.message.id}" class="like-btn">
     <div class="interaction">
       <form id="${data.data.message.id}" class="like_form" method="POST">
         <button class="btn">
@@ -212,13 +186,12 @@ async function post_message(text) {
       </form>
     </div>
   </div>
-
+  </li>
+  
   `;
   const template = document.createElement("template");
 
   template.innerHTML = content;
-  const t = template.content.children;
-  console.log(t);
-  ul.insertBefore(t[1], ul.firstChild);
-  ul.insertBefore(t[0], ul.firstChild);
+  const t = template.content;
+  ul.insertBefore(t, ul.firstChild);
 }

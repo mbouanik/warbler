@@ -19,7 +19,7 @@
 
   {% if g.user.id != user.id %}
   <div class="follow-bt">
-    <form id="{{user.id}}" class="follows" method="POST">
+    <form id="{{user.id}}" class="follows-btn" method="POST">
       {% if user in g.user.following %}
       <button
         class="btn btn-primary btn-sm unfollow f-btn"

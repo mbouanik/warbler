@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block title %} Home {% endblock %}
 {% block content %}
-<div class="messages-list">
-    <div class="messages">
+<!-- <div class="messages-list"> -->
+    <!-- <div class="messages"> -->
         <form id="post-form" action="" method="POST">
             {{ form.csrf_token }}
             {{ form.text(class="form-control", placeholder="What's Happening?") }}
@@ -13,8 +13,8 @@
                 {% include "components/messages.html" %}
             {% endfor %}
         </ul>
-    </div>
-</div>
+    <!-- </div> -->
+<!-- </div> -->
 {% include "components/modal_post_form.html" %}
         <script src=" {{ url_for('app_routes.static', filename='home.js' ) }} "></script>
 {% endblock %}

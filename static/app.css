@@ -47,10 +47,20 @@ nav {
 }
 
 .stats {
-  /* display: flexr */
+  display: flex;
+  gap: 0.4rem;
+  font-weight: bold;
   /* justify-content: center; */
   /* text-align: center; */
   /* text-size: 0.1rem; */
+}
+.stats a {
+  /* color: #7cb9e8; */
+  text-decoration: none;
+}
+.stats a:hover {
+  text-decoration: underline;
+  /* color: #7cbue8; */
 }
 
 .stat {
@@ -463,45 +473,46 @@ h1 {
     /* max-width: 40rem; */
     /* min-width: 12rem; */
   }
-  .messages-list {
-    border-radius: 2rem;
-    /* max-width: 40rem; */
-    /* min-width: 25rem; */
-    /* width: -webkit-fill-available; */
-    /* max-width: 60rem; */
+  /* .messages-list { */
+  /* border-radius: 2rem; */
+  /* max-width: 40rem; */
+  /* min-width: 25rem; */
+  /* width: -webkit-fill-available; */
+  /* max-width: 60rem; */
 
-    /* padding: 2rem; */
-  }
-  .header-img {
-    max-height: 12rem;
-    height: auto;
-  }
-  .header-image {
-    width: auto;
-    max-height: 30rem;
-    min-height: 12rem;
-    height: auto;
-  }
-  .profile-pic-bg {
-    height: 7rem;
-    width: 7rem;
-    border-radius: 7rem;
-    border: 0.3rem solid white;
-  }
-  .profile-follow-btn {
-    position: absolute;
-    margin-left: -13rem;
-    margin-top: -4rem;
-  }
+  /* padding: 2rem; */
+  /* } */
+  /* .header-img { */
+  /*   max-height: 12rem; */
+  /*   height: auto; */
+  /* } */
+  /* .header-image { */
+  /*   width: auto; */
+  /*   max-height: 30rem; */
+  /*   min-height: 12rem; */
+  /*   height: auto; */
+  /* } */
+  /* /* .profile-pic-bg { */
+  */
+  /*   height: 7rem; */
+  /*   width: 7rem; */
+  /*   border-radius: 7rem; */
+  /*   border: 0.3rem solid white; */
+  /* } */
+  /* .profile-follow-btn { */
+  /*   position: absolute; */
+  /*   margin-left: -13rem; */
+  /*   margin-top: -4rem; */
+  /* } */
 
-  .profile-stat-btn {
-    position: absolute;
-    margin-left: -14rem;
-    margin-top: -3rem;
-    border: none;
-    background-color: #0d6efd;
-    color: white;
-  }
+  /* .profile-stat-btn { */
+  /*   position: absolute; */
+  /*   margin-left: -14rem; */
+  /*   margin-top: -3rem; */
+  /*   border: none; */
+  /*   background-color: #0d6efd; */
+  /*   color: white; */
+  /* } */
   .search-page {
     padding: 4rem;
   }
