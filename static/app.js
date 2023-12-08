@@ -4,21 +4,22 @@ const profile_stat_follow_form = document.querySelector(
 profile_stat_follow_form.addEventListener("submit", (evt) => {
   if (evt.target.classList.contains("follows-stat")) {
     evt.preventDefault();
+    console.log(evt.target[0].children[0]);
     follow_user(evt);
-    if (evt.target[0].innerText == "Follow") {
-      evt.target[0].innerText = "Following";
+    if (evt.target[0].children[0].innerText == "Follow") {
+      evt.target[0].children[0].innerText = "Following";
       evt.target[0].classList.remove("btn-outline-primary");
       evt.target[0].classList.add("btn-primary");
       evt.target[0].classList.add("unfollow");
       evt.target[0].setAttribute("data-hover", "Unfollow");
     } else {
-      evt.target[0].innerText = "Follow";
+      evt.target[0].children[0].innerText = "Follow";
       evt.target[0].classList.remove("btn-primary");
       evt.target[0].classList.remove("unfollow");
       evt.target[0].classList.add("btn-outline-primary");
     }
     menus = document.querySelectorAll(".follows");
-    console.log(menus);
+    // console.log(menus);
     menus.forEach((menu) => {
       // console.log(menu.id);
       // console.log(evt.target.id);

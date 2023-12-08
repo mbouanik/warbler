@@ -1,78 +1,76 @@
-<div class="header-image card" style="width: 100%">
+<div class="card">
   <img class="header-img" src="{{ user.header_image_url }}" alt="r..." />
+  <div class="card-body">
+    <div class="top-card">
+      <img
+        src="{{ user.image_url }}"
+        alt="Image for {{ user.username }}"
+        class="profile-pic-bg"
+      />
+      <div
+        class="stat profile-stat profile-stat-follow-form list-group-item stat-btn mt-2"
+      >
+        {% if g.user.id != user.id %}
+        <form id="{{user.id}}" class="follows-stat" method="POST">
+          {% if user in g.user.following %}
+          <button
+            class="btn btn-primary btn-sm stat-follow-btn unfollow profile-stat-btn"
+            data-hover="Unfollow"
+          >
+            <span> Following </span>
+          </button>
+          {% else %}
+          <button
+            class="btn btn-outline-primary btn-sm stat-follow-btn profile-stat-btn"
+          >
+            <span>Follow</span>
+          </button>
+          {% endif %}
+        </form>
+        {% else %}
+        <!-- <div class="edit-btn profile-statrbtn"> -->
+        <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          style="width: 6rem"
+          data-bs-toggle="modal"
+          data-bs-target="#edit-profile"
+        >
+          Edit
+        </button>
+        <!-- </div> -->
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="bottom-card">
+    <div class="card-text">
+      @<a href="/users/{{user.id}}">{{user.username}}</a>
+    </div>
+    <div class="card-text">{{user.bio}}</div>
+    <div class="card-text">
+      <i class="fa-solid fa-location-dot"></i> {{ user.location}}
+    </div>
+    <div class="card-text">
+      <a
+        id="{{user.id}}"
+        class="stat-following"
+        href="/users/following/{{ user.id }}"
+        >{{ user.following | length}}
+      </a>
+      <span>Following</span>
+
+      <a class="stat-followers" href="/users/followers/{{ user.id }}" r
+        >{{ user.followers | length}}
+      </a>
+      <span>Followers</span>
+      <a
+        id="{{user.id}}"
+        class="stat-likes"
+        href="/users/messages/likes/{{user.id}}"
+        >{{ user.likes | length}}
+      </a>
+      <span>Likes</span>
+    </div>
+  </div>
 </div>
-
-<ul class="profile-stats list-group list-group-horizontal">
-  <li class="profile-user list-group-item">
-    <img
-      src="{{ user.image_url }}"
-      alt="Image for {{ user.username }}"
-      class="profile-pic-bg"
-    />
-  </li>
-
-  <li class="stat profile-stat list-group-item">
-    <div class="text-muted"><b>Messages</b></div>
-    <a class="stat-msg" href="/users/{{ user.id }}"
-      >{{ user.messages | length}}
-    </a>
-  </li>
-  <li class="stat profile-stat list-group-item">
-    <div class="text-muted"><b>Following</b></div>
-    <a
-      id="{{user.id}}"
-      class="stat-following"
-      href="/users/following/{{ user.id }}"
-      >{{ user.following | length}}
-    </a>
-  </li>
-  <li class="stat profile-stat list-group-item">
-    <div class="text-muted"><b>Followers</b></div>
-    <a class="stat-followers" href="/users/followers/{{ user.id }}"
-      >{{ user.followers | length}}
-    </a>
-  </li>
-  <li class="stat profile-stat list-group-item" style="border-right: none">
-    <div class="text-muted"><b>Likes</b></div>
-    <a
-      id="{{user.id}}"
-      class="stat-likes"
-      href="/users/messages/likes/{{user.id}}"
-      >{{ user.likes | length}}
-    </a>
-  </li>
-  <li
-    class="stat profile-stat profile-stat-follow-form list-group-item stat-btn mt-2"
-  >
-    {% if g.user.id != user.id %}
-    <form id="{{user.id}}" class="follows-stat" method="POST">
-      {% if user in g.user.following %}
-      <button
-        class="btn btn-primary btn-sm stat-follow-btn unfollow profile-stat-btn"
-        data-hover="Unfollow"
-      >
-        Following
-      </button>
-      {% else %}
-      <button
-        class="btn btn-outline-primary btn-sm stat-follow-btn profile-stat-btn"
-      >
-        Follow
-      </button>
-      {% endif %}
-    </form>
-    {% else %}
-    <!-- <div class="edit-btn profile-statrbtn"> -->
-    <button
-      type="button"
-      class="btn btn-primary btn-sm"
-      style="width: 6rem"
-      data-bs-toggle="modal"
-      data-bs-target="#edit-profile"
-    >
-      Edit
-    </button>
-    <!-- </div> -->
-    {% endif %}
-  </li>
-</ul>

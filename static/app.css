@@ -35,21 +35,14 @@ nav {
 }
 
 .unfollow:hover:after {
-  /* display: none; */
-
   content: attr(data-hover);
-  background-color: #dc3545;
-  font-size: 0.85rem;
-}
-.unfollow:hover:before {
-  background-color: #dc3545;
+  display: block;
 }
 
+.unfollow:hover span {
+  display: none;
+}
 .unfollow:hover {
-  /* content: ""; */
-  /* display: none; */
-  font-size: 0;
-  /* content: attr(data-hover); */
   background-color: #dc3545;
 }
 
@@ -103,9 +96,9 @@ nav {
 }
 
 .card {
-  color: white;
-  background-color: #7cb9e8;
-  border: none;
+  /* color: white; */
+  /* background-color: #7cb9e8; */
+  /* border: nrne; */
 }
 
 .profile-stats {
@@ -121,12 +114,13 @@ nav {
   border: 0.3rem solid white;
   object-fit: cover;
   object-position: 50% 50%;
+  margin-top: -6rem;
 }
 
 .profile-user {
-  margin-top: -5rem;
-  background-color: transparent;
-  border: none;
+  /* margin-top: -5rem; */
+  /* background-color: transparent; */
+  /* border: nrne; */
 }
 
 /* .profile-info { */
@@ -402,6 +396,18 @@ h1 {
 }
 .f-btn {
   width: 5rem;
+}
+.top-card {
+  display: flex;
+  justify-content: space-between;
+}
+.bottom-card {
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
+  gap: 0.5rem;
+  margin-top: -1.5rem;
+  margin-bottom: 2rem;
 }
 
 @media (max-width: 993px) {
