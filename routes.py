@@ -328,30 +328,23 @@ def show_message(message_id):
 def delete_message():
     if request.json:
         message_id = request.json["message_id"]
-
-    msg = db.get_or_404(Message, message_id)
-    repost = db.session.execute(
-        db.select(Repost).where(
-            Repost.user_id == g.user.id, Repost.message_id == message_id
-        )
-    ).scalar_one_or_none()
-    print(repost)
-    if repost:
-        db.session.delete(repost)
-    db.session.delete(msg)
-    db.session.commit()
-    return redirect(url_for("app_routes.home"))
+        msg = db.get_or_404(Message, message_id)
+        # for comment in msg.comments:
+        #     db.session.delete(comment)
+        db.session.delete(msg)
+        db.session.commit()
+    return jsonify(response={"data": 200})
 
 
 @app_routes.route("/messages/like/", methods=["POST"])
 def like_message():
     if request.json:
         message_id = request.json["message_id"]
-    message = db.get_or_404(Message, int(message_id))
-    if message in g.user.likes:
-        g.user.likes.remove(message)
-    else:
-        g.user.likes.append(message)
+        message = db.get_or_404(Message, int(message_id))
+        if message in g.user.likes:
+            g.user.likes.remove(message)
+        else:
+            g.user.likes.append(message)
     db.session.commit()
     return jsonify(response={"response": 200})
     return redirect(url_for("app_routes.home", user_id=g.user.id))

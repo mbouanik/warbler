@@ -10,6 +10,7 @@ forms_list.addEventListener("submit", (evt) => {
     console.log("Azzur ", evt.target.id);
   } else if (evt.target.classList.contains("delete-msg")) {
     console.log("MOUNTAIN", evt.target.id);
+    evt.preventDefault();
     delete_msg(evt);
     msgs = document.querySelectorAll(`#msg${evt.target.id}`);
     msgs.forEach((msg) => {

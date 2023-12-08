@@ -53,50 +53,54 @@
       <p>{{ msg.text }}</p>
     </div>
   </div>
-</li>
 
-<div id="msg{{msg.id}}" class="like-btn">
-  <div class="interaction">
-    <form id="{{msg.id}}" class="like_form" method="POST">
-      <button class="btn">
-        {% if msg in g.user.likes %}
-        <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked">
-          <small id="likes_count"> {{ msg.users | length }} </small>
+  <hr class="message-hr" />
+  <div id="msg{{msg.id}}" class="like-btn">
+    <div class="interaction">
+      <form id="{{msg.id}}" class="like_form" method="POST">
+        <button class="btn">
+          {% if msg in g.user.likes %}
+          <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked">
+            <small id="likes_count"> {{ msg.users | length }} </small>
+          </i>
+          {% else %}
+          <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked">
+            <small id="likes_count"> {{ msg.users | length }} </small>
+          </i>
+          {% endif %}
+        </button>
+      </form>
+    </div>
+    <div class="interaction">
+      <a class="btn primary" href="/messages/{{ msg.id }}">
+        {% if msg in g.user.comments %}
+        <i class="fa-sharp fa-solid fa-comment liked">
+          <small id="comments_count"> {{ msg.comments | length }} </small>
         </i>
         {% else %}
-        <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked">
-          <small id="likes_count"> {{ msg.users | length }} </small>
+        <i class="fa-sharp fa-regular fa-comment not-commented">
+          <small id="comments_count"> {{ msg.comments | length }} </small>
         </i>
         {% endif %}
-      </button>
-    </form>
+      </a>
+    </div>
+    <div class="interaction">
+      <form id="{{msg.id}}" class="repost_form" method="POST">
+        <button class="btn">
+          {% if msg in g.user.reposted %}
+          <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted">
+            <small id="repost_count"> {{ msg.reposted | length }} </small>
+          </i>
+          {% else %}
+          <i
+            id="repost_icon{{msg.id}}"
+            class="fa-solid fa-retweet not-reposted"
+          >
+            <small id="repost_count"> {{ msg.reposted | length }} </small>
+          </i>
+          {% endif %}
+        </button>
+      </form>
+    </div>
   </div>
-  <div class="interaction">
-    <a class="btn primary" href="/messages/{{ msg.id }}">
-      {% if msg in g.user.comments %}
-      <i class="fa-sharp fa-solid fa-comment liked">
-        <small id="comments_count"> {{ msg.comments | length }} </small>
-      </i>
-      {% else %}
-      <i class="fa-sharp fa-regular fa-comment not-commented">
-        <small id="comments_count"> {{ msg.comments | length }} </small>
-      </i>
-      {% endif %}
-    </a>
-  </div>
-  <div class="interaction">
-    <form id="{{msg.id}}" class="repost_form" method="POST">
-      <button class="btn">
-        {% if msg in g.user.reposted %}
-        <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted">
-          <small id="repost_count"> {{ msg.reposted | length }} </small>
-        </i>
-        {% else %}
-        <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet not-reposted">
-          <small id="repost_count"> {{ msg.reposted | length }} </small>
-        </i>
-        {% endif %}
-      </button>
-    </form>
-  </div>
-</div>
+</li>

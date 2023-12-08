@@ -1,13 +1,13 @@
 {% extends "base.html" %} {% block title %} Search {% endblock %}
 {% block content %}
-<div class="profile-messages-info ">
+<!-- <div class="profile-messages-info "> -->
     <ul class="follow-grid list-group search-page">
         {% for user in users %}
         {% include "components/follow.html" %}
         {% endfor %}
     </ul>
 
-</div>
+<!-- </div> -->
 <script src=" {{ url_for('app_routes.static', filename='search.js' ) }} "></script>
     {% endblock %}
 

@@ -23,7 +23,7 @@ async function follow_user(evt) {
   data = {
     follow_id: parseInt(follow_id),
   };
-  res = await axios
+  await axios
     .post("/users/follow", data)
     .then(function (response) {
       console.log(response);
@@ -101,11 +101,11 @@ async function repost(msg_id) {
 }
 
 async function delete_msg(evt) {
-  const msg_id = evt.target.id;
+  const msg_id = parseInt(evt.target.id);
   data = {
     message_id: msg_id,
   };
-  await axios.post("/messages/delete", data);
+  const res = await axios.post("/messages/delete", data);
   stat_msg = document.querySelector(".stat-msg");
   stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
 }

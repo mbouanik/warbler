@@ -1,0 +1,96 @@
+<li id="msg{{comment.id}}" class="list-group-item">
+  <div class="m">
+    <button
+      type="button"
+      class="btn btn-sm"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"
+    >
+      <i class="fa-solid fa-ellipsis"></i>
+    </button>
+
+    <ul class="dropdown-menu">
+      <li class="dropdown-item">
+        {% if comment.user.id == g.user.id %}
+        <form id="{{comment.id}}" class="delete-msg" method="POST">
+          <button class="btn btn-link text-danger">
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+        </form>
+        {% endif %}
+      </li>
+      <li class="dropdown-item">
+        {% if comment.user.id != g.user.id %}
+        <form id="{{comment.user.id}}" class="follows" method="POST">
+          {% if comment.user in g.user.following %}
+          <button class="btn btn-link text-muted">Unfollow</button>
+          {% else %}
+          <button class="btn btn-link text-muted">Follow</button>
+          {% endif %}
+        </form>
+        {% endif %}
+      </li>
+    </ul>
+  </div>
+  <div class="message">
+    <a class="" href="/users/{{ comment.user.id }}">
+      <img src="{{ comment.user.image_url }}" alt="" class="timeline-image" />
+    </a>
+    <div class="message-area">
+      <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
+      <span class="text-muted"
+        >{{ comment.timestamp.strftime('%b %-d, %Y') }}</span
+      >
+      <p>{{ comment.text }}</p>
+    </div>
+  </div>
+  <hr class="message-hr" />
+  <!-- <div id="cmt{{comment.id}}" class="like-btn"> -->
+  <!--   <div class="interaction"> -->
+  <!--     <form id="{{comment.id}}" class="like_form" method="POST"> -->
+  <!--       <button class="btn"> -->
+  <!--         {% if msg in g.user.likes %} -->
+  <!--         <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked"> -->
+  <!--           {{ msg.users | length }} -->
+  <!--         </i> -->
+  <!--         {% else %} -->
+  <!--         <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked"> -->
+  <!--           {{ msg.users | length }} -->
+  <!--         </i> -->
+  <!--         {% endif %} -->
+  <!--       </button> -->
+  <!--     </form> -->
+  <!--   </div> -->
+  <!--   <div class="interaction"> -->
+  <!--     <a class="btn primary" href="/messages/{{ msg.id }}"> -->
+  <!--       {% if msg in g.user.comments %} -->
+  <!--       <i class="fa-sharp fa-solid fa-comment liked"> -->
+  <!--         <small id="comments_count"> {{ msg.comments | length }} </small> -->
+  <!--       </i> -->
+  <!--       {% else %} -->
+  <!--       <i class="fa-sharp fa-regular fa-comment not-commented"> -->
+  <!--         <small id="comments_count"> {{ msg.comments | length }} </small> -->
+  <!--       </i> -->
+  <!--       {% endif %} -->
+  <!--     </a> -->
+  <!--   </div> -->
+  <!--   <div class="interaction"> -->
+  <!--     <form id="{{msg.id}}" class="repost_form" method="POST"> -->
+  <!--       <button class="btn"> -->
+  <!--         {% if msg in g.user.reposted %} -->
+  <!--         <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted"> -->
+  <!--           {{ msg.reposted | length }} -->
+  <!--         </i> -->
+  <!--         {% else %} -->
+  <!--         <i -->
+  <!--           id="repost_icon{{msg.id}}" -->
+  <!--           class="fa-solid fa-retweet not-reposted" -->
+  <!--         > -->
+  <!--           {{ msg.reposted | length }} -->
+  <!--         </i> -->
+  <!--         {% endif %} -->
+  <!--       </button> -->
+  <!--     </form> -->
+  <!--   </div> -->
+  <!-- </div> -->
+</li>

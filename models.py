@@ -48,94 +48,6 @@ class Notification(db.Model):
     from_user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
 
-class User(db.Model):
-    __tablename__ = "users"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(Text, nullable=False)
-    image_url: Mapped[str] = mapped_column(
-        Text,
-        default=DEFAULT_IMG_URL,
-    )
-    header_image_url: Mapped[str] = mapped_column(
-        Text,
-        default=DEFAULT_HEAD_IMG_URL,
-    )
-    bio: Mapped[str] = mapped_column(Text, default="")
-    location: Mapped[str] = mapped_column(String, default="")
-
-    messages = Relationship("Message", backref="user", cascade="all, delete")
-
-    followers = Relationship(
-        "User",
-        secondary="follows",
-        primaryjoin=(Follows.user_being_followed_id == id),
-        secondaryjoin=(Follows.user_following_id == id),
-    )
-
-    following = Relationship(
-        "User",
-        secondary="follows",
-        primaryjoin=(Follows.user_following_id == id),
-        secondaryjoin=(Follows.user_being_followed_id == id),
-    )
-
-    likes = Relationship("Message", secondary="likes", backref="users")
-
-    comments = Relationship("Message", secondary="comments", backref="user_comments")
-    reposted = Relationship(
-        "Message", secondary="reposts", backref="reposted", cascade="all, delete"
-    )
-
-    def __init__(self, **kwargs) -> None:
-        super(User, self).__init__(**kwargs)
-
-    @classmethod
-    def sign_up(cls, email, username, password, image_url):
-        hashed_pwd = bcrypt.generate_password_hash(password).decode("utf8")
-        image_url = image_url if image_url else None
-
-        return cls(
-            email=email, username=username, password=hashed_pwd, image_url=image_url
-        )
-
-    @classmethod
-    def authenticate(cls, username, password):
-        """
-        authenticate user, first find the username in the database
-        then compare the password entered and the user's' password
-        if succesful return the user else return False
-        """
-        user = db.session.execute(
-            db.select(User).filter_by(username=username)
-        ).scalar_one_or_none()
-
-        if user and bcrypt.check_password_hash(user.password, password):
-            return user
-        return False
-
-
-class Message(db.Model):
-    __tablename__ = "messages"
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    text: Mapped[str] = mapped_column(String(140), nullable=False)
-    timestamp: Mapped[DateTime] = mapped_column(
-        DateTime,
-        nullable=False,
-        default=datetime.utcnow,
-    )
-    img = mapped_column(String)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-
-    reposts = Relationship("Repost", backref="messages", cascade="all,delete")
-    comments = Relationship("Comment", backref="message", cascade="all, delete")
-
-    def __init__(self, **kwargs) -> None:
-        super(Message, self).__init__(**kwargs)
-
-
 class Repost(db.Model):
     __tablename__ = "reposts"
 
@@ -167,3 +79,99 @@ class Comment(db.Model):
 
     def __init__(self, **kwargs) -> None:
         super(Comment, self).__init__(**kwargs)
+
+
+class Message(db.Model):
+    __tablename__ = "messages"
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    text: Mapped[str] = mapped_column(String(140), nullable=False)
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+    )
+    img = mapped_column(String)
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+
+    reposts: Mapped[Repost] = Relationship(
+        "Repost", backref="messages", cascade="all,delete-orphan"
+    )
+    comments: Mapped[Comment] = Relationship(
+        "Comment", backref="message", cascade="all, delete-orphan"
+    )
+
+    def __init__(self, **kwargs) -> None:
+        super(Message, self).__init__(**kwargs)
+
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    email: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    username: Mapped[str] = mapped_column(String, nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(Text, nullable=False)
+    image_url: Mapped[str] = mapped_column(
+        Text,
+        default=DEFAULT_IMG_URL,
+    )
+    header_image_url: Mapped[str] = mapped_column(
+        Text,
+        default=DEFAULT_HEAD_IMG_URL,
+    )
+    bio: Mapped[str] = mapped_column(Text, default="")
+    location: Mapped[str] = mapped_column(String, default="")
+
+    messages: Mapped[Message] = Relationship(
+        "Message", backref="user", cascade="all, delete-orphan"
+    )
+
+    followers: Mapped[Follows] = Relationship(
+        "User",
+        secondary="follows",
+        primaryjoin=(Follows.user_being_followed_id == id),
+        secondaryjoin=(Follows.user_following_id == id),
+    )
+
+    following: Mapped[Follows] = Relationship(
+        "User",
+        secondary="follows",
+        primaryjoin=(Follows.user_following_id == id),
+        secondaryjoin=(Follows.user_being_followed_id == id),
+    )
+
+    likes: Mapped[Likes] = Relationship("Message", secondary="likes", backref="users")
+
+    comments: Mapped[Comment] = Relationship(
+        "Message", secondary="comments", cascade="all, delete"
+    )
+    reposted: Mapped[Repost] = Relationship(
+        "Message", secondary="reposts", backref="reposted", cascade="all, delete"
+    )
+
+    def __init__(self, **kwargs) -> None:
+        super(User, self).__init__(**kwargs)
+
+    @classmethod
+    def sign_up(cls, email, username, password, image_url):
+        hashed_pwd = bcrypt.generate_password_hash(password).decode("utf8")
+        image_url = image_url if image_url else None
+
+        return cls(
+            email=email, username=username, password=hashed_pwd, image_url=image_url
+        )
+
+    @classmethod
+    def authenticate(cls, username, password):
+        """
+        authenticate user, first find the username in the database
+        then compare the password entered and the user's' password
+        if succesful return the user else return False
+        """
+        user = db.session.execute(
+            db.select(User).filter_by(username=username)
+        ).scalar_one_or_none()
+
+        if user and bcrypt.check_password_hash(user.password, password):
+            return user
+        return False

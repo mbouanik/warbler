@@ -3,14 +3,14 @@
     {% include "components/header_one.html" %}
 
     <hr class="text-white">
-<div class="profile-messages-info">
+<!-- <div class="profile-messages-info"> -->
     <ul class="follow-grid list-group">
         {% for user in follows %}
         {% include "components/follow.html" %}
         {% endfor %}
     </ul>
 
-</div>
+<!-- </div> -->
 {% include "components/modal_post_form.html" %}
 {% include "components/modal_edit_profile.html" %}
 
