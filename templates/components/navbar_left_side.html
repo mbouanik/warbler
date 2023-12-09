@@ -1,32 +1,34 @@
 <nav
-  class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top nav-left-side"
+  class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top stiky-bottom nav-left-side"
 >
-  <hr />
-  <ul class="nav nav-pills flex-column mb-auto">
+  <hr class="text-white mobile-hr" />
+  <ul class="nav nav-pills flex-colum mb-auto">
     {% if g.user %}
     <li class="nav-item">
       <a href="/" class="nav-link text-white" aria-current="page">
-        <i class="fa-solid fa-house"></i> Home
+        <i class="fa-solid fa-house"></i> <span class="link-text">Home</span>
       </a>
     </li>
     <li>
       <a href="/users/{{g.user.id}}" class="nav-link text-white">
-        <i class="fa-solid fa-user"></i> Profile
+        <i class="fa-solid fa-user"></i> <span class="link-text">Profile</span>
       </a>
     </li>
     <li>
       <a href="/users/following/{{g.user.id}}" class="nav-link text-white">
-        <i class="fa-solid fa-user-group"></i> Following
+        <i class="fa-solid fa-user-group"></i>
+        <span class="link-text">Following</span>
       </a>
     </li>
     <li>
       <a href="/users/followers/{{g.user.id}}" class="nav-link text-white">
-        <i class="fa-solid fa-users"></i> Followers
+        <i class="fa-solid fa-users"></i>
+        <span class="link-text">Followers</span>
       </a>
     </li>
     <li>
       <a href="/users/messages/likes/{{g.user.id}}" class="nav-link text-white">
-        <i class="fa-solid fa-heart"></i> Likes
+        <i class="fa-solid fa-heart"></i> <span class="link-text">Likes</span>
       </a>
     </li>
     <li class="nav-item">
@@ -37,21 +39,21 @@
           data-bs-toggle="modal"
           data-bs-target="#exampleModal"
         >
-          <i class="fa-sharp fa-solid fa-comment"> </i>
+          <i class="fa-solid fa-solid fa-circle-plus"> </i>
 
-          Post
+          <span class="link-text">Post</span>
         </button>
       </div>
     </li>
 
     {% endif %}
   </ul>
-  <hr />
+  <hr class="mobile-hr" />
   {% if g.user %}
   <div class="dropdown">
     <a
       href="#"
-      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-menu"
       id="dropdownUser1"
       data-bs-toggle="dropdown"
       aria-expanded="false"
@@ -63,7 +65,7 @@
         height="32"
         class="rounded-circle me-2"
       />
-      <strong>{{ g.user.username }}</strong>
+      <strong class="mobile-hr">{{ g.user.username }}</strong>
     </a>
     <ul
       class="dropdown-menu dropdown-menu-dark text-small shadow"
@@ -74,7 +76,7 @@
           >Edit</a
         >
       </li>
-      <li><hr class="dropdown-divider" /></li>
+      <li><hr class="dropdown-divider mobile-hr" /></li>
       <li class="dropdown-item">
         <form
           id="{{g.user.id}}"

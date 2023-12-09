@@ -1,8 +1,10 @@
-<nav class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top">
-  <hr />
+<nav
+  class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top nav-right-side"
+>
+  <hr class="mobile-hr" />
   <ul class="nav nav-pills flex-column mb-auto">
     {% if g.user%}
-    <li class="nav-item">
+    <li class="nav-item searchbar">
       <form action="/search" class="d-flex" role="search">
         <input
           class="form-control"

@@ -240,3 +240,26 @@ async function delete_msg(msg_id) {
   };
   await axios.post("/messages/delete", data);
 }
+//
+// function updateElementClass() {
+//   const navbar = document.querySelector(".nav-left-side");
+//
+//   // Check the window size and add/remove classes accordingly
+//   if (window.innerWidth < 600) {
+//     navbar.classList.remove("sticky-bottom");
+//     navbar.classList.add("sticky-top");
+//   } else {
+//     navbar.classList.remove("sticky-top");
+//     navbar.classList.add("sticky-bottom");
+//   }
+//   if (window.innerWidth > 600) {
+//     navbar.classList.remove("sticky-top");
+//     navbar.classList.add("sticky-bottom");
+//   }
+// }
+//
+// // Initial update
+// updateElementClass();
+//
+// // Add event listener to window resize event
+// window.addEventListener("resize", updateElementClass);
