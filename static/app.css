@@ -253,6 +253,9 @@ nav {
   background-color: #318ce7;
   padding: 0.3rem 3rem 0.3rem 3rem;
 }
+.post-btn button:hover {
+  background-color: #318ce7;
+}
 
 .edit-btn button {
   /* margin-top: -3rem; */
@@ -284,7 +287,7 @@ nav {
   /* justify-content: center; */
   margin-left: auto;
   margin-right: auto;
-  margin-top: 10vh;
+  /* margin-top: 10vh; */
   background-color: white;
   border-radius: 1rem;
   margin-bottom: 2rem;
@@ -465,9 +468,16 @@ h1 {
   }
   .card {
     max-height: 15rem;
+    /* padding-bottor: 1rem; */
   }
   .card-text {
     font-size: 0.8rem;
+  }
+  .bottom-card {
+    margin-top: -2.5rem;
+  }
+  .stats {
+    padding-bottom: 1rem;
   }
   .profile-pic-bg {
     height: 6rem;
