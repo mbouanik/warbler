@@ -52,27 +52,27 @@
     <div class="card-text stats text-muted">
       <a class="stat-msg" href="/users/{{user.id}}">
         {{user.messages | length}}
-        <span class="text-muted"> Messages</span>
       </a>
+      <span class="text-muted"> Messages</span>
       <a
         id="{{user.id}}"
         class="stat-following"
         href="/users/following/{{ user.id }}"
         >{{ user.following | length}}
-        <span class="text-muted"> Following</span>
       </a>
+      <span class="text-muted"> Following</span>
 
       <a class="stat-followers" href="/users/followers/{{ user.id }}" r
         >{{ user.followers | length}}
-        <span class="text-muted"> Followers</span>
       </a>
+      <span class="text-muted"> Followers</span>
       <a
         id="{{user.id}}"
         class="stat-likes"
         href="/users/messages/likes/{{user.id}}"
         >{{ user.likes | length}}
-        <span class="text-muted"> Likes</span>
       </a>
+      <span class="text-muted"> Likes</span>
     </div>
   </div>
 </div>
