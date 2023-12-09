@@ -26,16 +26,14 @@
             {% endfor %}
             <div class="d-grid gap-1 col-3 mx-auto">
                 <button class="btn btn-primary ">Save</button>
-
-            </div>
-        </form>
-        <div class="modal-footer">
-            <form class="mb-3" action="/users/{{g.user.id}}/delete" method="POST">
+                <form class="mb-3" action="/users/{{g.user.id}}/delete" method="POST">
             <button class="btn btn-danger">Delete</button>
         </form>
 
-        </div>
-          </div>
+
+            </div>
+        </form>
+            </div>
 </div>
 
 

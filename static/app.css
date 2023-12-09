@@ -7,6 +7,9 @@ nav {
   /* height: 100vhr */
   /* padding: 1rem; */
 }
+.profile-menu-top {
+  display: none;
+}
 .nav-right-side {
   height: 100vh;
 }
@@ -59,8 +62,15 @@ nav {
 }
 .unfollow:hover {
   background-color: #dc3545;
+  border-color: #dc3545;
 }
-
+.follow-indicator {
+  background-color: #ededed;
+  /* color: white; */
+  font-size: 0.8rem;
+  padding-left: 0.1rem;
+  padding-right: 0.1rem;
+}
 .stats {
   display: flex;
   gap: 0.4rem;
@@ -228,10 +238,20 @@ nav {
 .post-btn {
   display: flex;
   justify-content: center;
+  /* justify-content: space-between; */
+}
+.fa-circle-plus {
+  /* position: absolute; */
+  /* margin-left: 1rem; */
+  /* margin-top: 2.5rem; */
 }
 .post-btn button {
-  padding: 0 3rem 0 3rem;
-  margin-bottom: 2rem;
+  /* display: flex; */
+  /* justify-content: space-evenly; */
+  color: white;
+  /* margin-top: 2rem; */
+  background-color: #318ce7;
+  padding: 0.3rem 3rem 0.3rem 3rem;
 }
 
 .edit-btn button {
@@ -299,6 +319,7 @@ h1 {
   text-align: center;
 }
 .top-authentificate {
+  flex-direction: row;
   border-top-left-radius: 1rem;
   border-top-right-radius: 1rem;
 }
@@ -311,6 +332,10 @@ h1 {
   justify-content: center;
 }
 .authenticate-top-btn {
+  display: flex;
+  flex-direction: rrw;
+  justify-content: center;
+  padding: 1rem;
   /* width: auto; */
 }
 /* .edit-top-btn { */
@@ -435,13 +460,34 @@ h1 {
 }
 
 @media (max-width: 993px) {
-  .profile-menu {
-    position: absolute;
-    margin-top: -2.3rem;
-    margin-left: -0.5rem;
+  .header-img {
+    max-height: 5rem;
   }
-  .dropdown-toggle {
+  .card {
+    max-height: 15rem;
+  }
+  .card-text {
+    font-size: 0.8rem;
+  }
+  .profile-pic-bg {
+    height: 6rem;
+    width: 6rem;
+    border-radius: 6rem;
+    border: 0.3rem solid white;
+    object-fit: cover;
+    object-position: 50% 50%;
+    margin-top: -5rem;
+  }
+
+  .profile-menu {
     display: none;
+    /* position: absolute; */
+    /* margin-top: 0.3rem; */
+    /* margin-left: -0.5rem; */
+    /* flex-direction: row-reverse; */
+  }
+  .profile-menu-top {
+    display: flex;
   }
   .main-content {
     margin-left: 0;
@@ -460,17 +506,18 @@ h1 {
   }
   .nav-right-side {
     /* position: fixed; */
-    background-color: #7cb9e8;
+    background-color: #318ce7;
     top: 0;
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
     height: 5rem;
-    /* width: 100vw; */
+    width: 100vw;
     justify-content: center;
   }
   .nav-left-side {
     display: flex;
     /* position: stickyr */
     flex-direction: row;
+    /* justify-content: space-everly; */
     /* justify-content: center; */
     top: 0;
     bottom: 0;
@@ -482,16 +529,19 @@ h1 {
     z-index: 100000000;
   }
 
-  .nav {
+  .nav-list-top {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .nav-list-bottom {
     display: flex;
     flex-direction: row;
-    justify-content: center;
-    gap: 0.2rem;
-    margin-left: 1rem;
-    /* padding: 0.5rem; */
-    /* padding-left: 2rem; */
-    flex-direction: row;
-    align-items: strech;
+
+    justify-content: space-evenly;
+    gap: 1rem;
+    /* margin-left: 1.7rem; */
+  }
+  .nav {
   }
   .nav:last-child {
     margin: 0;
@@ -507,8 +557,8 @@ h1 {
 
   .post-btn {
     position: absolute;
-    margin-top: -6rem;
-    margin-right: 5rem;
+    margin-top: -5.5rem;
+    margin-right: -17rem;
     font-size: 2rem;
   }
   .post-btn button {

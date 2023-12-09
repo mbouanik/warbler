@@ -2,58 +2,55 @@
   class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top stiky-bottom nav-left-side"
 >
   <hr class="text-white mobile-hr" />
-  <ul class="nav nav-pills flex-colum mb-auto">
+  <ul class="nav nav-pills flex-colum mb-auto nav-list-bottom">
     {% if g.user %}
     <li class="nav-item">
       <a href="/" class="nav-link text-white" aria-current="page">
         <i class="fa-solid fa-house"></i> <span class="link-text">Home</span>
       </a>
     </li>
-    <li>
+    <li class="nav-item">
       <a href="/users/{{g.user.id}}" class="nav-link text-white">
         <i class="fa-solid fa-user"></i> <span class="link-text">Profile</span>
       </a>
     </li>
-    <li>
+    <li class="nav-item">
       <a href="/users/following/{{g.user.id}}" class="nav-link text-white">
         <i class="fa-solid fa-user-group"></i>
         <span class="link-text">Following</span>
       </a>
     </li>
-    <li>
+    <li class="nav-item">
       <a href="/users/followers/{{g.user.id}}" class="nav-link text-white">
         <i class="fa-solid fa-users"></i>
         <span class="link-text">Followers</span>
       </a>
     </li>
-    <li>
+    <li class="nav-item">
       <a href="/users/messages/likes/{{g.user.id}}" class="nav-link text-white">
         <i class="fa-solid fa-heart"></i> <span class="link-text">Likes</span>
       </a>
     </li>
-    <li class="nav-item">
-      <div class="post-btn">
-        <button
-          type="button"
-          class="btn btn-primary"
-          data-bs-toggle="modal"
-          data-bs-target="#exampleModal"
-        >
-          <i class="fa-solid fa-solid fa-circle-plus"> </i>
-
-          <span class="link-text">Post</span>
-        </button>
-      </div>
+    <li class="nav-item post-btn">
+      <button
+        type="button"
+        class="btn btn-primary nav-lin"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        <span tyle="padding-right: 10px;" class="link-text">Post </span> &nbsp;
+        <i class="fa-solid fa-solid fa-circle-plus"> </i>
+      </button>
     </li>
 
     {% endif %}
   </ul>
   <hr class="mobile-hr" />
   {% if g.user %}
-  <div class="dropdown">
+  <div class="dropdown profile-menu">
     <a
       href="#"
-      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-menu"
+      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-men"
       id="dropdownUser1"
       data-bs-toggle="dropdown"
       aria-expanded="false"

@@ -38,7 +38,13 @@
     </div>
   </div>
   <div class="bottom-card">
-    <div class="card-text text-muted">@{{user.username}}</div>
+    <div class="card-text text-muted">
+      <b> @{{user.username}}</b> {% if user in g.user.followers %}<small
+        class="follow-indicator"
+      >
+        Follows you</small
+      >{% endif %}
+    </div>
     <div class="card-text">{{user.bio}}</div>
     <div class="card-text">
       <i class="fa-solid fa-location-dot"></i> {{ user.location}}

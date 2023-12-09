@@ -2,7 +2,7 @@
   class="d-flex flex-column flex-shrink-0 p-3 text-white sticky-top nav-right-side"
 >
   <hr class="mobile-hr" />
-  <ul class="nav nav-pills flex-column mb-auto">
+  <ul class="nav nav-pills flex-colum mb-auto nav-list-top">
     {% if g.user%}
     <li class="nav-item searchbar">
       <form action="/search" class="d-flex" role="search">
@@ -19,8 +19,56 @@
         </button>
       </form>
     </li>
+    <li>
+      <div class="dropdown profile-menu-top">
+        <a
+          href="#"
+          class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-men"
+          id="dropdownUser1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            src="{{ g.user.image_url}}"
+            alt=""
+            width="32"
+            height="32"
+            class="rounded-circle me-2"
+          />
+          <strong class="mobile-hr">{{ g.user.username }}</strong>
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-dark text-small shadow"
+          aria-labelledby="dropdownUser1"
+        >
+          <li class="dropdown-item">
+            <a class="btn btn-link text-white" href="/users/{{g.user.id}}/edit"
+              >Edit</a
+            >
+          </li>
+          <li><hr class="dropdown-divider mobile-hr" /></li>
+          <li class="dropdown-item">
+            <form
+              id="{{g.user.id}}"
+              class="logout navbar-form navbar-right"
+              action="/logout"
+              method="POST"
+            >
+              <button
+                id="{{g.user.id}}"
+                class="logout btn btn-link text-white link-underline-opacity-0"
+              >
+                Log out {{g.user.username}}
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </li>
     {% endif %}
   </ul>
 
-  <hr />
+  <!-- <hr /> -->
+  <hr class="mobile-hr" />
+  {% if g.user %} {% endif %}
 </nav>

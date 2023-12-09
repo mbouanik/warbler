@@ -36,18 +36,8 @@
             {{ field(class="form-control", placeholder=field.label.text ,
             id="floatingInput") }} {{field.label(for="floatingInput") }}
           </div>
-
           {% endfor %}
-          <div class="modal-footer">
-            <button class="btn btn-primary">Save</button>
-          </div>
-        </form>
-        <form
-          class="logout navbar-form ravbar-right"
-          action="/users/{{g.user.id}}/delete"
-          method="POST"
-        >
-          <button class="btn btn-danger">Delete</button>
+          <button class="btn btn-primary">Save</button>
         </form>
       </div>
     </div>
