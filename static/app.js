@@ -240,3 +240,9 @@ async function delete_msg(msg_id) {
   };
   await axios.post("/messages/delete", data);
 }
+
+const text_post_form = document.querySelector("#text_post_form");
+text_post_form.addEventListener("keyup", (evt) => {
+  const current = document.querySelector("#current");
+  current.innerText = evt.target.value.length;
+});

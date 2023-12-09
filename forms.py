@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, TextAreaField
+from wtforms import PasswordField, StringField, TextAreaField, validators
 from wtforms.validators import Email, InputRequired, Length
 from flask_wtf.file import FileField
 
@@ -20,7 +20,7 @@ class LoginForm(FlaskForm):
 
 
 class MessageForm(FlaskForm):
-    text = TextAreaField("Text", validators=[InputRequired()])
+    text = TextAreaField("Text", validators=[InputRequired(), Length(max=148, min=1)])
 
 
 class UploadForm(FlaskForm):
@@ -32,7 +32,7 @@ class EditUserForm(FlaskForm):
     email = StringField("Email", validators=[InputRequired(), Email()])
     image_url = StringField("(Optional) Image URL")
     header_image_url = StringField("(Optional) Header Image URL")
-    bio = StringField("(Optional) Bio")
+    bio = StringField("(Optional) Bio", validators=[Length(max=100)])
     location = StringField("(Optional) Location")
 
 

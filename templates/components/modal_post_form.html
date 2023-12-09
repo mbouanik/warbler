@@ -19,11 +19,11 @@
       <form action="/users/{{user.id}}" method="POST">
         <div class="modal-body">
           {{ form.csrf_token }} {{ form.text(class="form-control modal-form",
-          placeholder="What's Happening?") }}
+          placeholder="What's Happening?", id="text_post_form") }}
         </div>
         <div id="the-count">
-          <span id="current">0</span>
-          <span id="maximum">/ 148</span>
+          <span id="current">0</span> /
+          <span id="maximum"> 148</span>
         </div>
         <div class="modal-footer">
           <button class="btn btn-primary">
