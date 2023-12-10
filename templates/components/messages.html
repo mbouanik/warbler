@@ -1,48 +1,52 @@
 <li id="msg{{msg.id}}" class="list-group-item">
-  <div class="m">
-    <button
-      type="button"
-      class="btn btn-sm"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-    >
-      <i class="fa-solid fa-ellipsis"></i>
-    </button>
+  <div class="top-message">
+    <div class="message">
+      <a class="" href="/users/{{ msg.user.id }}">
+        <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
+      </a>
+      <div class="message-area">
+        <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
+        <span class="text-muted"
+          >{{ msg.timestamp.strftime('%b %-d, %Y') }}</span
+        >
+        <p>{{ msg.text }}</p>
+      </div>
+    </div>
+    <div class="">
+      <button
+        type="button"
+        class="btn btn-sm"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-ellipsis"></i>
+      </button>
 
-    <ul class="dropdown-menu">
-      <li class="dropdown-item">
-        {% if msg.user.id == g.user.id %}
-        <form id="{{msg.id}}" class="delete-msg" method="POST">
-          <button class="btn btn-link text-danger">
-            <i class="fa-solid fa-trash"></i> Delete
-          </button>
-        </form>
-        {% endif %}
-      </li>
-      <li class="dropdown-item">
-        {% if msg.user.id != g.user.id %}
-        <form id="{{msg.user.id}}" class="follows" method="POST">
-          {% if msg.user in g.user.following %}
-          <button class="btn btn-link text-muted">Unfollow</button>
-          {% else %}
-          <button class="btn btn-link text-muted">Follow</button>
+      <ul class="dropdown-menu">
+        <li class="dropdown-item">
+          {% if msg.user.id == g.user.id %}
+          <form id="{{msg.id}}" class="delete-msg" method="POST">
+            <button class="btn btn-link text-danger">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </form>
           {% endif %}
-        </form>
-        {% endif %}
-      </li>
-    </ul>
-  </div>
-  <div class="message">
-    <a class="" href="/users/{{ msg.user.id }}">
-      <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
-    </a>
-    <div class="message-area">
-      <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-      <span class="text-muted">{{ msg.timestamp.strftime('%b %-d, %Y') }}</span>
-      <p>{{ msg.text }}</p>
+        </li>
+        <li class="dropdown-item">
+          {% if msg.user.id != g.user.id %}
+          <form id="{{msg.user.id}}" class="follows" method="POST">
+            {% if msg.user in g.user.following %}
+            <button class="btn btn-link text-muted">Unfollow</button>
+            {% else %}
+            <button class="btn btn-link text-muted">Follow</button>
+            {% endif %}
+          </form>
+          {% endif %}
+        </li>
+      </ul>
     </div>
   </div>
-  <hr class="message-hr" />
+  <hr class="hr-message" />
   <div id="msg{{msg.id}}" class="like-btn">
     <div class="interaction">
       <form id="{{msg.id}}" class="like-form" method="POST">

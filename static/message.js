@@ -99,7 +99,7 @@ async function post_comment(evt) {
         <p>${data.data.comment.text}</p>
       </div>
     </div>
-    <hr class="message-hr" />
+    <hr class="hr-message" />
   </li>
   
   `;

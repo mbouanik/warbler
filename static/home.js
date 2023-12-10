@@ -154,7 +154,7 @@ async function post_message(text) {
         <p>${data.data.message.text}</p>
       </div>
     </div>
-    <hr class="message-hr" />
+    <hr class="hr-message" />
     <div id="msg${data.data.message.id}" class="like-btn">
     <div class="interaction">
       <form id="${data.data.message.id}" class="like_form" method="POST">

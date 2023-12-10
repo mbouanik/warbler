@@ -1,50 +1,52 @@
 <li id="comment{{comment.id}}" class="list-group-item">
-  <div class="m">
-    <button
-      type="button"
-      class="btn btn-sm"
-      data-bs-toggle="dropdown"
-      aria-expanded="false"
-    >
-      <i class="fa-solid fa-ellipsis"></i>
-    </button>
-
-    <ul class="dropdown-menu">
-      <li class="dropdown-item">
-        {% if comment.user.id == g.user.id %}
-        <form id="{{comment.id}}" class="delete-comment" method="POST">
-          <button class="btn btn-link text-danger">
-            <i class="fa-solid fa-trash"></i> Delete
-          </button>
-        </form>
-        {% endif %}
-      </li>
-      <li class="dropdown-item">
-        {% if comment.user.id != g.user.id %}
-        <form id="{{comment.user.id}}" class="follows" method="POST">
-          {% if comment.user in g.user.following %}
-          <button class="btn btn-link text-muted">Unfollow</button>
-          {% else %}
-          <button class="btn btn-link text-muted">Follow</button>
-          {% endif %}
-        </form>
-        {% endif %}
-      </li>
-    </ul>
-  </div>
-  <div class="message">
-    <a class="" href="/users/{{ comment.user.id }}">
-      <img src="{{ comment.user.image_url }}" alt="" class="timeline-image" />
-    </a>
-    <div class="message-area">
-      <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
-      <span class="text-muted"
-        >{{ comment.timestamp.strftime('%b %-d, %Y') }}</span
+  <div class="top-message">
+    <div class="message">
+      <a class="" href="/users/{{ comment.user.id }}">
+        <img src="{{ comment.user.image_url }}" alt="" class="timeline-image" />
+      </a>
+      <div class="message-area">
+        <a href="/users/{{ comment.user.id }}">@{{ comment.user.username }}</a>
+        <span class="text-muted"
+          >{{ comment.timestamp.strftime('%b %-d, %Y') }}</span
+        >
+        <p>{{ comment.text }}</p>
+      </div>
+    </div>
+    <div class="">
+      <button
+        type="button"
+        class="btn btn-sm"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
       >
-      <p>{{ comment.text }}</p>
+        <i class="fa-solid fa-ellipsis"></i>
+      </button>
+
+      <ul class="dropdown-menu">
+        <li class="dropdown-item">
+          {% if comment.user.id == g.user.id %}
+          <form id="{{comment.id}}" class="delete-comment" method="POST">
+            <button class="btn btn-link text-danger">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
+          </form>
+          {% endif %}
+        </li>
+        <li class="dropdown-item">
+          {% if comment.user.id != g.user.id %}
+          <form id="{{comment.user.id}}" class="follows" method="POST">
+            {% if comment.user in g.user.following %}
+            <button class="btn btn-link text-muted">Unfollow</button>
+            {% else %}
+            <button class="btn btn-link text-muted">Follow</button>
+            {% endif %}
+          </form>
+          {% endif %}
+        </li>
+      </ul>
     </div>
   </div>
-  <hr class="message-hr" />
+  <hr class="hr-message" />
   <!-- <div id="cmt{{comment.id}}" class="like-btn"> -->
   <!--   <div class="interaction"> -->
   <!--     <form id="{{comment.id}}" class="like_form" method="POST"> -->
