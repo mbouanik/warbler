@@ -23,7 +23,9 @@ nav {
   /* background-color: #7cbre8; */
   height: 100vh;
 }
-
+.profile-menu {
+  margin-bottom: 0.5rem;
+}
 .nav {
   flex-direction: column;
   margin-bottom: auto;
@@ -40,8 +42,8 @@ nav {
   /* padding: 1rem; */
   padding-left: 1rem;
   padding-right: 1rem;
-  /* max-width: 44.5rem; */
-  justify-content: center;
+  max-width: 40rem;
+  /* justify-content: center; */
   margin-left: 1rem;
 }
 .vr {
@@ -62,7 +64,8 @@ nav {
   display: flex;
   flex-flow: row nowrap;
   justify-content: center;
-  background-color: #7cb9e8;
+  /* justify-content: space-around; */
+  /* background-color: #7cbre8; */
 }
 .stat-follow-btn {
   width: 6rem;
@@ -562,6 +565,7 @@ h1 {
   }
   .nav-right-side {
     background-color: #318ce7;
+    /* background-color: rgb(0, 49, 140, 0.75); */
     top: 0;
     height: 4rem;
     width: 100vw;
@@ -575,8 +579,10 @@ h1 {
     /* right: 0; */
     left: 0;
     width: 100vw;
-    height: 3rem;
+    height: 4rem;
     background-color: #318ce7;
+    /* opacity: 0.6; */
+    /* background-color: rgb(88, 139, 228, 0r9); */
     /* z-index: 100000000; */
   }
 
@@ -584,12 +590,14 @@ h1 {
     flex-direction: row;
     justify-content: space-between;
     margin-top: 1rem;
+    font-size: 1.5rem;
   }
   .nav-list-bottom {
     /* display: flex; */
     flex-direction: row;
     /* align-items: center; */
     justify-content: space-evenly;
+    font-size: 1.5rem;
     /* gap: 1rem; */
   }
   /* .nav { */
@@ -611,7 +619,7 @@ h1 {
     /* margin-right: -17rem; */
     right: 1rem;
     bottom: 4rem;
-    font-size: 2rem;
+    /* font-size: 2rem; */
   }
   .post-btn button {
     font-size: 3rem;
