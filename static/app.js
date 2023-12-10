@@ -1,4 +1,5 @@
 const forms_list = document.querySelector(".forms-list");
+console.log(forms_list);
 const header_follow_form = document.querySelector(".header-follow-form");
 forms_list.addEventListener("submit", (evt) => {
   evt.preventDefault();
@@ -242,7 +243,8 @@ async function delete_msg(msg_id) {
 }
 
 const text_post_form = document.querySelector("#text_post_form");
+console.log(text_post_form);
 text_post_form.addEventListener("keyup", (evt) => {
-  const current = document.querySelector("#current");
+  const current = document.querySelector("#current_post");
   current.innerText = evt.target.value.length;
 });

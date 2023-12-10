@@ -1,35 +1,25 @@
-// const follow_form = document.querySelector(".search-page");
-// follow_form.addEventListener("submit", (evt) => {
-//   evt.preventDefault();
-//   if (evt.target.classList.contains("follows")) {
-//     console.log("ClAIM", evt.target.id);
-//     follow_user(evt);
-//     if (evt.target[0].innerText == "Follow") {
-//       evt.target[0].innerText = "Following";
-//       evt.target[0].classList.remove("btn-outline-primary");
-//       evt.target[0].classList.add("btn-primary");
-//       evt.target[0].classList.add("unfollow");
-//       evt.target[0].setAttribute("data-hover", "Unfollow");
-//     } else {
-//       evt.target[0].innerText = "Follow";
-//       evt.target[0].classList.remove("btn-primary");
-//       evt.target[0].classList.remove("unfollow");
-//       evt.target[0].classList.add("btn-outline-primary");
-//     }
-//   }
-// });
-//
-// async function follow_user(evt) {
-//   follow_id = evt.target.id;
-//   data = {
-//     follow_id: parseInt(follow_id),
-//   };
-//   res = await axios
-//     .post("/users/follow", data)
-//     .then(function (response) {
-//       console.log(response);
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-// }
+const form_list_search = document.querySelector(".forms-list-search");
+form_list_search.addEventListener("submit", (evt) => {
+  evt.preventDefault();
+  if (evt.target.classList.contains("follows")) {
+    console.log("DOOR", evt.target.id);
+    follow_user(parseInt(evt.target.id));
+    forms_list_follow(evt);
+  } else if (evt.target.classList.contains("delete-msg")) {
+    console.log("MOUNTAIN", evt.target.id);
+    delete_msg(parseInt(evt.target.id));
+    stat_msg = document.querySelector(".stat-msg");
+    if (stat_msg) {
+      stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
+    }
+    const msg = document.querySelector(`#msg${evt.target.id}`);
+    msg.remove();
+  } else if (evt.target.classList.contains("like-form")) {
+    console.log("HELLO WORLD ", evt.target.id);
+    like_msg(parseInt(evt.target.id));
+    like_form(evt);
+  } else if (evt.target.classList.contains("repost-form")) {
+    repost(parseInt(evt.target.id));
+    repost_form(evt);
+  }
+});

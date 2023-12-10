@@ -262,10 +262,39 @@ nav {
   padding: 0 2rem 0 2rem;
   border-radius: 0.7rem;
 }
+.forms {
+  background-color: white;
+  border-radius: 0.3rem;
+  border-radius: 0.3rem;
+}
+textarea {
+  border: none;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.3rem;
+}
+textarea :focus {
+  outine: none !important;
+  border: 0 solid red;
+  box-shadow: 0 0 0 black;
+}
 
 #the-count {
-  padding-right: 2rem;
-  float: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem;
+  background-color: white;
+  border-bottom-left-radius: 0.3rem;
+  border-bottom-right-radius: 0.3rem;
+  border: none;
+  /* margin-top: 0.3rem; */
+}
+#the-count button {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 1rem;
 }
 .modal-footer {
   margin-top: 2rem;

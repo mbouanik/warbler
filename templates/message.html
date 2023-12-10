@@ -7,21 +7,29 @@
         {% include "components/messages.html" %} 
     </ul>
     <hr  class="text-white">
-    <!-- <div id="post-form"> -->
-        <form method="POST">
-            {{ form.csrf_token }}
-            {{ form.text(class="form-control", placeholder="What do you think?") }}
-            <button class="btn btn-primary btn-sm"> React  <i class="fa-brands fa-twitter"> </i></button>
+    <div class="forms">
+        <form id="{{msg.id}}" class="post-comment" method="POST">
+            {{ comment_form.csrf_token }}
+            {{ comment_form.text(class="form-control", placeholder="What do you think?", id="text_comment_form") }}
+     <div id="the-count">
+        <b>
+          <span id="current">0</span> /
+          <span id="maximum"> 148</span>
+        </b>
+        <button class="btn btn-primary btn-sm"> React </button>
+        </div>
+
         </form>
-    <!-- </div> -->
+    </div>
     <hr  class="text-white">
 
-    <ul class="list-group messages">
+    <ul class="list-group messages forms-list-comments">
         {% for comment in msg.comments[::-1] %}
         {% include "components/comments.html" %} 
         {% endfor %}
     </ul>
 <!-- </div> -->
+{% include "components/modal_post_form.html" %}
 <script src=" {{ url_for('app_routes.static', filename='message.js' ) }} "></script>
 {% endblock %}
 

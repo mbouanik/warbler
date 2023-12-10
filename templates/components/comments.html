@@ -1,4 +1,4 @@
-<li id="msg{{comment.id}}" class="list-group-item">
+<li id="comment{{comment.id}}" class="list-group-item">
   <div class="m">
     <button
       type="button"
@@ -12,7 +12,7 @@
     <ul class="dropdown-menu">
       <li class="dropdown-item">
         {% if comment.user.id == g.user.id %}
-        <form id="{{comment.id}}" class="delete-msg" method="POST">
+        <form id="{{comment.id}}" class="delete-comment" method="POST">
           <button class="btn btn-link text-danger">
             <i class="fa-solid fa-trash"></i> Delete
           </button>

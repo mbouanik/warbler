@@ -194,4 +194,14 @@ async function post_message(text) {
   template.innerHTML = content;
   const t = template.content;
   ul.insertBefore(t, ul.firstChild);
+  const current = document.querySelector("#current");
+  current.innerText = "0";
+}
+
+const text_comment_form = document.querySelector("#text_post_form_home");
+if (text_comment_form) {
+  text_comment_form.addEventListener("keyup", (evt) => {
+    const current = document.querySelector("#current");
+    current.innerText = evt.target.value.length;
+  });
 }

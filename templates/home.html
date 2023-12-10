@@ -2,19 +2,29 @@
 {% block content %}
 <!-- <div class="messages-list"> -->
     <!-- <div class="messages"> -->
-        <form id="post-form" action="" method="POST">
-            {{ form.csrf_token }}
-            {{ form.text(class="form-control", placeholder="What's Happening?") }}
-            <button class="btn btn-primary btn-sm"> Warble <i class="fa-brands fa-twitter"></i></button>
-        </form>
-        <hr class="text-white">
-        <ul class="list-group forms-list">
-            {% for msg in messages %}
-                {% include "components/messages.html" %}
-            {% endfor %}
-        </ul>
-    <!-- </div> -->
+<div class="forms">
+<form id="post-form" action="" method="POST">
+    {{ form.csrf_token }}
+    {{ form.text(class="form-control", placeholder="What's Happening?", id="text_post_form_home") }}
+        <div id="the-count" class="">
+            <b>
+                <span id="current">0</span> /
+                <span id="maximum"> 148</span>
+            </b>
+            <button class="btn btn-primary btn-sm"> Post</button>
+        </div>
+
+</form>
+
+</div>
+<hr class="text-white">
+<ul class="list-group forms-list">
+    {% for msg in messages %}
+    {% include "components/messages.html" %}
+    {% endfor %}
+</ul>
+<!-- </div> -->
 <!-- </div> -->
 {% include "components/modal_post_form.html" %}
-        <script src=" {{ url_for('app_routes.static', filename='home.js' ) }} "></script>
-{% endblock %}
+<script src=" {{ url_for('app_routes.static', filename='home.js' ) }} "></script>
+    {% endblock %}

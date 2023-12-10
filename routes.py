@@ -104,29 +104,10 @@ def authenticate():
     )
 
 
-# def login(form):
-#                     return redirect(url_for("app_routes.home"))
-#
-#     return render_template("login.html", form=form)
-
-
 @app_routes.route("/logout", methods=["POST"])
 def logout():
     do_logout()
     return redirect(url_for("app_routes.authenticate"))
-
-
-# @app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
-# def one_profile(user_id):
-#     user = db.get_or_404(User, user_id)
-#     form = MessageForm()
-#     if form.validate_on_submit():
-#         message = Message(text=form.text.data, user_id=user.id)
-#         db.session.add(message)
-#         db.session.commit()
-#         return redirect(url_for("app_routes.one_profile", user_id=user.id))
-#
-#     return render_template("one_profile.html", user=user, form=form)
 
 
 @app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
@@ -168,7 +149,6 @@ def edit_user_profile(user_id):
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
-        # return redirect(url_for("app_routes.one_profile", user_id=user.id))
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template("edit_user_profile.html", form=form)
@@ -185,19 +165,18 @@ def delete_user(user_id):
 
 @app_routes.route("/search")
 def search():
-    name = request.args.get("search")
+    search = request.args.get("search")
     users = db.session.execute(
-        db.select(User).where(User.username.ilike(f"%{name}%"))
+        db.select(User).where(User.username.ilike(f"%{search}%")).limit(10)
     ).scalars()
-    return render_template("search.html", users=users)
+    messages = db.session.execute(
+        db.select(Message).where(Message.text.ilike(f"%{search}%")).limit(10)
+    ).scalars()
+    form = MessageForm()
 
-
-# @app_routes.route("/users/follow/", methods=["POST"])
-# def follow_user(follow_id):
-#     user = db.get_or_404(User, follow_id)
-#     g.user.following.append(user)
-#     db.session.commit()
-#     return redirect(url_for("app_routes.home"))
+    return render_template(
+        "search.html", users=users, messages=messages, form=form, user=g.user
+    )
 
 
 @app_routes.route("/users/follow", methods=["POST"])
@@ -214,14 +193,6 @@ def follow_user():
         db.session.commit()
         return jsonify(response={"response": 200})
     return jsonify(response={"response": "failed"})
-
-
-# @app_routes.route("/users/unfollow/<int:follow_id>", methods=["POST"])
-# def unfollow_user(follow_id):
-#     user = db.get_or_404(User, follow_id)
-#     g.user.following.remove(user)
-#     db.session.commit()
-#     return redirect(url_for("app_routes.home"))
 
 
 @app_routes.route("/users/following/<int:user_id>")
@@ -272,10 +243,7 @@ def add_post():
     if form.validate():
         message = Message()
         form.populate_obj(message)
-        # print(message.text)
-        # message.user_id = g.user.id
         g.user.messages.append(message)
-        # db.session.add(message)
         db.session.commit()
         response = {
             "user": {
@@ -308,20 +276,71 @@ def show_liked_messagess(user_id):
     return render_template("likes.html", user=user, form=form, edit_form=edit_form)
 
 
-@app_routes.route("/messages/<int:message_id>", methods=["GET", "POST"])
+@app_routes.route(
+    "/messages/<int:message_id>",
+)
 def show_message(message_id):
     msg = db.get_or_404(Message, message_id)
-    form = CommentForm()
+    comment_form = CommentForm()
+    form = MessageForm()
+    # if form.validate_on_submit():
+    #     comment = Comment()
+    #     form.populate_obj(comment)
+    #     comment.user_id = g.user.id
+    #     comment.message_id = msg.id
+    #     msg.comments.append(comment)
+    #     db.session.commit()
+    #     return redirect(url_for("app_routes.show_message", message_id=msg.id))
+    return render_template(
+        "message.html", msg=msg, comment_form=comment_form, form=form, user=g.user
+    )
+
+
+@app_routes.route("/messages/comments/add", methods=["POST"])
+def add_comment():
+    data = request.json
+    form = CommentForm(obj=data)
+    message = db.get_or_404(Message, request.json["message_id"])
     if form.validate_on_submit():
         comment = Comment()
         form.populate_obj(comment)
         comment.user_id = g.user.id
-        comment.message_id = msg.id
-        msg.comments.append(comment)
+        comment.message_id = request.json["message_id"]
+        db.session.add(comment)
         db.session.commit()
-        return redirect(url_for("app_routes.show_message", message_id=msg.id))
+        response = {
+            "user": {
+                "id": g.user.id,
+                "username": g.user.username,
+                "image_url": g.user.image_url,
+            },
+            "comment": {
+                "id": comment.id,
+                "timestamp": comment.timestamp,
+                "text": comment.text,
+            },
+        }
+    return jsonify(response)
 
-    return render_template("message.html", msg=msg, form=form)
+
+@app_routes.route("/messages/comment/delete", methods=["POST"])
+def delete_comment():
+    if request.json:
+        comment_id = request.json["comment_id"]
+
+        comment = db.get_or_404(Comment, comment_id)
+        message = db.get_or_404(Message, comment.message_id)
+
+        db.session.delete(comment)
+        db.session.commit()
+        return jsonify(
+            response={
+                "response": "deleted",
+                "commented": g.user in message.users_commented,
+                "message_id": message.id,
+            }
+        )
+    return jsonify(response={"response": "failed"})
 
 
 @app_routes.route("/messages/delete", methods=["POST"])
@@ -329,8 +348,8 @@ def delete_message():
     if request.json:
         message_id = request.json["message_id"]
         msg = db.get_or_404(Message, message_id)
-        # for comment in msg.comments:
-        #     db.session.delete(comment)
+        for comment in msg.comments:
+            db.session.delete(comment)
         db.session.delete(msg)
         db.session.commit()
     return jsonify(response={"data": 200})
@@ -347,51 +366,23 @@ def like_message():
             g.user.likes.append(message)
     db.session.commit()
     return jsonify(response={"response": 200})
-    return redirect(url_for("app_routes.home", user_id=g.user.id))
-
-    # @app_routes.route("/messages/unlike", methods=["POST"])
-    # def unlike_message():
-    #     if request.json:
-    #         message_id = request.json["message_id"]
-    #     message = db.get_or_404(Message, int(message_id))
-
-    g.user.likes.remove(message)
-    db.session.commit()
-    return jsonify(response={"response": 200})
-    return redirect(url_for("app_routes.home", user_id=g.user.id))
 
 
 @app_routes.route("/messages/repost", methods=["POST"])
 def respost_message():
     if request.json:
         message_id = request.json["message_id"]
-    repost = db.session.execute(
-        db.select(Repost).where(
-            Repost.message_id == message_id, Repost.user_id == g.user.id
-        )
-    ).scalar_one_or_none()
-    if repost:
-        db.session.delete(repost)
-    else:
-        repost = Repost()
-        repost.user_id = g.user.id
-        repost.message_id = message_id
-        db.session.add(repost)
-
+        repost = db.session.execute(
+            db.select(Repost).where(
+                Repost.message_id == message_id, Repost.user_id == g.user.id
+            )
+        ).scalar_one_or_none()
+        if repost:
+            db.session.delete(repost)
+        else:
+            repost = Repost()
+            repost.user_id = g.user.id
+            repost.message_id = message_id
+            db.session.add(repost)
     db.session.commit()
     return jsonify(response={"response": 200})
-
-    return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
-    return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
-
-
-# @app_routes.route("/messages/<int:message_id>/unpost", methods=["POST"])
-# def unpost_message(message_id):
-#     repost = db.session.execute(
-#         db.select(Repost).where(
-#             Repost.user_id == g.user.id, Repost.message_id == message_id
-#         )
-#     ).scalar_one_or_none()
-# db.session.delete(repost)
-#     db.session.commit()
-#     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))

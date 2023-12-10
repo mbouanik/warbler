@@ -67,7 +67,7 @@ class Comment(db.Model):
     __tablename__ = "comments"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    text: Mapped[str] = mapped_column(String(140), nullable=False)
+    text: Mapped[str] = mapped_column(String(148), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(
         DateTime, nullable=False, default=datetime.utcnow
     )
@@ -83,7 +83,7 @@ class Comment(db.Model):
 class Message(db.Model):
     __tablename__ = "messages"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    text: Mapped[str] = mapped_column(String(140), nullable=False)
+    text: Mapped[str] = mapped_column(String(148), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(
         DateTime,
         nullable=False,
@@ -98,6 +98,7 @@ class Message(db.Model):
     comments: Mapped[Comment] = Relationship(
         "Comment", backref="message", cascade="all, delete-orphan"
     )
+    users_commented = Relationship("User", secondary="comments")
 
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
