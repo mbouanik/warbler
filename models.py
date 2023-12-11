@@ -120,7 +120,7 @@ class User(db.Model):
         default=DEFAULT_HEAD_IMG_URL,
     )
     bio: Mapped[str] = mapped_column(String(100), default="")
-    location: Mapped[str] = mapped_column(String(20), default="")
+    location: Mapped[str] = mapped_column(String(50), default="")
 
     messages: Mapped[Message] = Relationship(
         "Message", backref="user", cascade="all, delete-orphan"

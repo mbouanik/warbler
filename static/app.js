@@ -43,7 +43,7 @@ async function repost(msg_id) {
   const data = {
     message_id: msg_id,
   };
-  res = await axios
+  await axios
     .post("/messages/repost", data)
     .then(function (response) {
       console.log(response);
@@ -56,7 +56,6 @@ async function repost(msg_id) {
 function repost_form(evt) {
   evt.preventDefault();
   const msg_id = parseInt(evt.target.id);
-  repost(msg_id);
   const repost_icon = document.querySelector(`#repost_icon${msg_id}`);
   if (repost_icon.classList.contains("reposted")) {
     repost_icon.classList.remove("reposted");
@@ -72,7 +71,7 @@ async function follow_user(user_id) {
   data = {
     follow_id: follow_id,
   };
-  res = await axios
+  await axios
     .post("/users/follow", data)
     .then(function (response) {
       console.log(response);

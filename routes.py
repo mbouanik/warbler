@@ -10,7 +10,7 @@ from flask import (
     request,
 )
 from init import db
-from models import Comment, Repost, User, Message
+from models import Comment, Likes, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
 
 app_routes = Blueprint(
@@ -267,11 +267,11 @@ def show_liked_messagess(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
     edit_form = EditUserForm(obj=user)
-    if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        db.session.add(message)
-        db.session.commit()
-        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+    # if form.validate_on_submit():
+    #     message = Message(text=form.text.data, user_id=user.id)
+    #     db.session.add(message)
+    #     db.session.commit()
+    #     return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template("likes.html", user=user, form=form, edit_form=edit_form)
 
@@ -363,7 +363,9 @@ def like_message():
         if message in g.user.likes:
             g.user.likes.remove(message)
         else:
-            g.user.likes.append(message)
+            like = Likes(user_id=g.user.id, message_id=message.id)
+            db.session.add(like)
+            # g.user.likes.append(message)
     db.session.commit()
     return jsonify(response={"response": 200})
 
@@ -377,6 +379,7 @@ def respost_message():
                 Repost.message_id == message_id, Repost.user_id == g.user.id
             )
         ).scalar_one_or_none()
+        print(f"============{repost}=============")
         if repost:
             db.session.delete(repost)
         else:
@@ -384,5 +387,5 @@ def respost_message():
             repost.user_id = g.user.id
             repost.message_id = message_id
             db.session.add(repost)
-    db.session.commit()
+        db.session.commit()
     return jsonify(response={"response": 200})
