@@ -8,6 +8,7 @@ body {
   flex-direction: column;
   /* justify-content: center;  */
   flex-flow: column wrap;
+  padding: 1rem;
   /* margin-top: -1.5rem; */
   /* height: 3rem; */
   /* width: 3rem; */
