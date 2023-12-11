@@ -7,7 +7,7 @@
       <a class="">@{{user.username}}</a>
 
       {% if g.user in user.following %}
-      <small class="text-muted"> Follows you</small>
+      <small class="text-muted follow-indicator"> Follows you</small>
       {%endif%}
       <br />
       <small>Following <span>{{ user.following | length }}</span></small>
