@@ -8,12 +8,17 @@ body {
   flex-direction: column;
   /* justify-content: center;  */
   flex-flow: column wrap;
-  padding: 1rem;
+  padding-lefr: 1rem;
   /* margin-top: -1.5rem; */
   /* height: 3rem; */
   /* width: 3rem; */
   /* margin-bottom: -4rem; */
   /* margin-top: 12rem; */
+}
+. search-modal {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
 }
 .logo-top-nav {
   display: none;
@@ -575,7 +580,7 @@ h1 {
     width: 2erem;
   }
   body {
-    background-color: white;
+    /* background-color: white; */
   }
   .header-img {
     max-height: 6rem;
