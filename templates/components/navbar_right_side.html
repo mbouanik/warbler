@@ -15,7 +15,7 @@
           id="search"
         />
         <button class="btn btn-default" type="submit">
-          <span class="fa fa-search"></span>
+          <!-- <span class="fa fa-search"><rspan> -->
         </button>
       </form>
     </li>
@@ -33,7 +33,7 @@
             alt=""
             width="32"
             height="32"
-            class="rounded-circle me-2"
+            class="profile-menu-top-image"
           />
           <strong class="mobile-hr">{{ g.user.username }}</strong>
         </a>
@@ -65,10 +65,35 @@
         </ul>
       </div>
     </li>
+
+    <li>
+      <div class="logo-top-nav nav-lin">
+        <div>
+          <a href="/">
+            <img
+              class="logo-image nav-lir text-white"
+              src="{{ url_for('app_routes.static', filename='img/galaxy.svg') }}"
+              alt=""
+            />
+          </a>
+        </div>
+      </div>
+    </li>
+
+    <li class="top-search-btn">
+      <button
+        type="button"
+        class="btn btn-sm"
+        data-bs-toggle="modal"
+        data-bs-target="#search"
+      >
+        <i class="fa-solid fa-magnifying-glass"></i>
+      </button>
+    </li>
+
     {% endif %}
   </ul>
 
-  <!-- <hr /> -->
   <hr class="mobile-hr" />
   {% if g.user %} {% endif %}
 </nav>

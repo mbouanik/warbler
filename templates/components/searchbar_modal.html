@@ -1,0 +1,33 @@
+<div
+  class="modal fade"
+  id="search"
+  tabindex="-1"
+  aria-labelledby="search"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="#search">Search</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form action="/search" class="d-flex" role="search">
+          <input
+            class="form-control"
+            type="search"
+            name="search"
+            placeholder="search"
+            aria-label="search"
+          />
+          <button class="btn btn-default" type="submit"></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

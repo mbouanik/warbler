@@ -248,3 +248,12 @@ text_post_form.addEventListener("keyup", (evt) => {
   const current = document.querySelector("#current_post");
   current.innerText = evt.target.value.length;
 });
+
+// searchbar = document.querySelector(".top-searchbar");
+// console.log(searchbar);
+// window.addEventListener("scroll", (evt) => {
+//   console.log("SCROLLL");
+//   // console.log(searchbar.style);
+//   console.log((searchbar.style.position = ""));
+//   // searchbar.style.removePropety("position");
+// });
