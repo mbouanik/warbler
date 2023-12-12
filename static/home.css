@@ -1,0 +1,39 @@
+body {
+  background-image: url("../static/img/bg-home.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  /* background-size: arto; */
+  background-color: #7cb9e8;
+  /* display: flex; */
+  justify-content: center;
+  heibackground-size: auto;
+  ght: 100vh;
+}
+
+.home {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  color: white;
+  font-size: 3rem;
+  padding: 1rem;
+  text-align: center;
+  /* background-color: rgb(255, 255, 255, 0.9); */
+  background-color: rgb(0, 49, 140, 0.2);
+}
+h1 {
+  font-size: 4rem;
+}
+
+.l {
+}
+
+@media (max-width: 900px) {
+  body {
+    background-position: center;
+    background-image: url("../static/img/bg-mobile.jpeg");
+  }
+}

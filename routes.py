@@ -10,7 +10,7 @@ from flask import (
     request,
 )
 from init import db
-from models import Comment, Likes, Repost, User, Message
+from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
 from functools import wraps
 
@@ -44,6 +44,7 @@ def add_user_to_g():
         g.user = db.get_or_404(User, user_id)
     else:
         g.user = None
+        # return render_template("home-non.html")
 
 
 #
@@ -66,7 +67,7 @@ def do_logout():
 
 
 @app_routes.route("/", methods=["GET", "POST"])
-@login_required
+# @login_required
 def home():
     user_id = session.get("user_id", None)
     if user_id:
@@ -88,6 +89,8 @@ def home():
             return redirect(url_for("app_routes.home"))
 
         return render_template("home.html", user=user, form=form, messages=messages)
+    return render_template("home-non.html")
+
     return redirect(url_for("app_routes.authenticate"))
 
 
