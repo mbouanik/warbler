@@ -14,10 +14,10 @@ forms_list_comments.addEventListener("submit", (evt) => {
     comment_icon.innerText = ` ${parseInt(comment_icon.innerText) - 1}`;
   }
 });
-delete_msg = document.querySelector(".delete-msg");
-delete_msg.addEventListener("submit", (evt) => {
-  console.log("LOOK OVER HERE");
-});
+// delete_msg = document.querySelector(".delete-msg");
+// delete_msg.addEventListener("submit", (evt) => {
+//   console.log("LOOK OVER HERE");
+// });
 async function delete_comment(comment_id, message_id) {
   data = {
     comment_id: comment_id,

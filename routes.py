@@ -12,6 +12,7 @@ from flask import (
 from init import db
 from models import Comment, Likes, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
+from functools import wraps
 
 app_routes = Blueprint(
     "app_routes",
@@ -20,6 +21,20 @@ app_routes = Blueprint(
     static_folder="static",
     static_url_path="/app_routes/static",
 )
+
+
+def is_authenticated():
+    return "user_id" in session
+
+
+def login_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if not is_authenticated():
+            return redirect(url_for("app_routes.authenticate"))
+        return view(*args, **kwargs)
+
+    return wrapped_view
 
 
 @app_routes.before_request
@@ -51,6 +66,7 @@ def do_logout():
 
 
 @app_routes.route("/", methods=["GET", "POST"])
+@login_required
 def home():
     user_id = session.get("user_id", None)
     if user_id:
@@ -105,12 +121,14 @@ def authenticate():
 
 
 @app_routes.route("/logout", methods=["POST"])
+@login_required
 def logout():
     do_logout()
     return redirect(url_for("app_routes.authenticate"))
 
 
 @app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
+@login_required
 def show_user_profile(user_id):
     user = db.get_or_404(User, user_id)
     all_messages_id = db.session.execute(
@@ -142,6 +160,7 @@ def show_user_profile(user_id):
 
 
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@login_required
 def edit_user_profile(user_id):
     user = db.get_or_404(User, user_id)
     form = EditUserForm(obj=user)
@@ -155,6 +174,7 @@ def edit_user_profile(user_id):
 
 
 @app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
+@login_required
 def delete_user(user_id):
     do_logout()
     user = db.get_or_404(User, user_id)
@@ -164,6 +184,7 @@ def delete_user(user_id):
 
 
 @app_routes.route("/search")
+@login_required
 def search():
     search = request.args.get("search")
     users = db.session.execute(
@@ -180,6 +201,7 @@ def search():
 
 
 @app_routes.route("/users/follow", methods=["POST"])
+@login_required
 def follow_user():
     if request.json:
         follow_id = request.json["follow_id"]
@@ -196,6 +218,7 @@ def follow_user():
 
 
 @app_routes.route("/users/following/<int:user_id>")
+@login_required
 def show_user_following(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
@@ -216,6 +239,7 @@ def show_user_following(user_id):
 
 
 @app_routes.route("/users/followers/<int:user_id>")
+@login_required
 def show_user_followers(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
@@ -236,6 +260,7 @@ def show_user_followers(user_id):
 
 
 @app_routes.route("/messages/", methods=["POST"])
+@login_required
 def add_post():
     data = request.json
     print(data)
@@ -263,6 +288,7 @@ def add_post():
 
 
 @app_routes.route("/users/messages/likes/<int:user_id>")
+@login_required
 def show_liked_messagess(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
@@ -275,9 +301,8 @@ def show_liked_messagess(user_id):
     )
 
 
-@app_routes.route(
-    "/messages/<int:message_id>",
-)
+@app_routes.route("/messages/<int:message_id>")
+@login_required
 def show_message(message_id):
     msg = db.get_or_404(Message, message_id)
     comment_form = CommentForm()
@@ -288,6 +313,7 @@ def show_message(message_id):
 
 
 @app_routes.route("/messages/comments/add", methods=["POST"])
+@login_required
 def add_comment():
     data = request.json
     form = CommentForm(obj=data)
@@ -317,6 +343,7 @@ def add_comment():
 
 
 @app_routes.route("/messages/comment/delete", methods=["POST"])
+@login_required
 def delete_comment():
     if request.json:
         comment_id = request.json["comment_id"]
@@ -337,6 +364,7 @@ def delete_comment():
 
 
 @app_routes.route("/messages/delete/<int:msg_id>", methods=["POST"])
+@login_required
 def delete_show_message(msg_id):
     if msg_id:
         message = db.get_or_404(Message, msg_id)
@@ -348,6 +376,7 @@ def delete_show_message(msg_id):
 
 
 @app_routes.route("/messages/delete", methods=["POST"])
+@login_required
 def delete_message():
     if request.json:
         message_id = request.json["message_id"]
@@ -360,6 +389,7 @@ def delete_message():
 
 
 @app_routes.route("/messages/like/", methods=["POST"])
+@login_required
 def like_message():
     if request.json:
         message_id = request.json["message_id"]
@@ -375,6 +405,7 @@ def like_message():
 
 
 @app_routes.route("/messages/repost", methods=["POST"])
+@login_required
 def respost_message():
     if request.json:
         message = db.get_or_404(Message, request.json["message_id"])
