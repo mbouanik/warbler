@@ -331,15 +331,15 @@ nav {
   border-radius: 0.3rem;
 }
 textarea {
-  border: none;
-  width: 100%;
-  padding: 1rem;
-  border-radius: 0.3rem;
+  /* border: none; */
+  /* width: 100%; */
+  /* padding: 1rem; */
+  /* border-radius: 0.3rem; */
 }
 textarea:focus {
-  outine: none !important;
-  border: 0 solid red;
-  box-shadow: 0 0 0 black;
+  /* outine: none !important; */
+  /* border: 0 solid red; */
+  /* box-shadow: 0 0 0 black; */
 }
 
 #the-count {
@@ -352,7 +352,7 @@ textarea:focus {
   border-bottom-left-radius: 0.3rem;
   border-bottom-right-radius: 0.3rem;
   border: none;
-  /* margin-top: 0.3rem; */
+  margin-top: 0.3rem;
 }
 #the-count button {
   padding-left: 1rem;
@@ -670,7 +670,10 @@ h1 {
   .nav-left-side {
     /* display: flex; */
     bottom: 0;
+    /* flex-direction: row; */
     /* right: 0; */
+    /* justify-content: centerr */
+    justify-content: space-evenly;
     /* left: 0; */
     /* width: 100vw; */
     height: 4rem;
@@ -691,7 +694,8 @@ h1 {
   }
   .nav-list-bottom {
     display: flex;
-    flex-direction: row;
+    /* flex-direction: row; */
+    flex-flow: row nowrap;
     /* align-items: center; */
     justify-content: space-between;
 
@@ -699,7 +703,8 @@ h1 {
     /* justify-content: space-evenly; */
     /* justify-content: center; */
     font-size: 1.5rem;
-    margin-left: -2rem;
+    margin-top: -1rem;
+    /* margin-left: -2rem; */
     /* gap: 1rem; */
   }
   /* .nav { */

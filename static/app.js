@@ -156,8 +156,13 @@ function forms_list_follow(evt) {
       if (msg.children[0].innerText == "Follow") {
         msg.children[0].innerText = "Unfollow";
         res = "Unfollow";
+        msg.children[0].classList.remove("text-primary");
+        msg.children[0].classList.add("text-danger");
       } else {
         msg.children[0].innerText = "Follow";
+        msg.children[0].classList.add("text-primary");
+        msg.children[0].classList.remove("text-danger");
+
         res = "Follow";
       }
     }

@@ -125,9 +125,9 @@ async function post_message(text) {
       </button>
 
       <ul class="dropdown-menu">
-        <li class="dropdown-item">
+        <li class="dropdown-ite text-danger">
           <form id="${data.data.message.id}" class="delete-msg" method="POST">
-            <button class="btn btn-link text-danger">
+            <button class="btn btn-li text-dang">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
           </form>

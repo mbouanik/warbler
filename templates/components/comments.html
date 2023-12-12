@@ -22,10 +22,10 @@
         <i class="fa-solid fa-ellipsis"></i>
       </button>
       <ul class="dropdown-menu">
-        <li class="dropdown-item">
+        <li class="dropdown-ite text-danger">
           {% if comment.user.id == g.user.id %}
           <form id="{{comment.id}}" class="delete-comment" method="POST">
-            <button class="btn btn-link text-danger">
+            <button class="btn btn-lin text-dang">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
           </form>

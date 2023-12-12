@@ -1,6 +1,7 @@
 const forms_list_comments = document.querySelector(".forms-list-comments");
 console.log(forms_list_comments);
 forms_list_comments.addEventListener("submit", (evt) => {
+  evt.preventDefault();
   if (evt.target.classList.contains("follows")) {
     console.log("DOOR", evt.target.id);
     follow_user(parseInt(evt.target.id));
@@ -62,9 +63,27 @@ async function post_comment(evt) {
     comment_icon.classList.add("fa-solid");
   }
   evt.target.children[1].value = "";
+
   const content = `
-  <li id="comment${data.data.comment.id}" class="list-group-item">
-    <div class="m">
+<li id="comment${data.data.comment.id}" class="list-group-item">
+  <div class="top-message">
+    <div class="message">
+      <a class="" href="/users/${data.data.user.id}">
+        <img src="${data.data.user.image_url}" alt="" class="timeline-image" />
+      </a>
+      <div class="message-area">
+        <a href="/users/${data.data.user.id}">@${data.data.user.username}</a>
+ <span class="text-muted">${new Date(
+   data.data.comment.timestamp,
+ ).toLocaleDateString("en-US", {
+   month: "short",
+   day: "numeric",
+   year: "numeric",
+ })}</span>
+              <p>${data.data.comment.text}</p>
+      </div>
+    </div>
+    <div class="">
       <button
         type="button"
         class="btn btn-sm"
@@ -73,35 +92,21 @@ async function post_comment(evt) {
       >
         <i class="fa-solid fa-ellipsis"></i>
       </button>
-
       <ul class="dropdown-menu">
-        <li class="dropdown-item">
-          <form id="${data.data.comment.id}" class="delete-comment" 
-            method="POST">
-            <button class="btn btn-link text-muted">Delete</button>
+        <li class="dropdown-ite text-danger">
+          <form id="${
+            data.data.comment.id
+          }" class="delete-comment" method="POST">
+            <button class="btn btn-lin text-dang">
+              <i class="fa-solid fa-trash"></i> Delete
+            </button>
           </form>
         </li>
       </ul>
     </div>
-    <div class="message">
-      <a class="" href="/users/${data.data.user.id}">
-        <img src="${data.data.user.image_url}" alt="" class="timeline-image" />
-      </a>
-      <div class="message-area">
-        <a href="/users/${data.data.user.id}">@${data.data.user.username}</a>
-        <span class="text-muted">${new Date(
-          data.data.comment.timestamp,
-        ).toLocaleDateString("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-        })}</span>
-        <p>${data.data.comment.text}</p>
-      </div>
-    </div>
-  </li>
-  
-  `;
+  </div>
+
+`;
   const template = document.createElement("template");
 
   template.innerHTML = content;
