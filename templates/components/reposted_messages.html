@@ -36,22 +36,22 @@
       </button>
 
       <ul class="dropdown-menu">
-        <li class="dropdown-item">
+        <li class="dropdown-ite text-dange">
           {% if msg.user.id == g.user.id %}
           <form id="{{msg.id}}" class="delete-msg" method="POST">
-            <button class="btn btn-link text-danger">
+            <button class="btn btn-lin text-danger">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
           </form>
           {% endif %}
         </li>
-        <li class="dropdown-item">
+        <li class="dropdown-ite">
           {% if msg.user.id != g.user.id %}
           <form id="{{msg.user.id}}" class="follows" method="POST">
             {% if msg.user in g.user.following %}
-            <button class="btn btn-link text-muted">Unfollow</button>
+            <button class="btn btn-lin text-danger">Unfollow</button>
             {% else %}
-            <button class="btn btn-link text-muted">Follow</button>
+            <button class="btn btn-lin text-primary">Follow</button>
             {% endif %}
           </form>
           {% endif %}

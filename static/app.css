@@ -274,6 +274,7 @@ nav {
 .display-follow {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 .follow-grid {
   display: flex;
@@ -315,7 +316,7 @@ nav {
   /* display: flex; */
   /* justify-content: space-evenly; */
   color: white;
-  /* margin-top: 2rem; */
+  margin-top: 2rem;
   background-color: #318ce7;
   padding: 0.3rem 3rem 0.3rem 3rem;
 }
@@ -762,8 +763,8 @@ h1 {
     padding: 0;
     margin: 0;
   }
-  .li0logo {
-    display: none;
+  .li-logo {
+    /* display: none; */
   }
   /* .grid-card { */
   /*   display: flex; */

@@ -14,7 +14,10 @@ forms_list_comments.addEventListener("submit", (evt) => {
     comment_icon.innerText = ` ${parseInt(comment_icon.innerText) - 1}`;
   }
 });
-
+delete_msg = document.querySelector(".delete-msg");
+delete_msg.addEventListener("submit", (evt) => {
+  console.log("LOOK OVER HERE");
+});
 async function delete_comment(comment_id, message_id) {
   data = {
     comment_id: comment_id,
@@ -93,11 +96,11 @@ async function post_comment(evt) {
         <i class="fa-solid fa-ellipsis"></i>
       </button>
       <ul class="dropdown-menu">
-        <li class="dropdown-ite text-danger">
+        <li class="dropdown-ite">
           <form id="${
             data.data.comment.id
           }" class="delete-comment" method="POST">
-            <button class="btn btn-lin text-dang">
+            <button class="btn btn-link text-danger">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
           </form>

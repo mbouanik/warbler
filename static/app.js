@@ -2,29 +2,37 @@ const forms_list = document.querySelector(".forms-list");
 console.log(forms_list);
 const header_follow_form = document.querySelector(".header-follow-form");
 forms_list.addEventListener("submit", (evt) => {
-  evt.preventDefault();
   if (evt.target.classList.contains("follows")) {
+    evt.preventDefault();
+
     console.log("DOOR", evt.target.id);
     follow_user(parseInt(evt.target.id));
     // follow_form(evt);
     forms_list_follow(evt);
   } else if (evt.target.classList.contains("follows-btn")) {
+    evt.preventDefault();
     follow_user(parseInt(evt.target.id));
     follow_form(evt.target);
   } else if (evt.target.classList.contains("delete-msg")) {
-    console.log("MOUNTAIN", evt.target.id);
-    delete_msg(parseInt(evt.target.id));
-    stat_msg = document.querySelector(".stat-msg");
-    if (stat_msg) {
-      stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
+    if (window.location.pathname != `/messages/${evt.target.id}`) {
+      evt.preventDefault();
+      console.log("MOUNTAIN", evt.target.id);
+      delete_msg(parseInt(evt.target.id));
+      stat_msg = document.querySelector(".stat-msg");
+      if (stat_msg) {
+        stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
+      }
+      const msg = document.querySelector(`#msg${evt.target.id}`);
+      msg.remove();
     }
-    const msg = document.querySelector(`#msg${evt.target.id}`);
-    msg.remove();
+    console.log(window.location.pathname);
   } else if (evt.target.classList.contains("like-form")) {
+    evt.preventDefault();
     console.log("HELLO WORLD ", evt.target.id);
     like_msg(parseInt(evt.target.id));
     like_form(evt);
   } else if (evt.target.classList.contains("repost-form")) {
+    evt.preventDefault();
     repost(parseInt(evt.target.id));
     repost_form(evt);
   }
