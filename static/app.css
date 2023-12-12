@@ -389,7 +389,17 @@ textarea:focus {
   margin-bottom: 2rem;
   /* box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.5); */
 }
-
+.authenticate button {
+  width: 6rem;
+}
+.search-modal {
+  /* padding: 2rem; */
+  padding-top: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-top: 2rem;
+  /* width: 100vw; */
+}
 .authenticate-form {
   /* border: 0.rrem solid #c4e0e5; */
   box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem rgba(0, 0, 200, 0.5);
