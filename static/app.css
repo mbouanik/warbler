@@ -564,6 +564,10 @@ h1 {
   display: none;
 }
 @media (max-width: 900px) {
+  .nav-link:hover {
+    background-color: transparent;
+    color: white;
+  }
   .top-search-btn {
     display: block;
   }
@@ -702,6 +706,8 @@ h1 {
     /* align-items: center; */
     justify-content: space-between;
 
+    padding-left: 1rem;
+    padding-right: 1rem;
     /* padding: 1rem; */
     /* justify-content: space-evenly; */
     /* justify-content: center; */
