@@ -1,15 +1,17 @@
 <li id="msg{{msg.id}}" class="list-group-item">
   <div class="top-message">
     <div class="message">
-      <a class="" href="/users/{{ msg.user.id }}">
-        <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
-      </a>
+      <div>
+        <a class="" href="/users/{{ msg.user.id }}">
+          <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
+        </a>
+      </div>
       <div class="message-area">
         <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-        <span class="text-muted"
-          >{{ msg.timestamp.strftime('%b %-d, %Y') }}</span
+        <span class="text-muted">
+          {{ msg.timestamp.strftime('%br%-d, %Y') }}</span
         >
-        <p>{{ msg.text }}</p>
+        <div>{{ msg.text }}</div>
       </div>
     </div>
     <div class="">
@@ -50,7 +52,7 @@
       </ul>
     </div>
   </div>
-  <hr class="hr-message" />
+  <!-- <hr class="hr-message" /> -->
   <div id="msg{{msg.id}}" class="like-btn">
     <div class="interaction">
       <form id="{{msg.id}}" class="like-form" method="POST">

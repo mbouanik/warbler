@@ -28,7 +28,7 @@
         <span class="text-muted"
           >{{ msg.message.timestamp.strftime('%b %-d, %Y') }}</span
         >
-        <p>{{ msg.message.text }}</p>
+        <div>{{ msg.message.text }}</div>
       </div>
     </div>
     <div class="">
@@ -68,7 +68,7 @@
       </ul>
     </div>
   </div>
-  <hr class="hr-message" />
+  <!-- <hr class="hr-message" /> -->
   <div id="msg{{msg.message.id}}" class="like-btn">
     <div class="interaction">
       <form id="{{msg.message.id}}" class="like-form" method="POST">
