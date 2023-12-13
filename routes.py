@@ -144,8 +144,28 @@ def show_user_profile(user_id):
         )
         .order_by(db.desc("timestamp"))
     ).scalars()
+    repost_id = [message.id for message in g.user.reposted]
 
+    print(repost_id)
     messages = [db.get_or_404(Message, id) for id in all_messages_id]
+    msgs = []
+    for msg in messages:
+        if msg.id in repost_id:
+            msgs.append(
+                {
+                    "message": msg,
+                    "original": False,
+                }
+            )
+            repost_id.remove(msg.id)
+        else:
+            msgs.append(
+                {
+                    "message": msg,
+                    "original": True,
+                }
+            )
+
     form = MessageForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
@@ -159,6 +179,7 @@ def show_user_profile(user_id):
         form=form,
         messages=messages,
         edit_form=edit_form,
+        msgs=msgs,
     )
 
 

@@ -1,5 +1,5 @@
-<li id="msg{{msg.id}}" class="list-group-item">
-  {% if msg in user.reposted %}
+<li id="msg{{msg.message.id}}" class="list-group-item">
+  {% if not msg.original %}
   <div class="repost-message">
     {% if user.id == g.user.id %}
     <small style="position: absolute"
@@ -14,15 +14,21 @@
   {%endif %}
   <div class="top-message">
     <div class="message">
-      <a class="" href="/users/{{ msg.user.id }}">
-        <img src="{{ msg.user.image_url }}" alt="" class="timeline-image" />
+      <a class="" href="/users/{{ msg.message.user.id }}">
+        <img
+          src="{{ msg.message.user.image_url }}"
+          alt=""
+          class="timeline-image"
+        />
       </a>
       <div class="message-area">
-        <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
-        <span class="text-muted"
-          >{{ msg.timestamp.strftime('%b %-d, %Y') }}</span
+        <a href="/users/{{ msg.message.user.id }}"
+          >@{{ msg.message.user.username }}</a
         >
-        <p>{{ msg.text }}</p>
+        <span class="text-muted"
+          >{{ msg.message.timestamp.strftime('%b %-d, %Y') }}</span
+        >
+        <p>{{ msg.message.text }}</p>
       </div>
     </div>
     <div class="">
@@ -37,8 +43,8 @@
 
       <ul class="dropdown-menu">
         <li class="dropdown-ite text-dange">
-          {% if msg.user.id == g.user.id %}
-          <form id="{{msg.id}}" class="delete-msg" method="POST">
+          {% if msg.message.user.id == g.user.id %}
+          <form id="{{msg.message.id}}" class="delete-msg" method="POST">
             <button class="btn btn-lin text-danger">
               <i class="fa-solid fa-trash"></i> Delete
             </button>
@@ -46,9 +52,9 @@
           {% endif %}
         </li>
         <li class="dropdown-ite">
-          {% if msg.user.id != g.user.id %}
-          <form id="{{msg.user.id}}" class="follows" method="POST">
-            {% if msg.user in g.user.following %}
+          {% if msg.message.user.id != g.user.id %}
+          <form id="{{msg.message.user.id}}" class="follows" method="POST">
+            {% if msg.message.user in g.user.following %}
             <button class="btn btn-lin text-danger">Unfollow</button>
             {% else %}
             <button class="btn btn-lin text-primary">Follow</button>
@@ -60,48 +66,65 @@
     </div>
   </div>
   <hr class="hr-message" />
-  <div id="msg{{msg.id}}" class="like-btn">
+  <div id="msg{{msg.message.id}}" class="like-btn">
     <div class="interaction">
-      <form id="{{msg.id}}" class="like-form" method="POST">
+      <form id="{{msg.message.id}}" class="like-form" method="POST">
         <button class="btn">
-          {% if msg in g.user.likes %}
-          <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked">
-            <small id="likes_count"> {{ msg.users | length }} </small>
+          {% if msg.message in g.user.likes %}
+          <i
+            id="like_icon{{msg.message.id}}"
+            class="fa-solid fa-thumbs-up liked"
+          >
+            <small id="likes_count"> {{ msg.message.users | length }} </small>
           </i>
           {% else %}
-          <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked">
-            <small id="likes_count"> {{ msg.users | length }} </small>
+          <i
+            id="like_icon{{msg.message.id}}"
+            class="fa-regular fa-thumbs-up not-liked"
+          >
+            <small id="likes_count"> {{ msg.message.users | length }} </small>
           </i>
           {% endif %}
         </button>
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/{{ msg.id }}">
-        {% if msg in g.user.comments %}
+      <a class="btn primary" href="/messages/{{ msg.message.id }}">
+        {% if msg.message in g.user.comments %}
         <i class="fa-sharp fa-solid fa-comments liked">
-          <small id="comments_count"> {{ msg.comments | length }} </small>
+          <small id="comments_count">
+            {{ msg.message.comments | length }}
+          </small>
         </i>
         {% else %}
         <i class="fa-sharp fa-regular fa-comments not-commented">
-          <small id="comments_count"> {{ msg.comments | length }} </small>
+          <small id="comments_count">
+            {{ msg.message.comments | length }}
+          </small>
         </i>
         {% endif %}
       </a>
     </div>
     <div class="interaction">
-      <form id="{{msg.id}}" class="repost-form" method="POST">
+      <form id="{{msg.message.id}}" class="repost-form" method="POST">
         <button class="btn">
-          {% if msg in g.user.reposted %}
-          <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted">
-            <small id="repost_count"> {{ msg.reposted | length }} </small>
+          {% if msg.message in g.user.reposted %}
+          <i
+            id="repost_icon{{msg.message.id}}"
+            class="fa-solid fa-retweet reposted"
+          >
+            <small id="repost_count">
+              {{ msg.message.reposted | length }}
+            </small>
           </i>
           {% else %}
           <i
-            id="repost_icon{{msg.id}}"
+            id="repost_icon{{msg.message.id}}"
             class="fa-solid fa-retweet not-reposted"
           >
-            <small id="repost_count"> {{ msg.reposted | length }} </small>
+            <small id="repost_count">
+              {{ msg.message.reposted | length }}
+            </small>
           </i>
           {% endif %}
         </button>
