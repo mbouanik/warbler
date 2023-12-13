@@ -24,22 +24,21 @@
                 {{field.label(for="floatingInput") }}
             </div>
             {% endfor %}
-            <div class="d-grid gap-1 col-3 mx-auto">
+            <div class="edit-form">
                 <button class="btn btn-primary ">Save</button>
                 <button
-            type="button"
-            class="btn btn-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#delete_profile"
-          >
-            Delete
-          </button>
-
+                    type="button"
+                    class="btn btn-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#delete_profile"
+                >
+                    Delete
+                </button>
             </div>
         </form>
-            </div>
+    </div>
 </div>
-{% include "components/modal_delete_profile.html" %}
+    {% include "components/modal_delete_profile.html" %}
 
 
 

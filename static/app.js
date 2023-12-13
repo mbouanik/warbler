@@ -106,7 +106,7 @@ function follow_form(evt) {
   }
   const stat_following = document.querySelector(".stat-following");
   const user_id = document.querySelector(".logout");
-  // console.log(stat_following.attributes[0].value);
+  // console.log(stat_following.attributes);
   if (
     stat_following &&
     stat_following.attributes.id.value == user_id.attributes.id.value

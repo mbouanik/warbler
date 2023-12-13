@@ -56,6 +56,23 @@ nav {
   /* height: 100vhr */
   /* padding: 1rem; */
 }
+.stats a {
+  display: flex;
+  gap: 0.1rem;
+
+  /* padding-left: 1rem; */
+  /* width: 1.5rem; */
+  /* float: right; */
+}
+.edit-form {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding: 1remr;
+}
+.edit-form button {
+  width: 6rem;
+}
 .profile-menu-top {
   display: none;
 }
