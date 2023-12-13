@@ -401,8 +401,8 @@ textarea:focus {
   /* width: 100vw; */
 }
 .authenticate-form {
-  /* border: 0.rrem solid #c4e0e5; */
-  box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem rgba(0, 0, 200, 0.5);
+  border: 0.1rem solid #c4e0e5;
+  /* box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem rgba(0, 0, 200, 0.5); */
   background-color: #7cb9e8;
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
