@@ -1,6 +1,3 @@
-<!-- Button trigger modal -->
-
-<!-- Modal -->
 <div
   class="modal fade"
   id="delete_msg"
@@ -21,8 +18,8 @@
       </div>
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
-        id="{{msg.id}}"
-        action="/messages/delete/{{msg.id}}"
+        id="{{msg.message.id}}"
+        action="/messages/delete/{{msg.message.id}}"
         class="delete-msg"
         method="POST"
       >

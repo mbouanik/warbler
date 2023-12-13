@@ -24,11 +24,14 @@
       <ul class="dropdown-menu">
         <li class="dropdown-ite text-dange">
           {% if comment.user.id == g.user.id %}
-          <form id="{{comment.id}}" class="delete-comment" method="POST">
-            <button class="btn btn-link text-danger">
-              <i class="fa-solid fa-trash"></i> Delete
-            </button>
-          </form>
+          <button
+            type="button"
+            class="btn btn-link text-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#delete_cmt"
+          >
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
           {% endif %}
         </li>
         <li class="dropdown-item">
@@ -45,6 +48,7 @@
       </ul>
     </div>
   </div>
+  {% include "components/modal_delete_comment.html"%}
   <!-- <hr class="hr-message" /> -->
   <!-- <div id="cmt{{comment.id}}" class="like-btn"> -->
   <!--   <div class="interaction"> -->

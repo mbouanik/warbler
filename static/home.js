@@ -126,12 +126,16 @@ async function post_message(text) {
 
       <ul class="dropdown-menu">
         <li class="dropdown-ite ">
-          <form id="${data.data.message.id}" class="delete-msg" method="POST">
-            <button class="btn btn-link text-danger">
-              <i class="fa-solid fa-trash"></i> Delete
-            </button>
-          </form>
-        </li>
+  <button
+            type="button"
+            class="btn btn-link text-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#delete_msg"
+          >
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+
+                 </li>
     </ul>
     </div>
   </div>
@@ -171,6 +175,45 @@ async function post_message(text) {
       </form>
     </div>
   </div>
+<div
+  class="modal fade"
+  id="delete_msg"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="delete_msg">Modal title</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are You sure you want to delete this post?</div>
+      <form
+        id="${data.data.message.id}"
+        action="/messages/delete/${data.data.message.id}}"
+        class="delete-msg"
+        method="POST"
+      >
+        <div class="modal-footer">
+          <button class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 </li>
 `;
   const template = document.createElement("template");

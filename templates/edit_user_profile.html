@@ -26,16 +26,20 @@
             {% endfor %}
             <div class="d-grid gap-1 col-3 mx-auto">
                 <button class="btn btn-primary ">Save</button>
-                <form class="mb-3" action="/users/{{g.user.id}}/delete" method="POST">
-            <button class="btn btn-danger">Delete</button>
-        </form>
-
+                <button
+            type="button"
+            class="btn btn-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#delete_profile"
+          >
+            Delete
+          </button>
 
             </div>
         </form>
             </div>
 </div>
-
+{% include "components/modal_delete_profile.html" %}
 
 
 

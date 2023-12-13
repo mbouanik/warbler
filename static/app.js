@@ -14,6 +14,7 @@ forms_list.addEventListener("submit", (evt) => {
     follow_user(parseInt(evt.target.id));
     follow_form(evt.target);
   } else if (evt.target.classList.contains("delete-msg")) {
+    // confirm("Are you sure to delete this post?");
     if (window.location.pathname != `/messages/${evt.target.id}`) {
       evt.preventDefault();
       console.log("MOUNTAIN", evt.target.id);

@@ -25,16 +25,15 @@
       <ul class="dropdown-menu">
         <li class="dropdown-ite text-dange">
           {% if msg.user.id == g.user.id %}
-          <form
-            id="{{msg.id}}"
-            action="/messages/delete/{{msg.id}}"
-            class="delete-msg"
-            method="POST"
+          <button
+            type="button"
+            class="btn btn-link text-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#delete_msg"
           >
-            <button class="btn btn-link text-danger">
-              <i class="fa-solid fa-trash"></i> Delete
-            </button>
-          </form>
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+
           {% endif %}
         </li>
         <li class="dropdown-itr text-primary">
@@ -106,4 +105,5 @@
       </form>
     </div>
   </div>
+  {% include "components/modal_delete_msg.html" %}
 </li>
