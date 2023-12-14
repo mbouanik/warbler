@@ -17,7 +17,7 @@ async function post_message(text) {
     csrf_token: document.querySelector("#csrf_token").value,
   };
 
-  const data = await axios.post("/messages/", d);
+  const data = await axios.post("/messages", d);
   // console.log(data.data.user);
   // user = data.data.user;
   // console.log(user);
@@ -111,7 +111,7 @@ async function post_message(text) {
          })}</span>
 
 
-        <p>${data.data.message.text}</p>
+        <div>${data.data.message.text}</div>
       </div>
     </div>
     <div class="">
@@ -139,7 +139,6 @@ async function post_message(text) {
     </ul>
     </div>
   </div>
-  <hr class="hr-message" />
   <div id="msg${data.data.message.id}" class="like-btn">
     <div class="interaction">
       <form id="${data.data.message.id}" class="like-form" method="POST">

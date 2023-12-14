@@ -94,6 +94,38 @@ def home():
     return redirect(url_for("app_routes.authenticate"))
 
 
+@app_routes.route("/login", methods=["GET", "POST"])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.authenticate(
+            username=form.username.data, password=form.password.data
+        )
+        if user:
+            do_login(user.id)
+
+        return redirect(url_for("app_routes.home"))
+    return render_template("login.html", form=form)
+
+
+@app_routes.route("/signup", methods=["GET", "POST"])
+def signup():
+    signup_form = UserForm()
+
+    if signup_form and signup_form.validate_on_submit():
+        user = User.sign_up(
+            username=signup_form.username.data,
+            email=signup_form.email.data,
+            password=signup_form.password.data,
+            image_url=signup_form.image_url.data,
+        )
+        db.session.add(user)
+        db.session.commit()
+        do_login(user.id)
+        return redirect(url_for("app_routes.home"))
+    return render_template("signup.html", form=signup_form)
+
+
 @app_routes.route("/authenticate", methods=["GET", "POST"])
 def authenticate():
     signup_form = UserForm()
@@ -146,7 +178,6 @@ def show_user_profile(user_id):
     ).scalars()
     repost_id = [message.id for message in g.user.reposted]
 
-    print(repost_id)
     messages = [db.get_or_404(Message, id) for id in all_messages_id]
     msgs = []
     for msg in messages:
@@ -231,11 +262,9 @@ def follow_user():
         follow_id = request.json["follow_id"]
         user = db.get_or_404(User, follow_id)
         if user in g.user.following:
-            print("unfollow")
             g.user.following.remove(user)
         else:
             g.user.following.append(user)
-            print("follow")
         db.session.commit()
         return jsonify(response={"response": 200})
     return jsonify(response={"response": "failed"})
@@ -283,11 +312,10 @@ def show_user_followers(user_id):
     )
 
 
-@app_routes.route("/messages/", methods=["POST"])
+@app_routes.route("/messages", methods=["POST"])
 @login_required
 def add_post():
     data = request.json
-    print(data)
     form = MessageForm(obj=data)
     if form.validate():
         message = Message()
@@ -412,19 +440,17 @@ def delete_message():
     return jsonify(response={"data": 200})
 
 
-@app_routes.route("/messages/like/", methods=["POST"])
+@app_routes.route("/messages/like", methods=["POST"])
 @login_required
 def like_message():
     if request.json:
         message_id = request.json["message_id"]
         message = db.get_or_404(Message, int(message_id))
-        print(g.user.likes)
         if message in g.user.likes:
             g.user.likes.remove(message)
         else:
             g.user.likes.append(message)
     db.session.commit()
-    print(g.user.likes)
     return jsonify(response={"response": 200})
 
 
