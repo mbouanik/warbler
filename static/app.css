@@ -9,14 +9,8 @@ body {
 .logo {
   display: flex;
   flex-direction: column;
-  /* justify-content: center;  */
   flex-flow: column wrap;
   padding-lefr: 1rem;
-  /* margin-top: -1.5rem; */
-  /* height: 3rem; */
-  /* width: 3rem; */
-  /* margin-bottom: -4rem; */
-  /* margin-top: 12rem; */
 }
 .message-area {
   /* margin-top: -0.3rem; */
