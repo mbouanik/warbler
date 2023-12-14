@@ -76,7 +76,7 @@ def home():
 
         messages = (
             db.session.execute(
-                db.select(Message).order_by(Message.timestamp.desc()).limit(100)
+                db.select(Message).order_by(Message.timestamp.desc()).limit(20)
             )
             .scalars()
             .all()
