@@ -1,4 +1,6 @@
 from operator import index
+from os import remove
+import re
 from flask import (
     Blueprint,
     flash,
@@ -10,7 +12,6 @@ from flask import (
     g,
     request,
 )
-from werkzeug.wrappers import response
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
@@ -177,8 +178,9 @@ def show_user_profile(user_id):
             .where(Repost.user_id == user_id)
         )
         .order_by(db.desc("timestamp"))
+        .limit(5)
     ).scalars()
-    repost_id = [message.id for message in g.user.reposted]
+    repost_id = [message.id for message in user.reposted]
 
     messages = [db.get_or_404(Message, id) for id in all_messages_id]
     msgs = []
@@ -316,13 +318,16 @@ def show_user_followers(user_id):
 
 @app_routes.route("/load-message", methods=["GET", "POST"])
 def load_more_msg():
+    offset = 10
     if request.json:
         index = request.json["index"]
+        if index + offset >= len(Message.query.all()):
+            offset = 0
         messages = (
             db.session.execute(
                 db.select(Message)
                 .order_by(Message.timestamp.desc())
-                .slice(index, index + 10)
+                .slice(index, index + offset)
             )
             .scalars()
             .all()
@@ -339,7 +344,7 @@ def load_more_msg():
                 "commented": msg in g.user.comments,
                 "like": msg in g.user.likes,
                 "repost": msg in g.user.reposted,
-                "cnt_cnt": len(msg.comments),
+                "cmt_cnt": len(msg.comments),
                 "likes_cnt": len(msg.users),
                 "repost_cnt": len(msg.reposted),
                 "guser": g.user.id,
@@ -347,6 +352,63 @@ def load_more_msg():
             }
             for msg in messages
         ]
+        print(all_msg)
+        return jsonify(all_msg)
+    return jsonify(response={"ok": 200})
+
+
+@app_routes.route("/load-profile-msg", methods=["POST"])
+def load_more_profiel_msg():
+    offset = 10
+    if request.json:
+        index = request.json["index"]
+        user_id = request.json["id"]
+        user = db.get_or_404(User, user_id)
+        if index + offset >= len(
+            db.session.query(Message).filter_by(user_id=user_id).all()
+        ):
+            offset = len(db.session.query(Message).filter_by(user_id=user_id).all())
+        all_messages_id = db.session.execute(
+            db.select(Message.id, Message.timestamp)
+            .where(Message.user_id == user_id)
+            .union(
+                db.select(Message.id, Repost.timestamp)
+                .join(Repost)
+                .where(Repost.user_id == user_id)
+            )
+            .order_by(db.desc("timestamp"))
+            .slice(index, index + offset)
+        ).scalars()
+        repost_id = [message.id for message in user.reposted]
+
+        messages = [db.get_or_404(Message, id) for id in all_messages_id]
+
+        all_msg = []
+        for msg in messages:
+            all_msg.append(
+                {
+                    "id": msg.id,
+                    "text": msg.text,
+                    "timestamp": msg.timestamp,
+                    "user_id": msg.user_id,
+                    "image_url": msg.user.image_url,
+                    "username": msg.user.username,
+                    "commented": msg in g.user.comments,
+                    "like": msg in g.user.likes,
+                    "repost": msg in g.user.reposted,
+                    "cmt_cnt": len(msg.comments),
+                    "likes_cnt": len(msg.users),
+                    "repost_cnt": len(msg.reposted),
+                    "guser": g.user.id,
+                    "follow": msg.user in g.user.following,
+                    "not_original": msg.id in repost_id,
+                    "page": user_id == g.user.id,
+                    "page_username": user.username,
+                }
+            )
+            if msg.id in repost_id:
+                repost_id.remove(msg.id)
+
         print(all_msg)
         return jsonify(all_msg)
     return jsonify(response={"ok": 200})

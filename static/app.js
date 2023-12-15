@@ -271,16 +271,16 @@ text_post_form.addEventListener("keyup", (evt) => {
 //   // searchbar.style.removePropety("position");
 // });
 
-async function load_more() {
-  res = await axios
-    .post("/load-message", (data = { index: forms_list.children.length }))
-    .then((response) => {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-}
+// async function load_more() {
+//   res = await axios
+//     .post("/load-message", (data = { index: forms_list.children.length }))
+//     .then((response) => {
+//       console.log(response);
+//     })
+//     .catch(function (error) {
+//       console.log(error);
+//     });
+// }
 function isBottom() {
   // Get the current scroll position
   const scrollY = window.scrollY || window.pageYOffset;
@@ -292,147 +292,5 @@ function isBottom() {
   const viewportHeight = window.innerHeight;
 
   // Check if we are near the bottom (you can adjust the "10" for a different threshold)
-  return scrollY + viewportHeight >= totalHeight - 10;
+  return scrollY + viewportHeight == totalHeight;
 }
-
-async function trackScroll() {
-  if (isBottom()) {
-    console.log("You reached the bottom of the page!");
-    // load_more();
-    res = await axios.post(
-      "/load-message",
-      (data = { index: forms_list.children.length }),
-    );
-
-    console.log(res.data);
-    // Perform your action here, such as loading more content
-    for (msg of res.data) {
-      const message = `
-<li id="msg${msg.id}" class="list-group-item">
-  <div class="top-message">
-    <div class="message">
-      <div>
-        <a class="" href="/users/${msg.user_id}">
-          <img src="${msg.image_url}" alt="" class="timeline-image" />
-        </a>
-      </div>
-      <div class="message-area">
-        <a href="/users/${msg.user_id}">@${msg.username}</a>
-         <span class="text-muted">${new Date(msg.timestamp).toLocaleDateString(
-           "en-US",
-           {
-             month: "short",
-             day: "numeric",
-             year: "numeric",
-           },
-         )}</span>
-
-    <div>${msg.text}</div>
-      </div>
-    </div>
-    <div class="">
-      <button
-        type="button"
-        class="btn btn-sm"
-        data-bs-toggle="dropdown"
-        aria-expanded="false"
-      >
-        <i class="fa-solid fa-ellipsis"></i>
-      </button>
-
-      <ul class="dropdown-menu">
-        <li class="dropdown-ite text-dange">
-          {% if msg.user.id == g.user.id %}
-          <button
-            type="button"
-            class="btn btn-link text-danger"
-            data-bs-toggle="modal"
-            data-bs-target="#delete_msg"
-          >
-            <i class="fa-solid fa-trash"></i> Delete
-          </button>
-
-          {% endif %}
-        </li>
-        <li class="dropdown-itr text-primary">
-          {% if msg.user.id != g.user.id %}
-          <form id="{{msg.user.id}}" class="follows" method="POST">
-            {% if msg.user in g.user.following %}
-            <button class="btn btn-link text-danger">Unfollow</button>
-            {% else %}
-            <button class="btn btn-link text-mut">Follow</button>
-            {% endif %}
-          </form>
-          {% endif %}
-        </li>
-      </ul>
-    </div>
-  </div>
-  <!-- <hr class="hr-message" /> -->
-  <div id="msg{{msg.id}}" class="like-btn">
-    <div class="interaction">
-      <form id="{{msg.id}}" class="like-form" method="POST">
-        <button class="btn">
-          {% if msg in g.user.likes %}
-          <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked">
-            {{ msg.users | length }}
-          </i>
-          {% else %}
-          <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked">
-            {{ msg.users | length }}
-          </i>
-          {% endif %}
-        </button>
-      </form>
-    </div>
-    <div class="interaction">
-      <a class="btn primary" href="/messages/{{ msg.id }}">
-        {% if msg in g.user.comments %}
-        <i
-          id="comment_icon{{msg.id}}"
-          class="fa-sharp fa-solid fa-comments liked cmt"
-        >
-          {{ msg.comments | length }}
-        </i>
-        {% else %}
-        <i
-          id="comment_icon{{msg.id}}"
-          class="fa-sharp fa-regular fa-comments not-commented cmt"
-        >
-          {{ msg.comments | length }}
-        </i>
-        {% endif %}
-      </a>
-    </div>
-    <div class="interaction">
-      <form id="{{msg.id}}" class="repost-form" method="POST">
-        <button class="btn">
-          {% if msg in g.user.reposted %}
-          <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted">
-            {{ msg.reposted | length }}
-          </i>
-          {% else %}
-          <i
-            id="repost_icon{{msg.id}}"
-            class="fa-solid fa-retweet not-reposted"
-          >
-            {{ msg.reposted | length }}
-          </i>
-          {% endif %}
-        </button>
-      </form>
-    </div>
-  </div>
-  {% include "components/modal_delete_msg.html" %}
-</li>
-`;
-      const template = document.createElement("template");
-      template.innerHTML = message;
-      const t = template.content;
-      forms_list.append(t);
-    }
-  }
-}
-
-// Attach scroll event listener
-window.addEventListener("scroll", trackScroll);
