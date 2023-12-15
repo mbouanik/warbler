@@ -1,3 +1,4 @@
+from operator import index
 from flask import (
     Blueprint,
     flash,
@@ -9,6 +10,7 @@ from flask import (
     g,
     request,
 )
+from werkzeug.wrappers import response
 from init import db
 from models import Comment, Repost, User, Message
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
@@ -142,7 +144,7 @@ def authenticate():
         db.session.commit()
         do_login(user.id)
         return redirect(url_for("app_routes.home"))
-    elif login_form.validate_on_submit():
+    elif login_form and login_form.validate_on_submit():
         user = User.authenticate(
             username=login_form.username.data, password=login_form.password.data
         )
@@ -310,6 +312,44 @@ def show_user_followers(user_id):
         edit_form=edit_form,
         follows=user.followers,
     )
+
+
+@app_routes.route("/load-message", methods=["GET", "POST"])
+def load_more_msg():
+    if request.json:
+        index = request.json["index"]
+        messages = (
+            db.session.execute(
+                db.select(Message)
+                .order_by(Message.timestamp.desc())
+                .slice(index, index + 10)
+            )
+            .scalars()
+            .all()
+        )
+
+        all_msg = [
+            {
+                "id": msg.id,
+                "text": msg.text,
+                "timestamp": msg.timestamp,
+                "user_id": msg.user_id,
+                "image_url": msg.user.image_url,
+                "username": msg.user.username,
+                "commented": msg in g.user.comments,
+                "like": msg in g.user.likes,
+                "repost": msg in g.user.reposted,
+                "cnt_cnt": len(msg.comments),
+                "likes_cnt": len(msg.users),
+                "repost_cnt": len(msg.reposted),
+                "guser": g.user.id,
+                "follow": msg.user in g.user.following,
+            }
+            for msg in messages
+        ]
+        print(all_msg)
+        return jsonify(all_msg)
+    return jsonify(response={"ok": 200})
 
 
 @app_routes.route("/messages", methods=["POST"])

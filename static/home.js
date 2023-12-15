@@ -18,82 +18,6 @@ async function post_message(text) {
   };
 
   const data = await axios.post("/messages", d);
-  // console.log(data.data.user);
-  // user = data.data.user;
-  // console.log(user);
-
-  // const content = `
-  // <li id="msg${data.data.message.id}" class="list-group-item">
-  //   <div class="m">
-  //     <button
-  //       type="button"
-  //       class="btn btn-sm"
-  //       data-bs-toggle="dropdown"
-  //       aria-expanded="false"
-  //     >
-  //       <i class="fa-solid fa-ellipsis"></i>
-  //     </button>
-  //
-  //     <ul class="dropdown-menu">
-  //       <li class="dropdown-item">
-  //         <form id="${data.data.message.id}" class="delete-msg"
-  //           method="POST">
-  //           <button class="btn btn-link text-muted">Delete</button>
-  //         </form>
-  //       </li>
-  //     </ul>
-  //   </div>
-  //   <div class="message">
-  //     <a class="" href="/users/${data.data.user.id}">
-  //       <img src="${data.data.user.image_url}" alt="" class="timeline-image" />
-  //     </a>
-  //     <div class="message-area">
-  //       <a href="/users/${data.data.user.id}">@${data.data.user.username}</a>
-  //       <span class="text-muted">${new Date(
-  //         data.data.message.timestamp,
-  //       ).toLocaleDateString("en-US", {
-  //         month: "short",
-  //         day: "numeric",
-  //         year: "numeric",
-  //       })}</span>
-  //       <p>${data.data.message.text}</p>
-  //     </div>
-  //   </div>
-  //   <hr class="hr-message" />
-  //   <div id="msg${data.data.message.id}" class="like-btn">
-  //   <div class="interaction">
-  //     <form id="${data.data.message.id}" class="like_form" method="POST">
-  //       <button class="btn">
-  //             <i id="like_icon${
-  //               data.data.message.id
-  //             }" class="fa-regular fa-thumbs-up not-liked">
-  //           0
-  //         </i>
-  //       </button>
-  //     </form>
-  //   </div>
-  //   <div class="interaction">
-  //     <a class="btn primary" href="/messages/${data.data.message.id}">
-  //       <i class="fa-sharp fa-regular fa-comment not-commented">
-  //         <small id="comments_count"> 0 </small>
-  //       </i>
-  //     </a>
-  //   </div>
-  //   <div class="interaction">
-  //     <form id="${data.data.message.id}" class="repost_form" method="POST">
-  //       <button class="btn">
-  //         <i id="repost_icon${
-  //           data.data.message.id
-  //         }" class="fa-solid fa-retweet not-reposted">
-  //           0
-  //         </i>
-  //       </button>
-  //     </form>
-  //   </div>
-  // </div>
-  // </li>
-  //
-  // `;
   const content = `<li id="msg${data.data.message.id}" class="list-group-item">
   <div class="top-message">
     <div class="message">
@@ -109,8 +33,6 @@ async function post_message(text) {
            day: "numeric",
            year: "numeric",
          })}</span>
-
-
         <div>${data.data.message.text}</div>
       </div>
     </div>
