@@ -102,16 +102,6 @@ class Message(db.Model):
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
 
-    def serialize(self):
-        return {
-            "id": self.id,
-            "text": self.text,
-            "user_id": self.user_id,
-            # "likes": len(self.likes),
-            # "comments": len(self.comments),
-            # "reposts": len(self.reposts),
-        }
-
 
 class User(db.Model):
     __tablename__ = "users"

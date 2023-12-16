@@ -1,5 +1,5 @@
 const forms_list = document.querySelector(".forms-list");
-console.log(forms_list);
+// console.log(forms_list);
 const header_follow_form = document.querySelector(".header-follow-form");
 forms_list.addEventListener("submit", (evt) => {
   if (evt.target.classList.contains("follows")) {
@@ -161,7 +161,7 @@ function forms_list_follow(evt) {
   msgs.forEach((msg) => {
     // console.log(msg.attributes.id.value);
     if (msg.attributes.id.value == user_id) {
-      console.log(msg.children[0].innerText);
+      // console.log(msg.children[0].innerText);
       if (msg.children[0].innerText == "Follow") {
         msg.children[0].innerText = "Unfollow";
         res = "Unfollow";
@@ -256,7 +256,7 @@ async function delete_msg(msg_id) {
 }
 
 const text_post_form = document.querySelector("#text_post_form");
-console.log(text_post_form);
+// console.log(text_post_form);
 text_post_form.addEventListener("keyup", (evt) => {
   const current = document.querySelector("#current_post");
   current.innerText = evt.target.value.length;
@@ -281,17 +281,3 @@ text_post_form.addEventListener("keyup", (evt) => {
 //       console.log(error);
 //     });
 // }
-function isBottom() {
-  // Get the current scroll position
-  const scrollY = window.scrollY || window.pageYOffset;
-
-  // Get the total height of the document
-  const totalHeight = document.documentElement.scrollHeight;
-
-  // Get the height of the viewport
-  const viewportHeight = window.innerHeight;
-
-  // Check if we are near the bottom (you can adjust the "10" for a different threshold)
-  // return scrollY + viewportHeight >= totalHeight - 10;
-  return scrollY + viewportHeight == totalHeight;
-}

@@ -155,16 +155,31 @@ if (text_comment_form) {
   });
 }
 
+function isBottom() {
+  // Get the current scroll position
+  const scrollY = window.scrollY || window.pageYOffset;
+
+  // Get the total height of the document
+  const totalHeight = document.documentElement.scrollHeight;
+
+  // Get the height of the viewport
+  const viewportHeight = window.innerHeight;
+
+  // Check if we are near the bottom (you can adjust the "10" for a different threshold)
+  // return scrollY + viewportHeight >= totalHeight - 10;
+  return scrollY + viewportHeight == totalHeight;
+}
+
 async function trackScroll() {
   if (isBottom()) {
-    console.log("You reached the bottom of the page!");
+    // console.log("You reached the bottom of the page!");
     // load_more();
     res = await axios.post(
       "/load-message",
       (data = { index: forms_list.children.length }),
     );
 
-    console.log(res.data);
+    // console.log(res.data);
     // Perform your action here, such as loading more content
     for (msg of res.data) {
       const message = `
