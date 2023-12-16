@@ -54,6 +54,12 @@
               action="/logout"
               method="POST"
             >
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+              />
+
               <button
                 id="{{g.user.id}}"
                 class="logout btn btn-link text-white link-underline-opacity-0"
