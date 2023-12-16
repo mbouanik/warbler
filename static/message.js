@@ -1,29 +1,21 @@
 const forms_list_comments = document.querySelector(".forms-list-comments");
-console.log(forms_list_comments);
 forms_list_comments.addEventListener("submit", (evt) => {
   evt.preventDefault();
   if (evt.target.classList.contains("follows")) {
-    console.log("DOOR", evt.target.id);
     follow_user(parseInt(evt.target.id));
     forms_list_follow(evt);
   } else if (evt.target.classList.contains("delete-comment")) {
-    console.log("COMMENT", evt.target.id);
     delete_comment(parseInt(evt.target.id));
     remove_comment(evt);
     const comment_icon = document.querySelector(".cmt");
     comment_icon.innerText = ` ${parseInt(comment_icon.innerText) - 1}`;
   }
 });
-// delete_msg = document.querySelector(".delete-msg");
-// delete_msg.addEventListener("submit", (evt) => {
-//   console.log("LOOK OVER HERE");
-// });
 async function delete_comment(comment_id, message_id) {
   data = {
     comment_id: comment_id,
   };
   const res = await axios.post("/messages/comment/delete", data);
-  console.log(await res);
   if (res.data.response.commented == false) {
     const comment_icon = document.querySelector(
       `#comment_icon${res.data.response.message_id}`,
@@ -35,7 +27,6 @@ async function delete_comment(comment_id, message_id) {
 }
 
 function remove_comment(evt) {
-  console.log(evt.target.id);
   const comment = document.querySelector(`#comment${evt.target.id}`);
   comment.remove();
 }
@@ -44,7 +35,6 @@ const comment_form = document.querySelector(".post-comment");
 
 comment_form.addEventListener("submit", (evt) => {
   evt.preventDefault();
-  console.log(evt.target.children[1].value);
   post_comment(evt);
 });
 
@@ -59,7 +49,6 @@ async function post_comment(evt) {
   };
   const data = await axios.post(`/messages/comments/add`, d);
   const comment_icon = document.querySelector(`#comment_icon${message_id}`);
-  console.log(comment_icon.innerText);
   comment_icon.innerText = ` ${parseInt(comment_icon.innerText) + 1}`;
   if (!comment_icon.classList.contains("liked")) {
     comment_icon.classList.add("liked");
@@ -183,7 +172,6 @@ function isBottom() {
 
 async function trackScroll() {
   if (isBottom()) {
-    console.log("You reached the bottom of the page!");
     const form = document.querySelector(".post-comment");
     const message_id = parseInt(form.attributes.id.value);
     res = await axios.post(
@@ -194,7 +182,6 @@ async function trackScroll() {
       }),
     );
 
-    // console.log(res.data);
     // Perform your action here, such as loading more content
     for (cmt of res.data) {
       const message = `

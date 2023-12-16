@@ -1,14 +1,13 @@
+const active_menu_btn = document.querySelector(".home");
+active_menu_btn.style.fontWeight = "bold";
+active_menu_btn.style.fontSize = "1.3rem";
 const ul = document.querySelector(".list-group");
 const post_form = document.querySelector("#post-form");
-// console.log(post_form);
 post_form.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   const text = document.querySelector("textarea");
   post_message(text.value);
   text.value = "";
-
-  // stat_msg = document.querySelector(".stat-msg");
-  // stat_msg.innerText = `${parseInt(stat_msg.innerText) + 1}`;
 });
 
 async function post_message(text) {
@@ -172,14 +171,11 @@ function isBottom() {
 
 async function trackScroll() {
   if (isBottom()) {
-    // console.log("You reached the bottom of the page!");
-    // load_more();
     res = await axios.post(
       "/load-message",
       (data = { index: forms_list.children.length }),
     );
 
-    // console.log(res.data);
     // Perform your action here, such as loading more content
     for (msg of res.data) {
       const message = `

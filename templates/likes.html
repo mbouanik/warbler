@@ -4,7 +4,7 @@
     <hr class="text-white">
 <div class="profile-messages-info">
         <ul class="list-group messages forms-list">
-        {% for msg in user.likes [:1]%}
+        {% for msg in user.likes[:10] %}
         {% include "components/messages.html" %}
         {% endfor %}
         </ul>

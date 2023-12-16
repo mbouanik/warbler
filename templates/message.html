@@ -24,7 +24,7 @@
     <hr  class="text-white">
 
     <ul class="list-group messages forms-list-comments">
-        {% for comment in msg.comments[:3] %}
+        {% for comment in msg.comments[:10] %}
         {% include "components/comments.html" %} 
         {% endfor %}
     </ul>

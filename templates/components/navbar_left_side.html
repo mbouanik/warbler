@@ -20,29 +20,38 @@
   <ul class="nav nav-pills flex-colum mb-auto nav-list-bottom">
     {% if g.user %}
     <li class="nav-item">
-      <a href="/" class="nav-link text-white" aria-current="page">
+      <a href="/" class="nav-link text-white home" aria-current="page">
         <i class="fa-solid fa-house"></i> <span class="link-text">Home</span>
       </a>
     </li>
     <li class="nav-item">
-      <a href="/users/{{g.user.id}}" class="nav-link text-white">
+      <a href="/users/{{g.user.id}}" class="nav-link text-white profile">
         <i class="fa-solid fa-user"></i> <span class="link-text">Profile</span>
       </a>
     </li>
     <li class="nav-item">
-      <a href="/users/following/{{g.user.id}}" class="nav-link text-white">
+      <a
+        href="/users/following/{{g.user.id}}"
+        class="nav-link text-white following"
+      >
         <i class="fa-solid fa-user-group"></i>
         <span class="link-text">Following</span>
       </a>
     </li>
     <li class="nav-item">
-      <a href="/users/followers/{{g.user.id}}" class="nav-link text-white">
+      <a
+        href="/users/followers/{{g.user.id}}"
+        class="nav-link text-white followers"
+      >
         <i class="fa-solid fa-users"></i>
         <span class="link-text">Followers</span>
       </a>
     </li>
     <li class="nav-item">
-      <a href="/users/messages/likes/{{g.user.id}}" class="nav-link text-white">
+      <a
+        href="/users/messages/likes/{{g.user.id}}"
+        class="nav-link text-white likes"
+      >
         <i class="fa-solid fa-heart"></i> <span class="link-text">Likes</span>
       </a>
     </li>

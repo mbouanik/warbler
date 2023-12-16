@@ -1,7 +1,8 @@
+const active_menu_btn = document.querySelector(".followers");
+active_menu_btn.style.fontWeight = "bold";
+active_menu_btn.style.fontSize = "1.3rem";
 const card_id = document.querySelector(".card-id");
 const user_id = parseInt(card_id.attributes.id.value);
-// const f = document.querySelector(".forms-list");
-// console.log(f.children.length);
 function isBottom() {
   // Get the current scroll position
   const scrollY = window.scrollY || window.pageYOffset;
@@ -19,14 +20,11 @@ function isBottom() {
 
 async function trackScroll() {
   if (isBottom()) {
-    // console.log("You reached the bottom of the page!");
-    // console.log(forms_list.children.length);
     res = await axios.post(
       "/load-followers-user",
       (data = { index: forms_list.children.length, id: user_id }),
     );
 
-    // console.log(res.data);
     // Perform your action here, such as loading more content
     for (user of res.data) {
       const follow_item = `

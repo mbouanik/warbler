@@ -1,11 +1,9 @@
 const forms_list = document.querySelector(".forms-list");
-// console.log(forms_list);
 const header_follow_form = document.querySelector(".header-follow-form");
 forms_list.addEventListener("submit", (evt) => {
   if (evt.target.classList.contains("follows")) {
     evt.preventDefault();
 
-    console.log("DOOR", evt.target.id);
     follow_user(parseInt(evt.target.id));
     // follow_form(evt);
     forms_list_follow(evt);
@@ -17,7 +15,6 @@ forms_list.addEventListener("submit", (evt) => {
     // confirm("Are you sure to delete this post?");
     if (window.location.pathname != `/messages/${evt.target.id}`) {
       evt.preventDefault();
-      console.log("MOUNTAIN", evt.target.id);
       delete_msg(parseInt(evt.target.id));
       stat_msg = document.querySelector(".stat-msg");
       if (stat_msg) {
@@ -26,10 +23,8 @@ forms_list.addEventListener("submit", (evt) => {
       const msg = document.querySelector(`#msg${evt.target.id}`);
       msg.remove();
     }
-    console.log(window.location.pathname);
   } else if (evt.target.classList.contains("like-form")) {
     evt.preventDefault();
-    console.log("HELLO WORLD ", evt.target.id);
     like_msg(parseInt(evt.target.id));
     like_form(evt);
   } else if (evt.target.classList.contains("repost-form")) {
@@ -43,7 +38,6 @@ if (header_follow_form) {
   header_follow_form.addEventListener("submit", (evt) => {
     evt.preventDefault();
     follow_user(parseInt(evt.target.id));
-    // console.log(evt.target);
     follow_form(evt.target);
   });
 }
@@ -91,7 +85,6 @@ async function follow_user(user_id) {
 }
 
 function follow_form(evt) {
-  console.log(evt);
   if (evt[0].children[0].innerText == "Follow") {
     evt[0].children[0].innerText = "Following";
     evt[0].classList.remove("btn-outline-primary");
@@ -106,7 +99,6 @@ function follow_form(evt) {
   }
   const stat_following = document.querySelector(".stat-following");
   const user_id = document.querySelector(".logout");
-  // console.log(stat_following.attributes);
   if (
     stat_following &&
     stat_following.attributes.id.value == user_id.attributes.id.value
@@ -117,9 +109,7 @@ function follow_form(evt) {
       stat_following.innerText = `${parseInt(stat_following.innerText) + 1}`;
     }
   }
-  console.log(evt.id);
   const follows = document.querySelectorAll(".follows");
-  console.log(follows);
   if (follows) {
     renaming_btn(follows, evt.id);
   }
@@ -142,9 +132,7 @@ function renaming_profile_follow_btn(evt) {
 
 function renaming_btn(msgs, user_id) {
   msgs.forEach((msg) => {
-    // console.log(msg.attributes.id.value);
     if (msg.attributes.id.value == user_id) {
-      console.log(msg.children[0].innerText);
       if (msg.children[0].innerText == "Follow") {
         msg.children[0].innerText = "Unfollow";
       } else {
@@ -159,9 +147,7 @@ function forms_list_follow(evt) {
   user_id = evt.target.id;
   let res = "";
   msgs.forEach((msg) => {
-    // console.log(msg.attributes.id.value);
     if (msg.attributes.id.value == user_id) {
-      // console.log(msg.children[0].innerText);
       if (msg.children[0].innerText == "Follow") {
         msg.children[0].innerText = "Unfollow";
         res = "Unfollow";
@@ -177,15 +163,12 @@ function forms_list_follow(evt) {
     }
   });
   const header_follow_btn = document.querySelector(".header-follow-form");
-  // console.log(header_follow_btn[0].children[0]);
-  // header_follow_btn.children[0].innerText = "I Made it!!";
   if (header_follow_btn) {
     renaming_profile_follow_btn(header_follow_btn);
   }
   const stat_following = document.querySelector(".stat-following");
 
   const guser_id = document.querySelector(".logout");
-  // console.log(stat_following.attributes[0].value);
   if (
     stat_following &&
     stat_following.attributes.id.value == guser_id.attributes.id.value
@@ -200,7 +183,6 @@ function forms_list_follow(evt) {
 
 function like_form(evt) {
   evt.preventDefault();
-  // console.log(evt.target.id);
   const msg_id = parseInt(evt.target.id);
   const like_icon = document.querySelector(`#like_icon${msg_id}`);
   const stat_likes = document.querySelector(".stat-likes");
@@ -209,7 +191,6 @@ function like_form(evt) {
     like_icon.classList.remove("fa-regular");
     like_icon.classList.add("fa-solid");
     like_icon.classList.add("liked");
-    console.log(user_id.attributes[0].value);
     like_icon.innerText = ` ${parseInt(like_icon.innerText) + 1}`;
 
     if (
@@ -256,28 +237,7 @@ async function delete_msg(msg_id) {
 }
 
 const text_post_form = document.querySelector("#text_post_form");
-// console.log(text_post_form);
 text_post_form.addEventListener("keyup", (evt) => {
   const current = document.querySelector("#current_post");
   current.innerText = evt.target.value.length;
 });
-
-// searchbar = document.querySelector(".top-searchbar");
-// console.log(searchbar);
-// window.addEventListener("scroll", (evt) => {
-//   console.log("SCROLLL");
-//   // console.log(searchbar.style);
-//   console.log((searchbar.style.position = ""));
-//   // searchbar.style.removePropety("position");
-// });
-
-// async function load_more() {
-//   res = await axios
-//     .post("/load-message", (data = { index: forms_list.children.length }))
-//     .then((response) => {
-//       console.log(response);
-//     })
-//     .catch(function (error) {
-//       console.log(error);
-//     });
-// }
