@@ -18,23 +18,6 @@ body {
 .message-area {
   /* margin-top: -0.3rem; */
 }
-.confirm-deletion {
-  background-color: white;
-  /* position: absolute; */
-  max-width: 10rem;
-  /* display: none; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem 5rem 2rem 5rem;
-  border-radius: 1rem;
-}
-.deletion {
-  position: absolute;
-  width: 100vw;
-  height: 25vhr;
-}
 .search-modal {
   display: flex;
   width: 100vw;
