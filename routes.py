@@ -351,7 +351,6 @@ def load_more_msg():
             }
             for msg in messages
         ]
-        print(all_msg)
         return jsonify(all_msg)
     return jsonify(response={"ok": 200})
 
@@ -410,7 +409,6 @@ def load_more_profiel_msg():
             if msg.id in repost_id:
                 repost_id.remove(msg.id)
 
-        print(all_msg)
         return jsonify(all_msg)
     return jsonify(response={"ok": 200})
 
@@ -478,7 +476,6 @@ def load_comments():
         message_id = request.json["message_id"]
         message = db.get_or_404(Message, message_id)
         comments = message.comments[index : index + offset]
-        print(comments)
         # serialize comments
         cmts = [
             {
@@ -557,7 +554,6 @@ def load_likes_msg():
             .scalars()
             .all()
         )
-        print(messages)
 
         # serialize messages
         all_msg = [
