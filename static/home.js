@@ -16,7 +16,7 @@ async function post_message(text) {
     text: text,
     csrf_token: document.querySelector("#csrf_token").value,
   };
-
+  console.log(d);
   const data = await axios.post("/messages", d);
   const content = `<li id="msg${data.data.message.id}" class="list-group-item">
   <div class="top-message">

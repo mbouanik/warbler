@@ -499,6 +499,7 @@ def load_comments():
 @login_required
 def add_post():
     data = request.json
+    print(data)
     form = MessageForm(obj=data)
     if form.validate():
         message = Message()
