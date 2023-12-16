@@ -1,4 +1,3 @@
-from operator import index
 from flask import (
     Blueprint,
     flash,
@@ -10,9 +9,8 @@ from flask import (
     g,
     request,
 )
-from werkzeug.wrappers import response
 from init import db
-from models import Comment, Repost, User, Message
+from models import Comment, Repost, User, Message, Likes
 from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
 from functools import wraps
 
@@ -177,8 +175,9 @@ def show_user_profile(user_id):
             .where(Repost.user_id == user_id)
         )
         .order_by(db.desc("timestamp"))
+        .limit(5)
     ).scalars()
-    repost_id = [message.id for message in g.user.reposted]
+    repost_id = [message.id for message in user.reposted]
 
     messages = [db.get_or_404(Message, id) for id in all_messages_id]
     msgs = []
@@ -285,11 +284,10 @@ def show_user_following(user_id):
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template(
-        "follow_page.html",
+        "following.html",
         user=user,
         form=form,
         edit_form=edit_form,
-        follows=user.following,
     )
 
 
@@ -306,23 +304,25 @@ def show_user_followers(user_id):
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
     return render_template(
-        "follow_page.html",
+        "followers.html",
         user=user,
         form=form,
         edit_form=edit_form,
-        follows=user.followers,
     )
 
 
 @app_routes.route("/load-message", methods=["GET", "POST"])
 def load_more_msg():
+    offset = 10
     if request.json:
         index = request.json["index"]
+        if index + offset >= len(Message.query.all()):
+            offset = len(Message.query.all())
         messages = (
             db.session.execute(
                 db.select(Message)
                 .order_by(Message.timestamp.desc())
-                .slice(index, index + 10)
+                .slice(index, index + offset)
             )
             .scalars()
             .all()
@@ -339,7 +339,7 @@ def load_more_msg():
                 "commented": msg in g.user.comments,
                 "like": msg in g.user.likes,
                 "repost": msg in g.user.reposted,
-                "cnt_cnt": len(msg.comments),
+                "cmt_cnt": len(msg.comments),
                 "likes_cnt": len(msg.users),
                 "repost_cnt": len(msg.reposted),
                 "guser": g.user.id,
@@ -350,6 +350,141 @@ def load_more_msg():
         print(all_msg)
         return jsonify(all_msg)
     return jsonify(response={"ok": 200})
+
+
+@app_routes.route("/load-profile-msg", methods=["POST"])
+def load_more_profiel_msg():
+    offset = 10
+    if request.json:
+        index = request.json["index"]
+        user_id = request.json["id"]
+        user = db.get_or_404(User, user_id)
+        if index + offset >= len(
+            db.session.query(Message).filter_by(user_id=user_id).all()
+        ):
+            offset = len(db.session.query(Message).filter_by(user_id=user_id).all())
+        all_messages_id = db.session.execute(
+            db.select(Message.id, Message.timestamp)
+            .where(Message.user_id == user_id)
+            .union(
+                db.select(Message.id, Repost.timestamp)
+                .join(Repost)
+                .where(Repost.user_id == user_id)
+            )
+            .order_by(db.desc("timestamp"))
+            .slice(index, index + offset)
+        ).scalars()
+        repost_id = [message.id for message in user.reposted]
+
+        messages = [db.get_or_404(Message, id) for id in all_messages_id]
+
+        all_msg = []
+        for msg in messages:
+            all_msg.append(
+                {
+                    "id": msg.id,
+                    "text": msg.text,
+                    "timestamp": msg.timestamp,
+                    "user_id": msg.user_id,
+                    "image_url": msg.user.image_url,
+                    "username": msg.user.username,
+                    "commented": msg in g.user.comments,
+                    "like": msg in g.user.likes,
+                    "repost": msg in g.user.reposted,
+                    "cmt_cnt": len(msg.comments),
+                    "likes_cnt": len(msg.users),
+                    "repost_cnt": len(msg.reposted),
+                    "guser": g.user.id,
+                    "follow": msg.user in g.user.following,
+                    "not_original": msg.id in repost_id,
+                    "page": user_id == g.user.id,
+                    "page_username": user.username,
+                }
+            )
+            if msg.id in repost_id:
+                repost_id.remove(msg.id)
+
+        print(all_msg)
+        return jsonify(all_msg)
+    return jsonify(response={"ok": 200})
+
+
+@app_routes.route("/load-following-user", methods=["POST"])
+def load_following():
+    offset = 10
+    if request.json:
+        index = request.json["index"]
+        user_id = request.json["id"]
+        user = db.get_or_404(User, user_id)
+        users = user.following[index : index + offset]
+        all_user = [
+            {
+                "id": user.id,
+                "username": user.username,
+                "image_url": user.image_url,
+                "bio": user.bio,
+                "following": len(user.following),
+                "followers": len(user.followers),
+                "guser": g.user.id,
+                "follow_you": g.user in user.following,
+            }
+            for user in users
+        ]
+        return jsonify(all_user)
+    return jsonify("failed")
+
+
+@app_routes.route("/load-followers-user", methods=["POST"])
+def load_followers():
+    offset = 10
+    if request.json:
+        index = request.json["index"]
+        user_id = request.json["id"]
+        user = db.get_or_404(User, user_id)
+        users = user.followers[index : index + offset]
+        all_user = [
+            {
+                "id": user.id,
+                "username": user.username,
+                "image_url": user.image_url,
+                "bio": user.bio,
+                "following": len(user.following),
+                "followers": len(user.followers),
+                "guser": g.user.id,
+                "follow_you": g.user in user.following,
+                "following": user in g.user.following,
+            }
+            for user in users
+        ]
+        return jsonify(all_user)
+    return jsonify("failed")
+
+
+@app_routes.route("/load-comments", methods=["POST"])
+def load_comments():
+    offset = 10
+    if request.json:
+        index = request.json["index"]
+        message_id = request.json["message_id"]
+        message = db.get_or_404(Message, message_id)
+        comments = message.comments[index : index + offset]
+        print(comments)
+
+        cmts = [
+            {
+                "id": cmt.id,
+                "text": cmt.text,
+                "timestamp": cmt.timestamp,
+                "user_id": cmt.user_id,
+                "image_url": cmt.user.image_url,
+                "username": cmt.user.username,
+                "guser": g.user.id,
+                "follow": cmt.user in g.user.following,
+            }
+            for cmt in comments
+        ]
+        return jsonify(cmts)
+    return jsonify("failed")
 
 
 @app_routes.route("/messages", methods=["POST"])
@@ -383,14 +518,55 @@ def add_post():
 @login_required
 def show_liked_messagess(user_id):
     user = db.get_or_404(User, user_id)
+
     form = MessageForm()
     edit_form = EditUserForm(obj=user)
-    return render_template(
-        "likes.html",
-        user=user,
-        form=form,
-        edit_form=edit_form,
-    )
+    return render_template("likes.html", user=user, form=form, edit_form=edit_form)
+
+
+@app_routes.route("/load-likes-msg", methods=["POST"])
+def load_likes_msg():
+    offset = 10
+    if request.json:
+        index = request.json["index"]
+        user_id = request.json["id"]
+        user = db.get_or_404(User, user_id)
+        if index + offset >= len(Message.query.all()):
+            offset = len(Message.query.all())
+        messages = (
+            db.session.execute(
+                db.select(Message)
+                .join(Likes)
+                .where(Likes.message_id == Message.id, Likes.user_id == user.id)
+                .order_by(Likes.id.desc())
+                .slice(index, index + offset)
+            )
+            .scalars()
+            .all()
+        )
+        print(messages)
+
+        all_msg = [
+            {
+                "id": msg.id,
+                "text": msg.text,
+                "timestamp": msg.timestamp,
+                "user_id": msg.user_id,
+                "image_url": msg.user.image_url,
+                "username": msg.user.username,
+                "commented": msg in g.user.comments,
+                "like": msg in g.user.likes,
+                "repost": msg in g.user.reposted,
+                "cmt_cnt": len(msg.comments),
+                "likes_cnt": len(msg.users),
+                "repost_cnt": len(msg.reposted),
+                "guser": g.user.id,
+                "follow": msg.user in g.user.following,
+            }
+            for msg in messages
+        ]
+        return jsonify(all_msg)
+    return jsonify(200)
 
 
 @app_routes.route("/messages/<int:message_id>")

@@ -28,7 +28,7 @@
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_cmt"
+            data-bs-target="#delete_cmt{{comment.id}}"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
@@ -38,9 +38,9 @@
           {% if comment.user.id != g.user.id %}
           <form id="{{comment.user.id}}" class="follows" method="POST">
             {% if comment.user in g.user.following %}
-            <button class="btn btn-link text-muted">Unfollow</button>
+            <button class="btn btn-link text-danger">Unfollow</button>
             {% else %}
-            <button class="btn btn-link text-muted">Follow</button>
+            <button class="btn btn-link text-primary">Follow</button>
             {% endif %}
           </form>
           {% endif %}

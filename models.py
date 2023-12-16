@@ -92,7 +92,10 @@ class Message(db.Model):
         "Repost", backref="messages", cascade="all,delete-orphan"
     )
     comments: Mapped[Comment] = Relationship(
-        "Comment", backref="message", cascade="all, delete-orphan"
+        "Comment",
+        backref="message",
+        cascade="all, delete-orphan",
+        order_by=("desc(Comment.id)"),
     )
     users_commented = Relationship("User", secondary="comments")
 
@@ -147,7 +150,10 @@ class User(db.Model):
     )
 
     likes: Mapped[Likes] = Relationship(
-        "Message", secondary="likes", backref="users", order_by="desc(Likes.id)"
+        "Message",
+        secondary="likes",
+        backref="users",
+        order_by="desc(Likes.id)",
     )
 
     comments: Mapped[Comment] = Relationship(
