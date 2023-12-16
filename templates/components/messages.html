@@ -40,7 +40,12 @@
         </li>
         <li class="dropdown-itr text-primary">
           {% if msg.user.id != g.user.id %}
-          <form id="{{msg.user.id}}" class="follows" method="POST">
+          <form
+            id="{{msg.user.id}}"
+            class="follows"
+            method="POST"
+            data-follow-id="{{msg.user.id}}"
+          >
             {% if msg.user in g.user.following %}
             <button class="btn btn-link text-danger">Unfollow</button>
             {% else %}
@@ -55,7 +60,12 @@
   <!-- <hr class="hr-message" /> -->
   <div id="msg{{msg.id}}" class="like-btn">
     <div class="interaction">
-      <form id="{{msg.id}}" class="like-form" method="POST">
+      <form
+        id="{{msg.id}}"
+        class="like-form"
+        method="POST"
+        data-like-id="{{msg.id}}"
+      >
         <button class="btn">
           {% if msg in g.user.likes %}
           <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked">
@@ -89,7 +99,12 @@
       </a>
     </div>
     <div class="interaction">
-      <form id="{{msg.id}}" class="repost-form" method="POST">
+      <form
+        id="{{msg.id}}"
+        class="repost-form"
+        method="POST"
+        data-repost-id="{{msg.id}}"
+      >
         <button class="btn">
           {% if msg in g.user.reposted %}
           <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted">

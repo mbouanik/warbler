@@ -315,7 +315,7 @@ def show_user_followers(user_id):
 
 
 # load homepage messages as you scroll down
-@app_routes.route("/load-message", methods=["GET", "POST"])
+@app_routes.route("/load-messages", methods=["GET", "POST"])
 def load_more_msg():
     offset = 10
     if request.json:

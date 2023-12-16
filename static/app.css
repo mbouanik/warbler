@@ -3,6 +3,9 @@ body {
   padding: 0;
   background-color: #7cb9e8;
 }
+.list-group-item {
+  padding: 0.6rem;
+}
 .li-logo {
   padding-left: 1rem;
 }
@@ -123,6 +126,7 @@ nav {
   justify-content: space-between;
   /* justify-content: flex-end  */
   /* align-items: flex-start; */
+  margin-top: -0.3rem;
 }
 .sidebar {
   display: flex;
@@ -213,6 +217,7 @@ nav {
   width: 3rem;
   object-fit: cover;
   object-position: 50% 10%;
+  margin-top: 0.2rem;
 }
 .timeline-image a {
   text-decoration: none;

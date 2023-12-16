@@ -15,7 +15,7 @@ function isBottom() {
 
   // Check if we are near the bottom (you can adjust the "10" for a different threshold)
   // return scrollY + viewportHeight >= totalHeight - 10;
-  return scrollY + viewportHeight == totalHeight;
+  return scrollY + viewportHeight >= totalHeight;
 }
 
 async function trackScroll() {
