@@ -3,7 +3,7 @@
     {% include "components/header.html" %}
     <hr class="text-white">
     <ul class="list-group forms-list">
-        {% for user in user.following[:5] %}
+        {% for user in user.following[:10] %}
         {% include "components/follow.html" %}
         {% endfor %}
     </ul>
