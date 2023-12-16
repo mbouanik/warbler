@@ -1,18 +1,18 @@
+
 {% extends "base.html" %} {% block title %} {{ user.username }} {% endblock %}
 {% block content %}
-    {% include "components/header_one.html" %}
-<div class="profile-follows-info container">
-    {% include "components/info_card.html" %}
-    <div class="follow-grid ">
-        {% for user in user.followers %}
-        {% include "components/follow.html" %}  
+    {% include "components/header.html" %}
+    <hr class="text-white">
+    <ul class="list-group forms-list">
+        {% for user in user.followers[:3] %}
+        {% include "components/follow.html" %}
         {% endfor %}
-    </div>
+    </ul>
 
-</div>
 {% include "components/modal_post_form.html" %}
 {% include "components/modal_edit_profile.html" %}
+{% include "components/searchbar_modal.html" %}
 
-<script src=" {{ url_for('app_routes.static', filename='follow.js' ) }} "></script>
+<script src=" {{ url_for('app_routes.static', filename='followers.js' ) }} "></script>
 {% endblock %}
 

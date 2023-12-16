@@ -3,7 +3,7 @@
     {% include "components/header.html" %}
     <hr class="text-white">
     <ul class="list-group forms-list">
-        {% for user in follows %}
+        {% for user in user.following[:5] %}
         {% include "components/follow.html" %}
         {% endfor %}
     </ul>
@@ -12,6 +12,6 @@
 {% include "components/modal_edit_profile.html" %}
 {% include "components/searchbar_modal.html" %}
 
-<script src=" {{ url_for('app_routes.static', filename='follow.js' ) }} "></script>
+<script src=" {{ url_for('app_routes.static', filename='following.js' ) }} "></script>
 {% endblock %}
 

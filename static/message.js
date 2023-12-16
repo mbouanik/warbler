@@ -35,6 +35,7 @@ async function delete_comment(comment_id, message_id) {
 }
 
 function remove_comment(evt) {
+  console.log(evt.target.id);
   const comment = document.querySelector(`#comment${evt.target.id}`);
   comment.remove();
 }
@@ -164,3 +165,140 @@ if (text_comment_form) {
     current.innerText = evt.target.value.length;
   });
 }
+
+async function trackScroll() {
+  if (isBottom()) {
+    console.log("You reached the bottom of the page!");
+    const form = document.querySelector(".post-comment");
+    const message_id = parseInt(form.attributes.id.value);
+    res = await axios.post(
+      "/load-comments",
+      (data = {
+        index: parseInt(forms_list_comments.children.length),
+        message_id: message_id,
+      }),
+    );
+
+    console.log(res.data);
+    // Perform your action here, such as loading more content
+    for (cmt of res.data) {
+      const message = `
+<li id="comment${cmt.id}" class="list-group-item">
+  <div class="top-message">
+    <div class="message">
+      <div>
+        <a class="" href="/users/${cmt.user_id}">
+          <img src="${cmt.image_url}" alt="" class="timeline-image" />
+        </a>
+      </div>
+      <div class="message-area">
+        <a href="/users/${cmt.user_id}">@${cmt.username}</a>
+         <span class="text-muted">${new Date(cmt.timestamp).toLocaleDateString(
+           "en-US",
+           {
+             month: "short",
+             day: "numeric",
+             year: "numeric",
+           },
+         )}</span>
+
+    <div>${cmt.text}</div>
+      </div>
+    </div>
+    <div class="">
+      <button
+        type="button"
+        class="btn btn-sm"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <i class="fa-solid fa-ellipsis"></i>
+      </button>
+
+      <ul class="dropdown-menu">
+         
+        </li>
+        <li class="dropdown-itr text-primary">
+        ${
+          cmt.user_id != cmt.guser
+            ? `
+          <form id="${cmt.user_id}}" class="follows" method="POST">
+            ${
+              cmt.follow
+                ? `  <button class="btn btn-link text-danger">Unfollow</button>
+`
+                : ` <button class="btn btn-link text-mut">Follow</button>`
+            }
+            </form>
+        </li>
+`
+            : `
+        <li class="dropdown-ite text-dange">
+
+            <button
+            type="button"
+            class="btn btn-link text-danger"
+            data-bs-toggle="modal"
+            data-bs-target="#delete_msg${cmt.id}"
+          >
+            <i class="fa-solid fa-trash"></i> Delete
+          </button>
+</li>
+`
+        }
+      </ul>
+    </div>
+  </div>
+
+
+<div
+  class="modal fade"
+  id="delete_msg${cmt.id}"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="delete_msg${cmt.id}">Modal title</h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">Are You sure you want to delete this post?</div>
+      <form
+        id="${cmt.id}"
+        action="/messages/delete/${cmt.id}"
+        class="delete-comment"
+        method="POST"
+      >
+        <div class="modal-footer">
+          <button class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</li>
+`;
+      const template = document.createElement("template");
+      template.innerHTML = message;
+      const t = template.content;
+      forms_list_comments.append(t);
+    }
+  }
+}
+
+// Attach scroll event listener
+window.addEventListener("scroll", trackScroll);

@@ -1,6 +1,6 @@
 <div
   class="modal fade"
-  id="delete_cmt"
+  id="delete_cmt{{comment.id}}"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -8,7 +8,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="delete_cmt">Modal title</h1>
+        <h1 class="modal-title fs-5" id="delete_cmt{{comment.id}}">
+          Modal title
+        </h1>
         <button
           type="button"
           class="btn-close"
