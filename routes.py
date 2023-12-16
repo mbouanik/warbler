@@ -23,10 +23,12 @@ app_routes = Blueprint(
 )
 
 
+# verify if you login
 def is_authenticated():
     return "user_id" in session
 
 
+# decorator for accessing each page you need to be login
 def login_required(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
@@ -44,14 +46,6 @@ def add_user_to_g():
         g.user = db.get_or_404(User, user_id)
     else:
         g.user = None
-        # return render_template("home-non.html")
-
-
-#
-# @app_routes.before_app_request
-# def login():
-#     if not g.get("user", None):
-#         return redirect(url_for("app_routes.authenticate"))
 
 
 def do_login(id):
@@ -66,6 +60,7 @@ def do_logout():
         g.user = None
 
 
+# home page diplay all messages posted by users if login or home for not login with sign up button
 @app_routes.route("/", methods=["GET", "POST"])
 # @login_required
 def home():
@@ -126,6 +121,7 @@ def signup():
     return render_template("signup.html", form=signup_form)
 
 
+# login or signup
 @app_routes.route("/authenticate", methods=["GET", "POST"])
 def authenticate():
     signup_form = UserForm()
@@ -162,6 +158,7 @@ def logout():
     return redirect(url_for("app_routes.authenticate"))
 
 
+# show profile user
 @app_routes.route("/users/<int:user_id>", methods=["GET", "POST"])
 @login_required
 def show_user_profile(user_id):
@@ -215,6 +212,7 @@ def show_user_profile(user_id):
     )
 
 
+# edit  profile user
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_user_profile(user_id):
@@ -229,6 +227,7 @@ def edit_user_profile(user_id):
     return render_template("edit_user_profile.html", form=form)
 
 
+# delete an user
 @app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
 @login_required
 def delete_user(user_id):
@@ -239,6 +238,7 @@ def delete_user(user_id):
     return redirect(url_for("app_routes.authenticate"))
 
 
+# search function for users and messages
 @app_routes.route("/search")
 @login_required
 def search():
@@ -256,6 +256,7 @@ def search():
     )
 
 
+# follow and unfollow users
 @app_routes.route("/users/follow", methods=["POST"])
 @login_required
 def follow_user():
@@ -271,6 +272,7 @@ def follow_user():
     return jsonify(response={"response": "failed"})
 
 
+# show the following of an user
 @app_routes.route("/users/following/<int:user_id>")
 @login_required
 def show_user_following(user_id):
@@ -291,6 +293,7 @@ def show_user_following(user_id):
     )
 
 
+# show the this of followers of an user
 @app_routes.route("/users/followers/<int:user_id>")
 @login_required
 def show_user_followers(user_id):
@@ -311,6 +314,7 @@ def show_user_followers(user_id):
     )
 
 
+# load homepage messages as you scroll down
 @app_routes.route("/load-message", methods=["GET", "POST"])
 def load_more_msg():
     offset = 10
@@ -352,6 +356,7 @@ def load_more_msg():
     return jsonify(response={"ok": 200})
 
 
+# load profile messages as you scroll down
 @app_routes.route("/load-profile-msg", methods=["POST"])
 def load_more_profiel_msg():
     offset = 10
@@ -378,6 +383,7 @@ def load_more_profiel_msg():
 
         messages = [db.get_or_404(Message, id) for id in all_messages_id]
 
+        # serialize messages
         all_msg = []
         for msg in messages:
             all_msg.append(
@@ -409,6 +415,7 @@ def load_more_profiel_msg():
     return jsonify(response={"ok": 200})
 
 
+# load mor following as you scroll down
 @app_routes.route("/load-following-user", methods=["POST"])
 def load_following():
     offset = 10
@@ -417,6 +424,7 @@ def load_following():
         user_id = request.json["id"]
         user = db.get_or_404(User, user_id)
         users = user.following[index : index + offset]
+        # serialize users
         all_user = [
             {
                 "id": user.id,
@@ -434,6 +442,7 @@ def load_following():
     return jsonify("failed")
 
 
+# load more follower as you scroll down
 @app_routes.route("/load-followers-user", methods=["POST"])
 def load_followers():
     offset = 10
@@ -460,6 +469,7 @@ def load_followers():
     return jsonify("failed")
 
 
+# load more comments as you sxroll down
 @app_routes.route("/load-comments", methods=["POST"])
 def load_comments():
     offset = 10
@@ -469,7 +479,7 @@ def load_comments():
         message = db.get_or_404(Message, message_id)
         comments = message.comments[index : index + offset]
         print(comments)
-
+        # serialize comments
         cmts = [
             {
                 "id": cmt.id,
@@ -487,6 +497,7 @@ def load_comments():
     return jsonify("failed")
 
 
+# save the message to the database and return the user and message as json to display it on the dom
 @app_routes.route("/messages", methods=["POST"])
 @login_required
 def add_post():
@@ -514,6 +525,7 @@ def add_post():
     return jsonify(response={"response": "failed"})
 
 
+# diplay the messages liked by the user
 @app_routes.route("/users/messages/likes/<int:user_id>")
 @login_required
 def show_liked_messagess(user_id):
@@ -524,6 +536,7 @@ def show_liked_messagess(user_id):
     return render_template("likes.html", user=user, form=form, edit_form=edit_form)
 
 
+# load messages liked by the user as you scroll down
 @app_routes.route("/load-likes-msg", methods=["POST"])
 def load_likes_msg():
     offset = 10
@@ -546,6 +559,7 @@ def load_likes_msg():
         )
         print(messages)
 
+        # serialize messages
         all_msg = [
             {
                 "id": msg.id,
@@ -569,6 +583,7 @@ def load_likes_msg():
     return jsonify(200)
 
 
+# display the message and a form to add comments
 @app_routes.route("/messages/<int:message_id>")
 @login_required
 def show_message(message_id):
@@ -580,6 +595,8 @@ def show_message(message_id):
     )
 
 
+# add comment to message and return a json with user and comment serialized
+# to display on the DOM
 @app_routes.route("/messages/comments/add", methods=["POST"])
 @login_required
 def add_comment():
@@ -610,6 +627,7 @@ def add_comment():
     return jsonify(response={"failed": "failed to add comment"})
 
 
+# delete a comment
 @app_routes.route("/messages/comment/delete", methods=["POST"])
 @login_required
 def delete_comment():
@@ -631,6 +649,8 @@ def delete_comment():
     return jsonify(response={"response": "failed"})
 
 
+# delete a message and the comments associated for the message page
+# then return to profile page
 @app_routes.route("/messages/delete/<int:msg_id>", methods=["POST"])
 @login_required
 def delete_show_message(msg_id):
@@ -643,6 +663,7 @@ def delete_show_message(msg_id):
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
 
 
+# delete message on other pages likes, home, profile without reloading the page
 @app_routes.route("/messages/delete", methods=["POST"])
 @login_required
 def delete_message():
@@ -656,6 +677,7 @@ def delete_message():
     return jsonify(response={"data": 200})
 
 
+# like and unlike functiond
 @app_routes.route("/messages/like", methods=["POST"])
 @login_required
 def like_message():
@@ -670,6 +692,7 @@ def like_message():
     return jsonify(response={"response": 200})
 
 
+# repost and unrepost
 @app_routes.route("/messages/repost", methods=["POST"])
 @login_required
 def respost_message():
