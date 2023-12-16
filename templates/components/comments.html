@@ -38,9 +38,9 @@
           {% if comment.user.id != g.user.id %}
           <form id="{{comment.user.id}}" class="follows" method="POST">
             {% if comment.user in g.user.following %}
-            <button class="btn btn-link text-muted">Unfollow</button>
+            <button class="btn btn-link text-danger">Unfollow</button>
             {% else %}
-            <button class="btn btn-link text-muted">Follow</button>
+            <button class="btn btn-link text-primary">Follow</button>
             {% endif %}
           </form>
           {% endif %}
