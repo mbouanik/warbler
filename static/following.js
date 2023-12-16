@@ -3,6 +3,7 @@ active_menu_btn.style.fontWeight = "bold";
 active_menu_btn.style.fontSize = "1.3rem";
 const card_id = document.querySelector(".card-id");
 const user_id = parseInt(card_id.attributes.id.value);
+let prev = 9;
 // const f = document.querySelector(".forms-list");
 function isBottom() {
   // Get the current scroll position
@@ -19,10 +20,12 @@ function isBottom() {
   return scrollY + viewportHeight >= totalHeight;
 }
 async function trackScroll() {
-  if (isBottom()) {
+  const index = forms_list.children.length;
+  if (isBottom() && index > prev) {
+    prev = index;
     res = await axios.post(
       "/load-following-user",
-      (data = { index: forms_list.children.length, id: user_id }),
+      (data = { index: index, id: user_id }),
     );
 
     // Perform your action here, such as loading more content

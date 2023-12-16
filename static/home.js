@@ -3,6 +3,7 @@ active_menu_btn.style.fontWeight = "bold";
 active_menu_btn.style.fontSize = "1.3rem";
 const ul = document.querySelector(".list-group");
 const post_form = document.querySelector("#post-form");
+let prev = 19;
 post_form.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   const text = document.querySelector("textarea");
@@ -170,11 +171,11 @@ function isBottom() {
 }
 
 async function trackScroll() {
-  if (isBottom()) {
-    res = await axios.post(
-      "/load-messages",
-      (data = { index: forms_list.children.length }),
-    );
+  const index = forms_list.children.length;
+  if (isBottom() && index > prev) {
+    prev = index;
+    console.log(forms_list.children.length);
+    res = await axios.post("/load-messages", (data = { index: index }));
 
     // Perform your action here, such as loading more content
     for (msg of res.data) {

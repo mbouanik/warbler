@@ -172,7 +172,7 @@ def show_user_profile(user_id):
             .where(Repost.user_id == user_id)
         )
         .order_by(db.desc("timestamp"))
-        .limit(5)
+        .limit(10)
     ).scalars()
     repost_id = [message.id for message in user.reposted]
 
@@ -201,7 +201,7 @@ def show_user_profile(user_id):
         message = Message(text=form.text.data, user_id=user.id)
         g.user.messages.append(message)
         db.session.commit()
-        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+        return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
     return render_template(
         "user_profile.html",
         user=user,

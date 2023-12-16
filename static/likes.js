@@ -3,7 +3,7 @@ active_menu_btn.style.fontWeight = "bold";
 active_menu_btn.style.fontSize = "1.3rem";
 const card_id = document.querySelector(".card-id");
 const user_id = parseInt(card_id.attributes.id.value);
-
+let prev = 9;
 function isBottom() {
   // Get the current scroll position
   const scrollY = window.scrollY || window.pageYOffset;
@@ -20,12 +20,14 @@ function isBottom() {
 }
 
 async function trackScroll() {
-  if (isBottom()) {
+  const index = forms_list.children.length;
+  if (isBottom() && index > prev) {
     // console.log("You reached the bottom of the page!");
     // load_more();
+    prev = index;
     res = await axios.post(
       "/load-likes-msg",
-      (data = { index: forms_list.children.length, id: user_id }),
+      (data = { index: index, id: user_id }),
     );
 
     // Perform your action here, such as loading more content

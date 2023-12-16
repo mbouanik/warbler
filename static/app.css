@@ -611,7 +611,7 @@ h1 {
 .top-search-btn {
   display: none;
 }
-@media (max-width: 900px) {
+@media (max-width: 933px) {
   .nav-link:hover {
     background-color: transparent;
     color: white;
