@@ -222,7 +222,7 @@ async function trackScroll() {
         ${
           cmt.user_id != cmt.guser
             ? `
-          <form id="${cmt.user_id}}" class="follows" method="POST">
+          <form id="${cmt.user_id}" class="follows" method="POST">
             ${
               cmt.follow
                 ? `  <button class="btn btn-link text-danger">Unfollow</button>
