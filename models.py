@@ -103,6 +103,20 @@ class Message(db.Model):
         super(Message, self).__init__(**kwargs)
 
 
+class DirectMessage:
+    __tablename__ = "direct_messages"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    sendr_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    recepient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    content: Mapped[str] = mapped_column(Text)
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+    )
+
+
 class User(db.Model):
     __tablename__ = "users"
 
