@@ -10,8 +10,15 @@ from flask import (
     request,
 )
 from init import db
-from models import Comment, Repost, User, Message, Likes
-from forms import CommentForm, EditUserForm, LoginForm, MessageForm, UserForm
+from models import Comment, DirectMessage, Repost, User, Message, Likes
+from forms import (
+    CommentForm,
+    DirectMessageForm,
+    EditUserForm,
+    LoginForm,
+    MessageForm,
+    UserForm,
+)
 from functools import wraps
 
 app_routes = Blueprint(
@@ -209,6 +216,25 @@ def show_user_profile(user_id):
         messages=messages,
         edit_form=edit_form,
         msgs=msgs,
+    )
+
+
+@app_routes.route("/users/direct_message/<int:user_id>")
+def direct_message(user_id):
+    user = db.get_or_404(User, user_id)
+    form = MessageForm()
+    # direct_message_form = DirectMessageForm()
+    # if direct_message_form.validate_on_submit():
+    # message = DirectMessage()
+    # direct_message_form.populate_obj(obj=message)
+    # user.direct_message.append(message)
+
+    # db.session.commit()
+    return render_template(
+        "direct_message.html",
+        user=user,
+        form=form,
+        # direct_message_form=direct_message_form,
     )
 
 
