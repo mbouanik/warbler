@@ -103,18 +103,33 @@ class Message(db.Model):
         super(Message, self).__init__(**kwargs)
 
 
-class DirectMessage:
-    __tablename__ = "direct_messages"
+class Conversation(db.Model):
+    __tablename__ = "conversations"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    sendr_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    recepient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
     content: Mapped[str] = mapped_column(Text)
     timestamp: Mapped[DateTime] = mapped_column(
         DateTime,
         nullable=False,
         default=datetime.utcnow,
     )
+
+
+class DirectMessage:
+    __tablename__ = "direct_messages"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    sender_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+    )
+    conversation_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("conversations.id")
+    )
+    conversation = Relationship("Conversation", backref="messages")
 
 
 class User(db.Model):
@@ -166,6 +181,8 @@ class User(db.Model):
     reposted: Mapped[Repost] = Relationship(
         "Message", secondary="reposts", backref="reposted", cascade="all, delete"
     )
+
+    # direct_messages = Relationship("DirectMessage", secondary="conversations")
 
     def __init__(self, **kwargs) -> None:
         super(User, self).__init__(**kwargs)

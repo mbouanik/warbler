@@ -38,15 +38,13 @@
           <strong class="mobile-hr">{{ g.user.username }}</strong>
         </a>
         <ul
-          class="dropdown-menu dropdown-menu-dark text-small shadow"
+          class="dropdown-menu dropdown-menu-color text-small shadow"
           aria-labelledby="dropdownUser1"
         >
           <li class="dropdown-item">
-            <a class="btn btn-link text-white" href="/users/{{g.user.id}}/edit"
-              >Edit</a
-            >
+            <a class="btn text-white" href="/users/{{g.user.id}}/edit">Edit</a>
           </li>
-          <li><hr class="dropdown-divider mobile-hr" /></li>
+          <!-- <li><hr class="dropdown-divider mobile-hr" /></li> -->
           <li class="dropdown-item">
             <form
               id="{{g.user.id}}"
@@ -62,7 +60,7 @@
 
               <button
                 id="{{g.user.id}}"
-                class="logout btn btn-link text-white link-underline-opacity-0"
+                class="logout btn text-white link-underline-opacity-0"
               >
                 Log out {{g.user.username}}
               </button>
