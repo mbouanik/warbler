@@ -223,7 +223,7 @@ def show_user_profile(user_id):
 def direct_message(user_id):
     user = db.get_or_404(User, user_id)
     form = MessageForm()
-    # direct_message_form = DirectMessageForm()
+    direct_message_form = DirectMessageForm()
     # if direct_message_form.validate_on_submit():
     # message = DirectMessage()
     # direct_message_form.populate_obj(obj=message)
@@ -234,7 +234,7 @@ def direct_message(user_id):
         "direct_message.html",
         user=user,
         form=form,
-        # direct_message_form=direct_message_form,
+        direct_message_form=direct_message_form,
     )
 
 
