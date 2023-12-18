@@ -3,6 +3,20 @@ body {
   padding: 0;
   background-color: #7cb9e8;
 }
+.dropdown-menu-color {
+  background-color: #7cb9e8;
+  border: 0.1rem solid #318ce7;
+}
+.dropdown-menu-color a {
+  background-color: #7cb9e8;
+  width: 100%;
+  text-decoration: none;
+  text-align: left;
+  border-radius: 0;
+}
+.dropdown-item :hover {
+  background-color: #318ce7;
+}
 .list-group-item {
   padding: 0.6rem;
 }
@@ -595,6 +609,15 @@ h1 {
   display: none;
 }
 @media (max-width: 933px) {
+  .dropdown-menu-color a {
+    background-color: #318ce7;
+  }
+
+  .dropdown-menu-color {
+    background-color: #318ce7;
+    border: 0.1rem solid #318ce7;
+  }
+
   .nav-link:hover {
     background-color: transparent;
     color: white;
