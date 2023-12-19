@@ -131,6 +131,8 @@ def signup():
 # login or signup
 @app_routes.route("/authenticate", methods=["GET", "POST"])
 def authenticate():
+    if session.get("user_id", None):
+        return redirect(url_for("app_routes.home"))
     signup_form = UserForm()
     login_form = LoginForm()
 
