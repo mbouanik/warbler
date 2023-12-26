@@ -1,12 +1,10 @@
 from unittest import TestCase
 
-from flask import json
-
 from init import create_app, db, bcrypt
 from dotenv import load_dotenv
 from os import getenv
 
-from models import Message, User
+from models import Post, User
 
 load_dotenv()
 app = create_app()
@@ -54,6 +52,7 @@ class TestHomeView(TestCase):
             )
 
     def tearDown(self):
+        self.client.post(f"/users/{self.user_id}/delete")
         with app.app_context():
             db.session.delete(self.user)
             db.session.commit()
@@ -98,7 +97,7 @@ class TestMessage(TestCase):
             db.session.add(user)
             db.session.commit()
 
-            message = Message(user_id=user.id, text="This is the way")
+            message = Post(user_id=user.id, text="This is the way")
             db.session.add(message)
             db.session.commit()
             self.message = message
@@ -115,6 +114,7 @@ class TestMessage(TestCase):
 
     def tearDown(self):
         with app.app_context():
+            db.session.delete(self.message)
             db.session.delete(self.user)
             db.session.commit()
             db.session.rollback()
@@ -125,7 +125,7 @@ class TestMessage(TestCase):
         self.assertEqual(home_page.status_code, 200)
         self.assertIn("This is the way", data)
 
-        self.client.post("/messages/delete", json={"message_id": self.message_id})
+        self.client.post("/messages/delete", json={"post_id": self.message_id})
         home_page = self.client.get(f"/users/{self.user_id}")
         data = home_page.get_data(as_text=True)
 
@@ -150,7 +150,7 @@ class TestLikes(TestCase):
             db.session.add(user)
             db.session.commit()
 
-            message = Message(user_id=user.id, text="This is the way")
+            message = Post(user_id=user.id, text="This is the way")
             db.session.add(message)
             db.session.commit()
 
@@ -172,7 +172,7 @@ class TestLikes(TestCase):
             db.session.rollback()
 
     def test_like(self):
-        like = self.client.post("/messages/like", json={"message_id": self.message_id})
+        like = self.client.post("/messages/like", json={"post_id": self.message_id})
         home_page = self.client.get(f"/users/{self.user_id}")
         data = home_page.get_data(as_text=True)
         self.assertEqual(like.status_code, 200)
@@ -190,7 +190,7 @@ class TestRepost(TestCase):
             db.session.add(user)
             db.session.commit()
 
-            message = Message(user_id=user.id, text="This is the way")
+            message = Post(user_id=user.id, text="This is the way")
             db.session.add(message)
             db.session.commit()
 
@@ -212,16 +212,12 @@ class TestRepost(TestCase):
             db.session.rollback()
 
     def test_repost(self):
-        repost = self.client.post(
-            "/messages/repost", json={"message_id": self.message_id}
-        )
+        repost = self.client.post("/messages/repost", json={"post_id": self.message_id})
         home_page = self.client.get(f"/users/{self.user_id}")
         data = home_page.get_data(as_text=True)
         self.assertEqual(repost.status_code, 200)
         self.assertIn(
-            """<small id="repost_count">
-              1
-            </small>""",
+            """<small id="repost_count"> 1 </small>""",
             data,
         )
 
@@ -237,7 +233,7 @@ class TestComment(TestCase):
             db.session.add(user)
             db.session.commit()
 
-            message = Message(user_id=user.id, text="This is the way")
+            message = Post(user_id=user.id, text="This is the way")
             db.session.add(message)
             db.session.commit()
 
@@ -261,7 +257,7 @@ class TestComment(TestCase):
     def test_comment(self):
         cmt = self.client.post(
             "/messages/comments/add",
-            json={"text": "oh nice", "message_id": self.message_id},
+            json={"text": "oh nice", "post_id": self.message_id},
         )
         home_page = self.client.get(f"/messages/{self.message_id}")
 

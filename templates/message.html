@@ -8,7 +8,7 @@
     </ul>
     <hr  class="text-white">
     <div class="forms">
-        <form id="{{msg.id}}" class="post-comment" method="POST">
+        <form id="{{post.id}}" class="post-comment" method="POST">
             {{ comment_form.csrf_token }}
             {{ comment_form.text(class="form-control", placeholder="What do you think?", id="text_comment_form") }}
      <div id="the-count">
@@ -24,7 +24,7 @@
     <hr  class="text-white">
 
     <ul class="list-group messages forms-list-comments">
-        {% for comment in msg.comments[:10] %}
+        {% for comment in post.comments[:10] %}
         {% include "components/comments.html" %} 
         {% endfor %}
     </ul>

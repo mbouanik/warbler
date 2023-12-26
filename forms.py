@@ -19,7 +19,7 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password", validators=[InputRequired(), Length(min=6)])
 
 
-class MessageForm(FlaskForm):
+class PostForm(FlaskForm):
     text = TextAreaField("Text", validators=[InputRequired(), Length(max=148, min=1)])
 
 

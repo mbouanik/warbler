@@ -11,21 +11,21 @@ forms_list.addEventListener("submit", (evt) => {
     evt.preventDefault();
     follow_user(parseInt(evt.target.id));
     follow_form(evt.target);
-  } else if (evt.target.classList.contains("delete-msg")) {
+  } else if (evt.target.classList.contains("delete-post")) {
     // confirm("Are you sure to delete this post?");
     if (window.location.pathname != `/messages/${evt.target.id}`) {
       evt.preventDefault();
-      delete_msg(parseInt(evt.target.id));
-      stat_msg = document.querySelector(".stat-msg");
-      if (stat_msg) {
-        stat_msg.innerText = `${parseInt(stat_msg.innerText) - 1}`;
+      delete_post(parseInt(evt.target.id));
+      stat_post = document.querySelector(".stat-post");
+      if (stat_post) {
+        stat_post.innerText = `${parseInt(stat_post.innerText) - 1}`;
       }
-      const msg = document.querySelector(`#msg${evt.target.id}`);
-      msg.remove();
+      const post = document.querySelector(`#post${evt.target.id}`);
+      post.remove();
     }
   } else if (evt.target.classList.contains("like-form")) {
     evt.preventDefault();
-    like_msg(parseInt(evt.target.id));
+    like_post(parseInt(evt.target.id));
     like_form(evt);
   } else if (evt.target.classList.contains("repost-form")) {
     evt.preventDefault();
@@ -42,9 +42,9 @@ if (header_follow_form) {
   });
 }
 
-async function repost(msg_id) {
+async function repost(post_id) {
   const data = {
-    message_id: msg_id,
+    post_id: post_id,
   };
   await axios
     .post("/messages/repost", data)
@@ -58,8 +58,8 @@ async function repost(msg_id) {
 
 function repost_form(evt) {
   evt.preventDefault();
-  const msg_id = parseInt(evt.target.id);
-  const repost_icon = document.querySelector(`#repost_icon${msg_id}`);
+  const post_id = parseInt(evt.target.id);
+  const repost_icon = document.querySelector(`#repost_icon${post_id}`);
   if (repost_icon.classList.contains("reposted")) {
     repost_icon.classList.remove("reposted");
     repost_icon.innerText = ` ${parseInt(repost_icon.innerText) - 1}`;
@@ -130,33 +130,33 @@ function renaming_profile_follow_btn(evt) {
   }
 }
 
-function renaming_btn(msgs, user_id) {
-  msgs.forEach((msg) => {
-    if (msg.attributes.id.value == user_id) {
-      if (msg.children[0].innerText == "Follow") {
-        msg.children[0].innerText = "Unfollow";
+function renaming_btn(posts, user_id) {
+  posts.forEach((post) => {
+    if (post.attributes.id.value == user_id) {
+      if (post.children[0].innerText == "Follow") {
+        post.children[0].innerText = "Unfollow";
       } else {
-        msg.children[0].innerText = "Follow";
+        post.children[0].innerText = "Follow";
       }
     }
   });
 }
 
 function forms_list_follow(evt) {
-  msgs = document.querySelectorAll(".follows");
-  user_id = evt.target.id;
+  const posts = document.querySelectorAll(".follows");
+  const user_id = evt.target.id;
   let res = "";
-  msgs.forEach((msg) => {
-    if (msg.attributes.id.value == user_id) {
-      if (msg.children[0].innerText == "Follow") {
-        msg.children[0].innerText = "Unfollow";
+  posts.forEach((post) => {
+    if (post.attributes.id.value == user_id) {
+      if (post.children[0].innerText == "Follow") {
+        post.children[0].innerText = "Unfollow";
         res = "Unfollow";
-        msg.children[0].classList.remove("text-primary");
-        msg.children[0].classList.add("text-danger");
+        post.children[0].classList.remove("text-primary");
+        post.children[0].classList.add("text-danger");
       } else {
-        msg.children[0].innerText = "Follow";
-        msg.children[0].classList.add("text-primary");
-        msg.children[0].classList.remove("text-danger");
+        post.children[0].innerText = "Follow";
+        post.children[0].classList.add("text-primary");
+        post.children[0].classList.remove("text-danger");
 
         res = "Follow";
       }
@@ -183,8 +183,8 @@ function forms_list_follow(evt) {
 
 function like_form(evt) {
   evt.preventDefault();
-  const msg_id = parseInt(evt.target.id);
-  const like_icon = document.querySelector(`#like_icon${msg_id}`);
+  const post_id = parseInt(evt.target.id);
+  const like_icon = document.querySelector(`#like_icon${post_id}`);
   const stat_likes = document.querySelector(".stat-likes");
   const user_id = document.querySelector(".logout");
   if (like_icon.classList.contains("fa-regular")) {
@@ -215,9 +215,9 @@ function like_form(evt) {
   }
 }
 
-async function like_msg(msg_id) {
+async function like_post(post_id) {
   const data = {
-    message_id: msg_id,
+    post_id: post_id,
   };
   const rest = await axios
     .post(`/messages/like`, data)
@@ -229,9 +229,9 @@ async function like_msg(msg_id) {
     });
 }
 
-async function delete_msg(msg_id) {
+async function delete_post(post_id) {
   data = {
-    message_id: msg_id,
+    post_id: post_id,
   };
   await axios.post("/messages/delete", data);
 }

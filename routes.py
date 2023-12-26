@@ -10,13 +10,13 @@ from flask import (
     request,
 )
 from init import db
-from models import Comment, Repost, User, Message, Likes
+from models import Comment, Repost, User, Post, Likes
 from forms import (
     CommentForm,
     DirectMessageForm,
     EditUserForm,
     LoginForm,
-    MessageForm,
+    PostForm,
     UserForm,
 )
 from functools import wraps
@@ -74,23 +74,23 @@ def home():
     user_id = session.get("user_id", None)
     if user_id:
         user = db.get_or_404(User, user_id)
-        form = MessageForm()
+        form = PostForm()
 
-        messages = (
+        posts = (
             db.session.execute(
-                db.select(Message).order_by(Message.timestamp.desc()).limit(20)
+                db.select(Post).order_by(Post.timestamp.desc()).limit(20)
             )
             .scalars()
             .all()
         )
 
         if form.validate_on_submit():
-            message = Message(text=form.text.data, user_id=user.id)
-            db.session.add(message)
+            post = Post(text=form.text.data, user_id=user.id)
+            db.session.add(post)
             db.session.commit()
             return redirect(url_for("app_routes.home"))
 
-        return render_template("home.html", user=user, form=form, messages=messages)
+        return render_template("home.html", user=user, form=form, posts=posts)
     return render_template("home-non.html")
 
 
@@ -170,52 +170,51 @@ def logout():
 @login_required
 def show_user_profile(user_id):
     user = db.get_or_404(User, user_id)
-    all_messages_id = db.session.execute(
-        db.select(Message.id, Message.timestamp)
-        .where(Message.user_id == user_id)
+    all_posts_id = db.session.execute(
+        db.select(Post.id, Post.timestamp)
+        .where(Post.user_id == user_id)
         .union(
-            db.select(Message.id, Repost.timestamp)
+            db.select(Post.id, Repost.timestamp)
             .join(Repost)
             .where(Repost.user_id == user_id)
         )
         .order_by(db.desc("timestamp"))
         .limit(10)
     ).scalars()
-    repost_id = [message.id for message in user.reposted]
+    repost_id = [post.id for post in user.reposted]
 
-    messages = [db.get_or_404(Message, id) for id in all_messages_id]
-    msgs = []
-    for msg in messages:
-        if msg.id in repost_id:
-            msgs.append(
+    all_posts = [db.get_or_404(Post, id) for id in all_posts_id]
+    posts = []
+    for pst in all_posts:
+        if pst.id in repost_id:
+            posts.append(
                 {
-                    "message": msg,
+                    "post": pst,
                     "original": False,
                 }
             )
-            repost_id.remove(msg.id)
+            repost_id.remove(pst.id)
         else:
-            msgs.append(
+            posts.append(
                 {
-                    "message": msg,
+                    "post": pst,
                     "original": True,
                 }
             )
 
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        g.user.messages.append(message)
+        post = Post(text=form.text.data, user_id=user.id)
+        g.user.posts.append(post)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
     return render_template(
         "user_profile.html",
         user=user,
         form=form,
-        messages=messages,
         edit_form=edit_form,
-        msgs=msgs,
+        posts=posts,
     )
 
 
@@ -272,13 +271,13 @@ def search():
     users = db.session.execute(
         db.select(User).where(User.username.ilike(f"%{search}%")).limit(10)
     ).scalars()
-    messages = db.session.execute(
-        db.select(Message).where(Message.text.ilike(f"%{search}%")).limit(10)
+    posts = db.session.execute(
+        db.select(Post).where(Post.text.ilike(f"%{search}%")).limit(10)
     ).scalars()
-    form = MessageForm()
+    form = PostForm()
 
     return render_template(
-        "search.html", users=users, messages=messages, form=form, user=g.user
+        "search.html", users=users, posts=posts, form=form, user=g.user
     )
 
 
@@ -303,11 +302,11 @@ def follow_user():
 @login_required
 def show_user_following(user_id):
     user = db.get_or_404(User, user_id)
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        db.session.add(message)
+        post = PostForm(text=form.text.data, user_id=user.id)
+        db.session.add(post)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
@@ -324,11 +323,11 @@ def show_user_following(user_id):
 @login_required
 def show_user_followers(user_id):
     user = db.get_or_404(User, user_id)
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        db.session.add(message)
+        post = PostForm(text=form.text.data, user_id=user.id)
+        db.session.add(post)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
@@ -346,38 +345,38 @@ def load_more_msg():
     offset = 10
     if request.json:
         index = request.json["index"]
-        if index + offset >= len(Message.query.all()):
-            offset = len(Message.query.all()) - 1
-        messages = (
+        if index + offset >= len(Post.query.all()):
+            offset = len(Post.query.all()) - 1
+        posts = (
             db.session.execute(
-                db.select(Message)
-                .order_by(Message.timestamp.desc())
+                db.select(Post)
+                .order_by(Post.timestamp.desc())
                 .slice(index, index + offset)
             )
             .scalars()
             .all()
         )
 
-        all_msg = [
+        all_posts = [
             {
-                "id": msg.id,
-                "text": msg.text,
-                "timestamp": msg.timestamp,
-                "user_id": msg.user_id,
-                "image_url": msg.user.image_url,
-                "username": msg.user.username,
-                "commented": msg in g.user.comments,
-                "like": msg in g.user.likes,
-                "repost": msg in g.user.reposted,
-                "cmt_cnt": len(msg.comments),
-                "likes_cnt": len(msg.users),
-                "repost_cnt": len(msg.reposted),
+                "id": post.id,
+                "text": post.text,
+                "timestamp": post.timestamp,
+                "user_id": post.user_id,
+                "image_url": post.user.image_url,
+                "username": post.user.username,
+                "commented": post in g.user.comments,
+                "like": post in g.user.likes,
+                "repost": post in g.user.reposted,
+                "cmt_cnt": len(post.comments),
+                "likes_cnt": len(post.users),
+                "repost_cnt": len(post.reposted),
                 "guser": g.user.id,
-                "follow": msg.user in g.user.following,
+                "follow": post.user in g.user.following,
             }
-            for msg in messages
+            for post in posts
         ]
-        return jsonify(all_msg)
+        return jsonify(all_posts)
     return jsonify(response={"failed": 404})
 
 
@@ -389,53 +388,50 @@ def load_more_profiel_msg():
         index = request.json["index"]
         user_id = request.json["id"]
         user = db.get_or_404(User, user_id)
-        if index + offset >= len(
-            db.session.query(Message).filter_by(user_id=user_id).all()
-        ):
-            offset = len(db.session.query(Message).filter_by(user_id=user_id).all()) - 1
-        all_messages_id = db.session.execute(
-            db.select(Message.id, Message.timestamp)
-            .where(Message.user_id == user_id)
+
+        all_posts_id = db.session.execute(
+            db.select(Post.id, Post.timestamp)
+            .where(Post.user_id == user_id)
             .union(
-                db.select(Message.id, Repost.timestamp)
+                db.select(Post.id, Repost.timestamp)
                 .join(Repost)
                 .where(Repost.user_id == user_id)
             )
             .order_by(db.desc("timestamp"))
             .slice(index, index + offset)
         ).scalars()
-        repost_id = [message.id for message in user.reposted]
+        repost_id = [post.id for post in user.reposted]
 
-        messages = [db.get_or_404(Message, id) for id in all_messages_id]
+        posts = [db.get_or_404(Post, id) for id in all_posts_id]
 
         # serialize messages
-        all_msg = []
-        for msg in messages:
-            all_msg.append(
+        all_posts = []
+        for post in posts:
+            all_posts.append(
                 {
-                    "id": msg.id,
-                    "text": msg.text,
-                    "timestamp": msg.timestamp,
-                    "user_id": msg.user_id,
-                    "image_url": msg.user.image_url,
-                    "username": msg.user.username,
-                    "commented": msg in g.user.comments,
-                    "like": msg in g.user.likes,
-                    "repost": msg in g.user.reposted,
-                    "cmt_cnt": len(msg.comments),
-                    "likes_cnt": len(msg.users),
-                    "repost_cnt": len(msg.reposted),
+                    "id": post.id,
+                    "text": post.text,
+                    "timestamp": post.timestamp,
+                    "user_id": post.user_id,
+                    "image_url": post.user.image_url,
+                    "username": post.user.username,
+                    "commented": post in g.user.comments,
+                    "like": post in g.user.likes,
+                    "repost": post in g.user.reposted,
+                    "cmt_cnt": len(post.comments),
+                    "likes_cnt": len(post.users),
+                    "repost_cnt": len(post.reposted),
                     "guser": g.user.id,
-                    "follow": msg.user in g.user.following,
-                    "not_original": msg.id in repost_id,
+                    "follow": post.user in g.user.following,
+                    "not_original": post.id in repost_id,
                     "page": user_id == g.user.id,
                     "page_username": user.username,
                 }
             )
-            if msg.id in repost_id:
-                repost_id.remove(msg.id)
+            if post.id in repost_id:
+                repost_id.remove(post.id)
 
-        return jsonify(all_msg)
+        return jsonify(all_posts)
     return jsonify(response={"failed": 404})
 
 
@@ -499,9 +495,9 @@ def load_comments():
     offset = 10
     if request.json:
         index = request.json["index"]
-        message_id = request.json["message_id"]
-        message = db.get_or_404(Message, message_id)
-        comments = message.comments[index : index + offset]
+        post_id = request.json["post_id"]
+        post = db.get_or_404(Post, post_id)
+        comments = post.comments[index : index + offset]
         # serialize comments
         cmts = [
             {
@@ -526,11 +522,11 @@ def load_comments():
 def add_post():
     data = request.json
     print(data)
-    form = MessageForm(obj=data)
+    form = PostForm(obj=data)
     if form.validate():
-        message = Message()
-        form.populate_obj(message)
-        g.user.messages.append(message)
+        post = Post()
+        form.populate_obj(post)
+        g.user.posts.append(post)
         db.session.commit()
         response = {
             "user": {
@@ -538,10 +534,10 @@ def add_post():
                 "username": g.user.username,
                 "image_url": g.user.image_url,
             },
-            "message": {
-                "id": message.id,
-                "timestamp": message.timestamp,
-                "text": message.text,
+            "post": {
+                "id": post.id,
+                "timestamp": post.timestamp,
+                "text": post.text,
             },
         }
 
@@ -552,10 +548,10 @@ def add_post():
 # diplay the messages liked by the user
 @app_routes.route("/users/messages/likes/<int:user_id>")
 @login_required
-def show_liked_messagess(user_id):
+def show_liked_post(user_id):
     user = db.get_or_404(User, user_id)
 
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     return render_template("likes.html", user=user, form=form, edit_form=edit_form)
 
@@ -568,13 +564,13 @@ def load_likes_msg():
         index = request.json["index"]
         user_id = request.json["id"]
         user = db.get_or_404(User, user_id)
-        if index + offset >= len(Message.query.all()):
-            offset = len(Message.query.all())
-        messages = (
+        if index + offset >= len(Post.query.all()):
+            offset = len(Post.query.all())
+        posts = (
             db.session.execute(
-                db.select(Message)
+                db.select(Post)
                 .join(Likes)
-                .where(Likes.message_id == Message.id, Likes.user_id == user.id)
+                .where(Likes.post_id == Post.id, Likes.user_id == user.id)
                 .order_by(Likes.id.desc())
                 .slice(index, index + offset)
             )
@@ -583,38 +579,38 @@ def load_likes_msg():
         )
 
         # serialize messages
-        all_msg = [
+        all_posts = [
             {
-                "id": msg.id,
-                "text": msg.text,
-                "timestamp": msg.timestamp,
-                "user_id": msg.user_id,
-                "image_url": msg.user.image_url,
-                "username": msg.user.username,
-                "commented": msg in g.user.comments,
-                "like": msg in g.user.likes,
-                "repost": msg in g.user.reposted,
-                "cmt_cnt": len(msg.comments),
-                "likes_cnt": len(msg.users),
-                "repost_cnt": len(msg.reposted),
+                "id": post.id,
+                "text": post.text,
+                "timestamp": post.timestamp,
+                "user_id": post.user_id,
+                "image_url": post.user.image_url,
+                "username": post.user.username,
+                "commented": post in g.user.comments,
+                "like": post in g.user.likes,
+                "repost": post in g.user.reposted,
+                "cmt_cnt": len(post.comments),
+                "likes_cnt": len(post.users),
+                "repost_cnt": len(post.reposted),
                 "guser": g.user.id,
-                "follow": msg.user in g.user.following,
+                "follow": post.user in g.user.following,
             }
-            for msg in messages
+            for post in posts
         ]
-        return jsonify(all_msg)
+        return jsonify(all_posts)
     return jsonify("failed")
 
 
 # display the message and a form to add comments
-@app_routes.route("/messages/<int:message_id>")
+@app_routes.route("/messages/<int:post_id>")
 @login_required
-def show_message(message_id):
-    msg = db.get_or_404(Message, message_id)
+def show_message(post_id):
+    post = db.get_or_404(Post, post_id)
     comment_form = CommentForm()
-    form = MessageForm()
+    form = PostForm()
     return render_template(
-        "message.html", msg=msg, comment_form=comment_form, form=form, user=g.user
+        "message.html", post=post, comment_form=comment_form, form=form, user=g.user
     )
 
 
@@ -626,7 +622,7 @@ def add_comment():
     data = request.json
     form = CommentForm(obj=data)
     if request.json:
-        message = db.get_or_404(Message, request.json["message_id"])
+        message = db.get_or_404(Post, request.json["post_id"])
         if form.validate_on_submit():
             comment = Comment()
             form.populate_obj(comment)
@@ -658,15 +654,15 @@ def delete_comment():
         comment_id = request.json["comment_id"]
 
         comment = db.get_or_404(Comment, comment_id)
-        message = db.get_or_404(Message, comment.message_id)
+        post = db.get_or_404(Post, comment.post_id)
 
         db.session.delete(comment)
         db.session.commit()
         return jsonify(
             response={
                 "response": "deleted",
-                "commented": g.user in message.users_commented,
-                "message_id": message.id,
+                "commented": g.user in post.users_commented,
+                "message_id": post.id,
             }
         )
     return jsonify(response={"response": "failed"})
@@ -674,14 +670,14 @@ def delete_comment():
 
 # delete a message and the comments associated for the message page
 # then return to profile page
-@app_routes.route("/messages/delete/<int:msg_id>", methods=["POST"])
+@app_routes.route("/messages/delete/<int:post_id>", methods=["POST"])
 @login_required
-def delete_show_message(msg_id):
-    if msg_id:
-        message = db.get_or_404(Message, msg_id)
-        for cmt in message.comments:
+def delete_show_message(post_id):
+    if post_id:
+        post = db.get_or_404(Post, post_id)
+        for cmt in post.comments:
             db.session.delete(cmt)
-        db.session.delete(message)
+        db.session.delete(post)
         db.session.commit()
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
 
@@ -691,11 +687,11 @@ def delete_show_message(msg_id):
 @login_required
 def delete_message():
     if request.json:
-        message_id = request.json["message_id"]
-        msg = db.get_or_404(Message, message_id)
-        for comment in msg.comments:
+        post_id = request.json["post_id"]
+        post = db.get_or_404(Post, post_id)
+        for comment in post.comments:
             db.session.delete(comment)
-        db.session.delete(msg)
+        db.session.delete(post)
         db.session.commit()
     return jsonify(response={"data": 200})
 
@@ -705,12 +701,12 @@ def delete_message():
 @login_required
 def like_message():
     if request.json:
-        message_id = request.json["message_id"]
-        message = db.get_or_404(Message, int(message_id))
-        if message in g.user.likes:
-            g.user.likes.remove(message)
+        post_id = request.json["post_id"]
+        post = db.get_or_404(Post, post_id)
+        if post in g.user.likes:
+            g.user.likes.remove(post)
         else:
-            g.user.likes.append(message)
+            g.user.likes.append(post)
     db.session.commit()
     return jsonify(response={"response": 200})
 
@@ -720,10 +716,10 @@ def like_message():
 @login_required
 def respost_message():
     if request.json:
-        message = db.get_or_404(Message, request.json["message_id"])
-        if message in g.user.reposted:
-            g.user.reposted.remove(message)
+        post = db.get_or_404(Post, request.json["post_id"])
+        if post in g.user.reposted:
+            g.user.reposted.remove(post)
         else:
-            g.user.reposted.append(message)
+            g.user.reposted.append(post)
         db.session.commit()
     return jsonify(response={"response": 200})

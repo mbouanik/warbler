@@ -26,7 +26,7 @@ class Likes(db.Model):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id"))
 
     def __init__(self, **kwargs) -> None:
         super(Likes, self).__init__(**kwargs)
@@ -51,8 +51,8 @@ class Repost(db.Model):
         DateTime, nullable=False, default=datetime.utcnow
     )
 
-    message_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("messages.id"), primary_key=True
+    post_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("posts.id"), primary_key=True
     )
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("users.id"), primary_key=True
@@ -68,7 +68,7 @@ class Comment(db.Model):
         DateTime, nullable=False, default=datetime.utcnow
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id"))
 
     user = Relationship("User")
 
@@ -76,8 +76,8 @@ class Comment(db.Model):
         super(Comment, self).__init__(**kwargs)
 
 
-class Message(db.Model):
-    __tablename__ = "messages"
+class Post(db.Model):
+    __tablename__ = "posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(148), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(
@@ -89,18 +89,18 @@ class Message(db.Model):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     reposts: Mapped[Repost] = Relationship(
-        "Repost", backref="messages", cascade="all,delete-orphan"
+        "Repost", backref="posts", cascade="all,delete-orphan"
     )
     comments: Mapped[Comment] = Relationship(
         "Comment",
-        backref="message",
+        backref="post",
         cascade="all, delete-orphan",
         order_by=("desc(Comment.id)"),
     )
     users_commented = Relationship("User", secondary="comments")
 
     def __init__(self, **kwargs) -> None:
-        super(Message, self).__init__(**kwargs)
+        super(Post, self).__init__(**kwargs)
 
 
 class User(db.Model):
@@ -121,8 +121,8 @@ class User(db.Model):
     bio: Mapped[str] = mapped_column(String(100), default="")
     location: Mapped[str] = mapped_column(String(50), default="")
 
-    messages: Mapped[Message] = Relationship(
-        "Message", backref="user", cascade="all, delete-orphan"
+    posts: Mapped[Post] = Relationship(
+        "Post", backref="user", cascade="all, delete-orphan"
     )
 
     followers: Mapped[Follows] = Relationship(
@@ -140,17 +140,17 @@ class User(db.Model):
     )
 
     likes: Mapped[Likes] = Relationship(
-        "Message",
+        "Post",
         secondary="likes",
         backref="users",
         order_by="desc(Likes.id)",
     )
 
     comments: Mapped[Comment] = Relationship(
-        "Message", secondary="comments", cascade="all, delete"
+        "Post", secondary="comments", cascade="all, delete"
     )
     reposted: Mapped[Repost] = Relationship(
-        "Message", secondary="reposts", backref="reposted", cascade="all, delete"
+        "Post", secondary="reposts", backref="reposted", cascade="all, delete"
     )
 
     def __init__(self, **kwargs) -> None:

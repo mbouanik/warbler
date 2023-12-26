@@ -6,12 +6,11 @@ forms_list_comments.addEventListener("submit", (evt) => {
     forms_list_follow(evt);
   } else if (evt.target.classList.contains("delete-comment")) {
     delete_comment(parseInt(evt.target.id));
-    remove_comment(evt);
     const comment_icon = document.querySelector(".cmt");
     comment_icon.innerText = ` ${parseInt(comment_icon.innerText) - 1}`;
   }
 });
-async function delete_comment(comment_id, message_id) {
+async function delete_comment(comment_id) {
   data = {
     comment_id: comment_id,
   };
@@ -24,10 +23,11 @@ async function delete_comment(comment_id, message_id) {
     comment_icon.classList.add("fa-regular");
     comment_icon.classList.remove("fa-solid");
   }
+  remove_comment(comment_id);
 }
 
-function remove_comment(evt) {
-  const comment = document.querySelector(`#comment${evt.target.id}`);
+function remove_comment(cmt_id) {
+  const comment = document.querySelector(`#comment${cmt_id}`);
   comment.remove();
 }
 
@@ -39,16 +39,16 @@ comment_form.addEventListener("submit", (evt) => {
 });
 
 async function post_comment(evt) {
-  const message_id = parseInt(evt.target.id);
+  const post_id = parseInt(evt.target.id);
   const text = document.querySelector("#text_comment_form").value;
   const csrf_token = evt.target.csrf_token.value;
   const d = {
     csrf_token: csrf_token,
-    message_id: message_id,
+    post_id: post_id,
     text: text,
   };
   const data = await axios.post(`/messages/comments/add`, d);
-  const comment_icon = document.querySelector(`#comment_icon${message_id}`);
+  const comment_icon = document.querySelector(`#comment_icon${post_id}`);
   comment_icon.innerText = ` ${parseInt(comment_icon.innerText) + 1}`;
   if (!comment_icon.classList.contains("liked")) {
     comment_icon.classList.add("liked");
@@ -91,7 +91,7 @@ async function post_comment(evt) {
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_cmt"
+            data-bs-target="#delete_cmt${data.data.comment.id}"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
@@ -101,7 +101,7 @@ async function post_comment(evt) {
   </div>
 <div
   class="modal fade"
-  id="delete_cmt"
+  id="delete_cmt${data.data.comment.id}"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -173,18 +173,18 @@ function isBottom() {
 async function trackScroll() {
   if (isBottom()) {
     const form = document.querySelector(".post-comment");
-    const message_id = parseInt(form.attributes.id.value);
+    const post_id = parseInt(form.attributes.id.value);
     res = await axios.post(
       "/load-comments",
       (data = {
         index: parseInt(forms_list_comments.children.length),
-        message_id: message_id,
+        post_id: post_id,
       }),
     );
 
     // Perform your action here, such as loading more content
     for (cmt of res.data) {
-      const message = `
+      const comment = `
 <li id="comment${cmt.id}" class="list-group-item">
   <div class="top-message">
     <div class="message">
@@ -241,7 +241,7 @@ async function trackScroll() {
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_msg${cmt.id}"
+            data-bs-target="#delete_cmt${cmt.id}"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
@@ -255,7 +255,7 @@ async function trackScroll() {
 
 <div
   class="modal fade"
-  id="delete_msg${cmt.id}"
+  id="delete_cmt${cmt.id}"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -263,7 +263,7 @@ async function trackScroll() {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="delete_msg${cmt.id}">Modal title</h1>
+        <h1 class="modal-title fs-5" id="delete_cmt${cmt.id}">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -271,10 +271,9 @@ async function trackScroll() {
           aria-label="Close"
         ></button>
       </div>
-      <div class="modal-body">Are You sure you want to delete this post?</div>
+      <div class="modal-body">Are You sure you want to delete this comment?</div>
       <form
         id="${cmt.id}"
-        action="/messages/delete/${cmt.id}"
         class="delete-comment"
         method="POST"
       >
@@ -295,7 +294,7 @@ async function trackScroll() {
 </li>
 `;
       const template = document.createElement("template");
-      template.innerHTML = message;
+      template.innerHTML = comment;
       const t = template.content;
       forms_list_comments.append(t);
     }

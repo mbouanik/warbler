@@ -54,44 +54,44 @@
   <!--   <div class="interaction"> -->
   <!--     <form id="{{comment.id}}" class="like_form" method="POST"> -->
   <!--       <button class="btn"> -->
-  <!--         {% if msg in g.user.likes %} -->
-  <!--         <i id="like_icon{{msg.id}}" class="fa-solid fa-thumbs-up liked"> -->
-  <!--           {{ msg.users | length }} -->
+  <!--         {% if post in g.user.likes %} -->
+  <!--         <i id="like_icon{{post.id}}" class="fa-solid fa-thumbs-up liked"> -->
+  <!--           {{ post.users | length }} -->
   <!--         </i> -->
   <!--         {% else %} -->
-  <!--         <i id="like_icon{{msg.id}}" class="fa-regular fa-thumbs-up not-liked"> -->
-  <!--           {{ msg.users | length }} -->
+  <!--         <i id="like_icon{{post.id}}" class="fa-regular fa-thumbs-up not-liked"> -->
+  <!--           {{ post.users | length }} -->
   <!--         </i> -->
   <!--         {% endif %} -->
   <!--       </button> -->
   <!--     </form> -->
   <!--   </div> -->
   <!--   <div class="interaction"> -->
-  <!--     <a class="btn primary" href="/messages/{{ msg.id }}"> -->
-  <!--       {% if msg in g.user.comments %} -->
+  <!--     <a class="btn primary" href="/messages/{{ post.id }}"> -->
+  <!--       {% if post in g.user.comments %} -->
   <!--       <i class="fa-sharp fa-solid fa-comment liked"> -->
-  <!--         <small id="comments_count"> {{ msg.comments | length }} </small> -->
+  <!--         <small id="comments_count"> {{ post.comments | length }} </small> -->
   <!--       </i> -->
   <!--       {% else %} -->
   <!--       <i class="fa-sharp fa-regular fa-comment not-commented"> -->
-  <!--         <small id="comments_count"> {{ msg.comments | length }} </small> -->
+  <!--         <small id="comments_count"> {{ post.comments | length }} </small> -->
   <!--       </i> -->
   <!--       {% endif %} -->
   <!--     </a> -->
   <!--   </div> -->
   <!--   <div class="interaction"> -->
-  <!--     <form id="{{msg.id}}" class="repost_form" method="POST"> -->
+  <!--     <form id="{{post.id}}" class="repost_form" method="POST"> -->
   <!--       <button class="btn"> -->
-  <!--         {% if msg in g.user.reposted %} -->
-  <!--         <i id="repost_icon{{msg.id}}" class="fa-solid fa-retweet reposted"> -->
-  <!--           {{ msg.reposted | length }} -->
+  <!--         {% if post in g.user.reposted %} -->
+  <!--         <i id="repost_icon{{post.id}}" class="fa-solid fa-retweet reposted"> -->
+  <!--           {{ post.reposted | length }} -->
   <!--         </i> -->
   <!--         {% else %} -->
   <!--         <i -->
-  <!--           id="repost_icon{{msg.id}}" -->
+  <!--           id="repost_icon{{post.id}}" -->
   <!--           class="fa-solid fa-retweet not-reposted" -->
   <!--         > -->
-  <!--           {{ msg.reposted | length }} -->
+  <!--           {{ post.reposted | length }} -->
   <!--         </i> -->
   <!--         {% endif %} -->
   <!--       </button> -->

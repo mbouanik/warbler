@@ -3,13 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from dotenv import load_dotenv
 from os import getenv
-from flask_wtf.csrf import CSRFProtect
+# from flask_wtf.csrf import CSRFProtect
 
 load_dotenv()
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
-csrf = CSRFProtect()
+# csrf = CSRFProtect()
 
 
 def create_app():

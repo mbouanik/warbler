@@ -28,17 +28,16 @@ async function trackScroll() {
       "/load-profile-msg",
       (data = { index: index, id: user_id }),
     );
+    for (pst of res.data) {
+      const post = `
 
-    for (msg of res.data) {
-      const message = `
 
-
-<li id="msg${msg.id}" class="list-group-item">
+<li id="post${pst.id}" class="list-group-item">
   <div class="repost-message">
 ${
-  msg.not_original
+  pst.not_original
     ? ` ${
-        msg.page
+        pst.page
           ? `
  <small style="position: absolute"
       >You reposted <i class="fa-solid fa-retweet"></i>
@@ -47,7 +46,7 @@ ${
 `
           : `
  <small style="position: absolute"
-      >${msg.page_username} reposted <i class="fa-solid fa-retweet"></i>
+      >${pst.page_username} reposted <i class="fa-solid fa-retweet"></i>
     </small>
 
 `
@@ -60,13 +59,13 @@ ${
   <div class="top-message">
     <div class="message">
       <div>
-        <a class="" href="/users/${msg.user_id}">
-          <img src="${msg.image_url}" alt="" class="timeline-image" />
+        <a class="" href="/users/${pst.user_id}">
+          <img src="${pst.image_url}" alt="" class="timeline-image" />
         </a>
       </div>
       <div class="message-area">
-        <a href="/users/${msg.user_id}">@${msg.username}</a>
-         <span class="text-muted">${new Date(msg.timestamp).toLocaleDateString(
+        <a href="/users/${pst.user_id}">@${pst.username}</a>
+         <span class="text-muted">${new Date(pst.timestamp).toLocaleDateString(
            "en-US",
            {
              month: "short",
@@ -75,7 +74,7 @@ ${
            },
          )}</span>
 
-    <div>${msg.text}</div>
+    <div>${pst.text}</div>
       </div>
     </div>
     <div class="">
@@ -93,11 +92,11 @@ ${
         </li>
         <li class="dropdown-itr text-primary">
         ${
-          msg.user_id != msg.guser
+          pst.user_id != pst.guser
             ? `
-          <form id="${msg.user_id}}" class="follows" method="POST">
+          <form id="${pst.user_id}}" class="follows" method="POST">
             ${
-              msg.follow
+              pst.follow
                 ? `  <button class="btn btn-link text-danger">Unfollow</button>
 `
                 : ` <button class="btn btn-link text-mut">Follow</button>`
@@ -112,7 +111,7 @@ ${
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_msg${msg.id}"
+            data-bs-target="#delete_post${pst.id}"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
@@ -123,56 +122,56 @@ ${
     </div>
   </div>
   <!-- <hr class="hr-message" /> -->
-  <div id="msg${msg.id}" class="like-btn">
+  <div id="post${pst.id}" class="like-btn">
     <div class="interaction">
-      <form id="${msg.id}}" class="like-form" method="POST">
+      <form id="${pst.id}}" class="like-form" method="POST">
         <button class="btn">
             ${
-              msg.like
-                ? ` <i id="like_icon${msg.id}" class="fa-solid fa-thumbs-up liked">
-            ${msg.likes_cnt}
+              pst.like
+                ? ` <i id="like_icon${pst.id}" class="fa-solid fa-thumbs-up liked">
+            ${pst.likes_cnt}
           </i>`
-                : `<i id="like_icon${msg.id}" class="fa-regular fa-thumbs-up not-liked">
-            ${msg.likes_cnt}
+                : `<i id="like_icon${pst.id}" class="fa-regular fa-thumbs-up not-liked">
+            ${pst.likes_cnt}
           </i>`
             }
         </button>
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/${msg.id}">
+      <a class="btn primary" href="/messages/${pst.id}">
         ${
-          msg.commented
+          pst.commented
             ? ` <i
-          id="comment_icon${msg.id}"
+          id="comment_icon${pst.id}"
           class="fa-sharp fa-solid fa-comments liked cmt"
         >
-          ${msg.cmt_cnt}
+          ${pst.cmt_cnt}
         </i>
 `
             : ` <i
-          id="comment_icon${msg.id}"
+          id="comment_icon${pst.id}"
           class="fa-sharp fa-regular fa-comments not-commented cmt"
         >
-          ${msg.cmt_cnt}
+          ${pst.cmt_cnt}
         </i>
 `
         }
              </a>
     </div>
     <div class="interaction">
-      <form id="${msg.id}" class="repost-form" method="POST">
+      <form id="${pst.id}" class="repost-form" method="POST">
         <button class="btn">
         ${
-          msg.repost
-            ? ` <i id="repost_icon${msg.id}" class="fa-solid fa-retweet reposted">
-            ${msg.repost_cnt}
+          pst.repost
+            ? ` <i id="repost_icon${pst.id}" class="fa-solid fa-retweet reposted">
+            ${pst.repost_cnt}
           </i>`
             : `<i
-            id="repost_icon${msg.id}"
+            id="repost_icon${pst.id}"
             class="fa-solid fa-retweet not-reposted"
           >
-            ${msg.repost_cnt}
+            ${pst.repost_cnt}
           </i>`
         }
                  </button>
@@ -183,7 +182,7 @@ ${
 
 <div
   class="modal fade"
-  id="delete_msg${msg.id}"
+  id="delete_post${pst.id}"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -191,7 +190,7 @@ ${
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="delete_msg${msg.id}">Modal title</h1>
+        <h1 class="modal-title fs-5" id="delete_post${pst.id}">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -201,9 +200,9 @@ ${
       </div>
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
-        id="${msg.id}"
-        action="/messages/delete/${msg.id}"
-        class="delete-msg"
+        id="${pst.id}"
+        action="/messages/delete/${pst.id}"
+        class="delete-post"
         method="POST"
       >
         <div class="modal-footer">
@@ -223,7 +222,7 @@ ${
 </li>
 `;
       const template = document.createElement("template");
-      template.innerHTML = message;
+      template.innerHTML = post;
       const t = template.content;
       forms_list.append(t);
     }

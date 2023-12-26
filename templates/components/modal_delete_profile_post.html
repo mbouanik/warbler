@@ -1,6 +1,6 @@
 <div
   class="modal fade"
-  id="delete_msg"
+  id="delete_post"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -8,7 +8,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="delete_msg">Modal title</h1>
+        <h1 class="modal-title fs-5" id="delete_post">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -18,9 +18,9 @@
       </div>
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
-        id="{{msg.message.id}}"
-        action="/messages/delete/{{msg.message.id}}"
-        class="delete-msg"
+        id="{{pst.post.id}}"
+        action="/messages/delete/{{pst.post.id}}"
+        class="delete-post"
         method="POST"
       >
         <div class="modal-footer">
