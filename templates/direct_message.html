@@ -1,13 +1,8 @@
 {% extends "base.html" %} {% block title %} {% endblock %} 
 {% block content %}
-   <!--  <form action=""> -->
-   <!--       {{ direct_message_form.csrf_token }} -->
-   <!--      {{ direct_message_form.content(class="form-control", placeholder="What do you think?") }} -->
-   <!--      <button class="btn btn-primary">Send</button> -->
-   <!---->
-   <!--  </form> -->
-   <!--  -->
-
+    {% for direct_message in direct_messages %}
+        {{direct_message}}
+    {% endfor %}
     {% include "components/modal_post_form.html" %}
-    <script src="{{ url_for('app_routes.static', filename='direct_message.js' ) }} "></script>
+    <script src="{{ url_for('app_routes.static', filename='direct_message.js' ) }}"></script>
 {% endblock %}

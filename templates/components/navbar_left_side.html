@@ -21,12 +21,14 @@
     {% if g.user %}
     <li class="nav-item">
       <a href="/" class="nav-link text-white home" aria-current="page">
-        <i class="fa-solid fa-house"></i> <span class="link-text">Home</span>
+        <i class="fa-solid fa-house"></i>
+        <span class="link-text">&nbsp;Home</span>
       </a>
     </li>
     <li class="nav-item">
       <a href="/users/{{g.user.id}}" class="nav-link text-white profile">
-        <i class="fa-solid fa-user"></i> <span class="link-text">Profile</span>
+        <i class="fa-solid fa-user"></i>
+        <span class="link-text">&nbsp;Profile</span>
       </a>
     </li>
     <li class="nav-item">
@@ -35,7 +37,7 @@
         class="nav-link text-white direct-message"
       >
         <i class="fa-solid fa-message"></i>
-        <span class="link-text">Messages</span>
+        <span class="link-text">&nbsp;Messages</span>
       </a>
     </li>
 
@@ -45,7 +47,7 @@
         class="nav-link text-white following"
       >
         <i class="fa-solid fa-user-group"></i>
-        <span class="link-text">Following</span>
+        <span class="link-text">&nbsp;Following</span>
       </a>
     </li>
     <li class="nav-item">
@@ -54,7 +56,7 @@
         class="nav-link text-white followers"
       >
         <i class="fa-solid fa-users"></i>
-        <span class="link-text">Followers</span>
+        <span class="link-text">&nbsp;Followers</span>
       </a>
     </li>
     <li class="nav-item">
@@ -62,7 +64,8 @@
         href="/users/messages/likes/{{g.user.id}}"
         class="nav-link text-white likes"
       >
-        <i class="fa-solid fa-heart"></i> <span class="link-text">Likes</span>
+        <i class="fa-solid fa-heart"></i>
+        <span class="link-text">&nbsp;Likes</span>
       </a>
     </li>
     <li class="nav-item post-btn">

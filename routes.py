@@ -1,4 +1,3 @@
-import re
 from flask import (
     Blueprint,
     flash,
@@ -11,7 +10,7 @@ from flask import (
     request,
 )
 from init import db
-from models import Comment, DirectMessage, Repost, User, Message, Likes
+from models import Comment, Repost, User, Message, Likes
 from forms import (
     CommentForm,
     DirectMessageForm,
@@ -31,12 +30,12 @@ app_routes = Blueprint(
 )
 
 
-# verify if you login
+# verify if you are login
 def is_authenticated():
     return "user_id" in session
 
 
-# decorator for accessing each page you need to be login
+# decorator to access any page you need to be login
 def login_required(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
@@ -94,8 +93,6 @@ def home():
         return render_template("home.html", user=user, form=form, messages=messages)
     return render_template("home-non.html")
 
-    return redirect(url_for("app_routes.authenticate"))
-
 
 @app_routes.route("/login", methods=["GET", "POST"])
 def login():
@@ -132,6 +129,8 @@ def signup():
 # login or signup
 @app_routes.route("/authenticate", methods=["GET", "POST"])
 def authenticate():
+    if session.get("user_id", None):
+        return redirect(url_for("app_routes.home"))
     signup_form = UserForm()
     login_form = LoginForm()
 
@@ -220,23 +219,23 @@ def show_user_profile(user_id):
     )
 
 
-@app_routes.route("/users/direct_message/<int:user_id>")
-def direct_message(user_id):
-    user = db.get_or_404(User, user_id)
-    form = MessageForm()
-    direct_message_form = DirectMessageForm()
-    # if direct_message_form.validate_on_submit():
-    # message = DirectMessage()
-    # direct_message_form.populate_obj(obj=message)
-    # user.direct_message.append(message)
-
-    # db.session.commit()
-    return render_template(
-        "direct_message.html",
-        user=user,
-        form=form,
-        direct_message_form=direct_message_form,
-    )
+# @app_routes.route("/users/direct_message/<int:user_id>")
+# def direct_message(user_id):
+#     user = db.get_or_404(User, user_id)
+#     form = MessageForm()
+#     # if direct_message_form.validate_on_submit():
+#     # message = DirectMessage()
+#     # direct_message_form.populate_obj(obj=message)
+#     # user.direct_message.append(message)
+#
+#     # db.session.commit()
+#     return render_template(
+#         "direct_message.html",
+#         user=user,
+#         form=form,
+#         direct_messages=[1, 2, 3, 4, 5],
+#     )
+#
 
 
 # edit  profile user
@@ -348,7 +347,7 @@ def load_more_msg():
     if request.json:
         index = request.json["index"]
         if index + offset >= len(Message.query.all()):
-            offset = len(Message.query.all())
+            offset = len(Message.query.all()) - 1
         messages = (
             db.session.execute(
                 db.select(Message)
@@ -379,7 +378,7 @@ def load_more_msg():
             for msg in messages
         ]
         return jsonify(all_msg)
-    return jsonify(response={"ok": 200})
+    return jsonify(response={"failed": 404})
 
 
 # load profile messages as you scroll down
@@ -393,7 +392,7 @@ def load_more_profiel_msg():
         if index + offset >= len(
             db.session.query(Message).filter_by(user_id=user_id).all()
         ):
-            offset = len(db.session.query(Message).filter_by(user_id=user_id).all())
+            offset = len(db.session.query(Message).filter_by(user_id=user_id).all()) - 1
         all_messages_id = db.session.execute(
             db.select(Message.id, Message.timestamp)
             .where(Message.user_id == user_id)
@@ -437,7 +436,7 @@ def load_more_profiel_msg():
                 repost_id.remove(msg.id)
 
         return jsonify(all_msg)
-    return jsonify(response={"ok": 200})
+    return jsonify(response={"failed": 404})
 
 
 # load mor following as you scroll down
@@ -604,7 +603,7 @@ def load_likes_msg():
             for msg in messages
         ]
         return jsonify(all_msg)
-    return jsonify(200)
+    return jsonify("failed")
 
 
 # display the message and a form to add comments
@@ -647,7 +646,7 @@ def add_comment():
                     "text": comment.text,
                 },
             }
-        return jsonify(response)
+            return jsonify(response)
     return jsonify(response={"failed": "failed to add comment"})
 
 

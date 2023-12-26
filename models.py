@@ -103,37 +103,6 @@ class Message(db.Model):
         super(Message, self).__init__(**kwargs)
 
 
-class Conversation(db.Model):
-    __tablename__ = "conversations"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    content: Mapped[str] = mapped_column(Text)
-    timestamp: Mapped[DateTime] = mapped_column(
-        DateTime,
-        nullable=False,
-        default=datetime.utcnow,
-    )
-
-
-class DirectMessage:
-    __tablename__ = "direct_messages"
-
-    # id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    sendr_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id"), primary_key=True
-    )
-    recepient_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("users.id"), primary_key=True
-    )
-    conversation_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("conversations.id")
-    )
-    conversation = Relationship(
-        "User", secondary="conversations", cascade="all, delete-orphan"
-    )
-
-
 class User(db.Model):
     __tablename__ = "users"
 
