@@ -253,13 +253,15 @@ def edit_user_profile(user_id):
 
 
 # delete an user
-@app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
+@app_routes.route("/users/delete", methods=["POST"])
 @login_required
-def delete_user(user_id):
+def delete_user():
+    user = db.get_or_404(User, g.user.id)
+    print(g.user)
     do_logout()
-    user = db.get_or_404(User, user_id)
     db.session.delete(user)
     db.session.commit()
+    g.user = None
     return redirect(url_for("app_routes.authenticate"))
 
 
@@ -341,7 +343,7 @@ def show_user_followers(user_id):
 
 # load homepage Posts as you scroll down
 @app_routes.route("/load-posts", methods=["GET", "POST"])
-def load_more_msg():
+def load_more_post():
     offset = 10
     if request.json:
         index = request.json["index"]
@@ -365,7 +367,7 @@ def load_more_msg():
                 "user_id": post.user_id,
                 "image_url": post.user.image_url,
                 "username": post.user.username,
-                "commented": post in g.user.comments,
+                "commented": post in g.user.commented,
                 "like": post in g.user.likes,
                 "repost": post in g.user.reposted,
                 "cmt_cnt": len(post.comments),
@@ -415,7 +417,7 @@ def load_more_profiel_msg():
                     "user_id": post.user_id,
                     "image_url": post.user.image_url,
                     "username": post.user.username,
-                    "commented": post in g.user.comments,
+                    "commented": post in g.user.commented,
                     "like": post in g.user.likes,
                     "repost": post in g.user.reposted,
                     "cmt_cnt": len(post.comments),
@@ -587,7 +589,7 @@ def load_likes_msg():
                 "user_id": post.user_id,
                 "image_url": post.user.image_url,
                 "username": post.user.username,
-                "commented": post in g.user.comments,
+                "commented": post in g.user.commented,
                 "like": post in g.user.likes,
                 "repost": post in g.user.reposted,
                 "cmt_cnt": len(post.comments),
@@ -675,8 +677,8 @@ def delete_comment():
 def delete_show_post_page(post_id):
     if post_id:
         post = db.get_or_404(Post, post_id)
-        for cmt in post.comments:
-            db.session.delete(cmt)
+        # for cmt in post.comments:
+        #     db.session.delete(cmt)
         db.session.delete(post)
         db.session.commit()
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
@@ -689,8 +691,8 @@ def delete_post():
     if request.json:
         post_id = request.json["post_id"]
         post = db.get_or_404(Post, post_id)
-        for comment in post.comments:
-            db.session.delete(comment)
+        # for comment in post.comments:
+        #     db.session.delete(comment)
         db.session.delete(post)
         db.session.commit()
     return jsonify(response={"data": 200})

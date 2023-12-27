@@ -97,7 +97,7 @@ class Post(db.Model):
         cascade="all, delete-orphan",
         order_by=("desc(Comment.id)"),
     )
-    users_commented = Relationship("User", secondary="comments")
+    # users_commented = Relationship("User", secondary="comments")
 
     def __init__(self, **kwargs) -> None:
         super(Post, self).__init__(**kwargs)
@@ -146,9 +146,8 @@ class User(db.Model):
         order_by="desc(Likes.id)",
     )
 
-    comments: Mapped[Comment] = Relationship(
-        "Post", secondary="comments", cascade="all, delete"
-    )
+    comments: Mapped[Comment] = Relationship("Comment", cascade="all, delete-orphan")
+    commented: Mapped[Post] = Relationship("Post", secondary="comments")
     reposted: Mapped[Repost] = Relationship(
         "Post", secondary="reposts", backref="reposted", cascade="all, delete"
     )

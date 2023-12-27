@@ -135,9 +135,12 @@ function renaming_btn(posts, user_id) {
     if (post.attributes.id.value == user_id) {
       if (post.children[0].innerText == "Follow") {
         post.children[0].innerText = "Unfollow";
+        post.children[0].classList.remove("text-primary");
         post.children[0].classList.add("text-danger");
       } else {
         post.children[0].innerText = "Follow";
+        post.children[0].classList.remove("text-danger");
+        post.children[0].classList.add("text-primary");
       }
     }
   });

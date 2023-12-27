@@ -84,7 +84,7 @@
     </div>
     <div class="interaction">
       <a class="btn primary" href="/posts/{{ post.id }}">
-        {% if post in g.user.comments %}
+        {% if post in g.user.commented %}
         <i
           id="comment_icon{{post.id}}"
           class="fa-sharp fa-solid fa-comments liked cmt"
