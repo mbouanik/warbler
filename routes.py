@@ -663,7 +663,8 @@ def delete_comment():
         return jsonify(
             response={
                 "response": "deleted",
-                "commented": g.user in post.users_commented,
+                # "commented": g.user in post.users_commented,
+                "commented": post in g.user.commented,
                 "post_id": post.id,
             }
         )

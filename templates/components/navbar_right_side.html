@@ -42,7 +42,9 @@
           aria-labelledby="dropdownUser1"
         >
           <li class="dropdown-item">
-            <a class="btn btn-link text-white" href="/users/{{g.user.id}}/edit"
+            <a
+              class="btn btn-link text-white"
+              href="{{ url_for('app_routes.edit_user_profile', user_id=g.user.id) }}"
               >Edit</a
             >
           </li>

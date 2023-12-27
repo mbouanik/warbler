@@ -2,12 +2,18 @@
   <div class="top-message">
     <div class="message">
       <div>
-        <a class="" href="/users/{{ post.user.id }}">
+        <a
+          class=""
+          href="{{ url_for( 'app_routes.show_user_profile',user_id=post.user.id) }}"
+        >
           <img src="{{ post.user.image_url }}" alt="" class="timeline-image" />
         </a>
       </div>
       <div class="message-area">
-        <a href="/users/{{ post.user.id }}">@{{ post.user.username }}</a>
+        <a
+          href="{{ url_for( 'app_routes.show_user_profile',user_id=post.user.id) }}"
+          >@{{ post.user.username }}</a
+        >
         <span class="text-muted">
           {{ post.timestamp.strftime('%b%-d, %Y') }}</span
         >
@@ -83,7 +89,10 @@
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/posts/{{ post.id }}">
+      <a
+        class="btn primary"
+        href="{{ url_for('app_routes.show_post', post_id=post.id) }}"
+      >
         {% if post in g.user.commented %}
         <i
           id="comment_icon{{post.id}}"

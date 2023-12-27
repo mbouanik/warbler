@@ -14,7 +14,10 @@
   {%endif %}
   <div class="top-message">
     <div class="message">
-      <a class="" href="/users/{{ pst.post.user.id }}">
+      <a
+        class=""
+        href="{{ url_for( 'app_routes.show_user_profile',user_id=pst.post.user.id) }}"
+      >
         <img
           src="{{ pst.post.user.image_url }}"
           alt=""
@@ -22,7 +25,8 @@
         />
       </a>
       <div class="message-area">
-        <a href="/users/{{ pst.post.user.id }}"
+        <a
+          href="{{ url_for( 'app_routes.show_user_profile',user_id=pst.post.user.id) }}"
           >@{{ pst.post.user.username }}</a
         >
         <span class="text-muted"
@@ -89,7 +93,10 @@
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/posts/{{ pst.post.id }}">
+      <a
+        class="btn primary"
+        href="{{ url_for('app_routes.show_post', post_id=pst.post.id) }}"
+      >
         {% if pst.post in g.user.commented %}
         <i class="fa-sharp fa-solid fa-comments liked">
           <small id="comments_count"> {{ pst.post.comments | length }} </small>
