@@ -83,7 +83,7 @@
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/{{ post.id }}">
+      <a class="btn primary" href="/posts/{{ post.id }}">
         {% if post in g.user.comments %}
         <i
           id="comment_icon{{post.id}}"

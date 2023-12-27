@@ -13,9 +13,8 @@ forms_list.addEventListener("submit", (evt) => {
     follow_form(evt.target);
   } else if (evt.target.classList.contains("delete-post")) {
     // confirm("Are you sure to delete this post?");
-    if (window.location.pathname != `/messages/${evt.target.id}`) {
+    if (window.location.pathname != `/posts/${evt.target.id}`) {
       evt.preventDefault();
-      console.log(evt.target.id);
       delete_post(parseInt(evt.target.id));
       stat_post = document.querySelector(".stat-post");
       if (stat_post) {
@@ -48,7 +47,7 @@ async function repost(post_id) {
     post_id: post_id,
   };
   await axios
-    .post("/messages/repost", data)
+    .post("/posts/repost", data)
     .then(function (response) {
       console.log(response);
     })
@@ -136,6 +135,7 @@ function renaming_btn(posts, user_id) {
     if (post.attributes.id.value == user_id) {
       if (post.children[0].innerText == "Follow") {
         post.children[0].innerText = "Unfollow";
+        post.children[0].classList.add("text-danger");
       } else {
         post.children[0].innerText = "Follow";
       }
@@ -221,7 +221,7 @@ async function like_post(post_id) {
     post_id: post_id,
   };
   const rest = await axios
-    .post(`/messages/like`, data)
+    .post(`/posts/like`, data)
     .then(function (response) {
       console.log(response);
     })
@@ -234,7 +234,7 @@ async function delete_post(post_id) {
   data = {
     post_id: post_id,
   };
-  await axios.post("/messages/delete", data);
+  await axios.post("/posts/delete", data);
 }
 
 const text_post_form = document.querySelector("#text_post_form");

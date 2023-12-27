@@ -339,8 +339,8 @@ def show_user_followers(user_id):
     )
 
 
-# load homepage messages as you scroll down
-@app_routes.route("/load-messages", methods=["GET", "POST"])
+# load homepage Posts as you scroll down
+@app_routes.route("/load-posts", methods=["GET", "POST"])
 def load_more_msg():
     offset = 10
     if request.json:
@@ -380,8 +380,8 @@ def load_more_msg():
     return jsonify(response={"failed": 404})
 
 
-# load profile messages as you scroll down
-@app_routes.route("/load-profile-msg", methods=["POST"])
+# load profile posts as you scroll down
+@app_routes.route("/load-profile-post", methods=["POST"])
 def load_more_profiel_msg():
     offset = 10
     if request.json:
@@ -404,7 +404,7 @@ def load_more_profiel_msg():
 
         posts = [db.get_or_404(Post, id) for id in all_posts_id]
 
-        # serialize messages
+        # serialize posts
         all_posts = []
         for post in posts:
             all_posts.append(
@@ -516,8 +516,8 @@ def load_comments():
     return jsonify("failed")
 
 
-# save the message to the database and return the user and message as json to display it on the dom
-@app_routes.route("/messages", methods=["POST"])
+# save the post to the database and return the user and message as json to display it on the dom
+@app_routes.route("/posts", methods=["POST"])
 @login_required
 def add_post():
     data = request.json
@@ -545,8 +545,8 @@ def add_post():
     return jsonify(response={"response": "failed"})
 
 
-# diplay the messages liked by the user
-@app_routes.route("/users/messages/likes/<int:user_id>")
+# diplay the posts liked by the user
+@app_routes.route("/users/posts/likes/<int:user_id>")
 @login_required
 def show_liked_post(user_id):
     user = db.get_or_404(User, user_id)
@@ -556,8 +556,8 @@ def show_liked_post(user_id):
     return render_template("likes.html", user=user, form=form, edit_form=edit_form)
 
 
-# load messages liked by the user as you scroll down
-@app_routes.route("/load-likes-msg", methods=["POST"])
+# load posts liked by the user as you scroll down
+@app_routes.route("/load-likes-post", methods=["POST"])
 def load_likes_msg():
     offset = 10
     if request.json:
@@ -578,7 +578,7 @@ def load_likes_msg():
             .all()
         )
 
-        # serialize messages
+        # serialize posts
         all_posts = [
             {
                 "id": post.id,
@@ -602,33 +602,33 @@ def load_likes_msg():
     return jsonify("failed")
 
 
-# display the message and a form to add comments
-@app_routes.route("/messages/<int:post_id>")
+# display the post and a form to add comments
+@app_routes.route("/posts/<int:post_id>")
 @login_required
-def show_message(post_id):
+def show_post(post_id):
     post = db.get_or_404(Post, post_id)
     comment_form = CommentForm()
     form = PostForm()
     return render_template(
-        "message.html", post=post, comment_form=comment_form, form=form, user=g.user
+        "post.html", post=post, comment_form=comment_form, form=form, user=g.user
     )
 
 
-# add comment to message and return a json with user and comment serialized
+# add comment to post and return a json with user and comment serialized
 # to display on the DOM
-@app_routes.route("/messages/comments/add", methods=["POST"])
+@app_routes.route("/posts/comments/add", methods=["POST"])
 @login_required
 def add_comment():
     data = request.json
     form = CommentForm(obj=data)
     if request.json:
-        message = db.get_or_404(Post, request.json["post_id"])
+        post = db.get_or_404(Post, request.json["post_id"])
         if form.validate_on_submit():
             comment = Comment()
             form.populate_obj(comment)
             comment.user_id = g.user.id
-            comment.message_id = message.id
-            message.comments.append(comment)
+            comment.post_id = post.id
+            post.comments.append(comment)
             db.session.commit()
             response = {
                 "user": {
@@ -647,7 +647,7 @@ def add_comment():
 
 
 # delete a comment
-@app_routes.route("/messages/comment/delete", methods=["POST"])
+@app_routes.route("/posts/comment/delete", methods=["POST"])
 @login_required
 def delete_comment():
     if request.json:
@@ -662,17 +662,17 @@ def delete_comment():
             response={
                 "response": "deleted",
                 "commented": g.user in post.users_commented,
-                "message_id": post.id,
+                "post_id": post.id,
             }
         )
     return jsonify(response={"response": "failed"})
 
 
-# delete a message and the comments associated for the message page
+# delete a post and the comments associated for the post page
 # then return to profile page
-@app_routes.route("/messages/delete/<int:post_id>", methods=["POST"])
+@app_routes.route("/posts/delete/<int:post_id>", methods=["POST"])
 @login_required
-def delete_show_message(post_id):
+def delete_show_post_page(post_id):
     if post_id:
         post = db.get_or_404(Post, post_id)
         for cmt in post.comments:
@@ -682,10 +682,10 @@ def delete_show_message(post_id):
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
 
 
-# delete message on other pages likes, home, profile without reloading the page
-@app_routes.route("/messages/delete", methods=["POST"])
+# delete post on other pages likes, home, profile without reloading the page
+@app_routes.route("/posts/delete", methods=["POST"])
 @login_required
-def delete_message():
+def delete_post():
     if request.json:
         post_id = request.json["post_id"]
         post = db.get_or_404(Post, post_id)
@@ -697,9 +697,9 @@ def delete_message():
 
 
 # like and unlike functiond
-@app_routes.route("/messages/like", methods=["POST"])
+@app_routes.route("/posts/like", methods=["POST"])
 @login_required
-def like_message():
+def like_post():
     if request.json:
         post_id = request.json["post_id"]
         post = db.get_or_404(Post, post_id)
@@ -712,9 +712,9 @@ def like_message():
 
 
 # repost and unrepost
-@app_routes.route("/messages/repost", methods=["POST"])
+@app_routes.route("/posts/repost", methods=["POST"])
 @login_required
-def respost_message():
+def respost_post():
     if request.json:
         post = db.get_or_404(Post, request.json["post_id"])
         if post in g.user.reposted:

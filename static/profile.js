@@ -25,7 +25,7 @@ async function trackScroll() {
   if (isBottom() && index > prev) {
     prev = index;
     res = await axios.post(
-      "/load-profile-msg",
+      "/load-profile-post",
       (data = { index: index, id: user_id }),
     );
     for (pst of res.data) {
@@ -139,7 +139,7 @@ ${
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/${pst.id}">
+      <a class="btn primary" href="/posts/${pst.id}">
         ${
           pst.commented
             ? ` <i
@@ -201,7 +201,7 @@ ${
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
         id="${pst.id}"
-        action="/messages/delete/${pst.id}"
+        action="/posts/delete/${pst.id}"
         class="delete-post"
         method="POST"
       >

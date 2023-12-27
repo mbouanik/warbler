@@ -14,10 +14,10 @@ async function delete_comment(comment_id) {
   data = {
     comment_id: comment_id,
   };
-  const res = await axios.post("/messages/comment/delete", data);
+  const res = await axios.post("/posts/comment/delete", data);
   if (res.data.response.commented == false) {
     const comment_icon = document.querySelector(
-      `#comment_icon${res.data.response.message_id}`,
+      `#comment_icon${res.data.response.post_id}`,
     );
     comment_icon.classList.remove("liked");
     comment_icon.classList.add("fa-regular");
@@ -47,7 +47,7 @@ async function post_comment(evt) {
     post_id: post_id,
     text: text,
   };
-  const data = await axios.post(`/messages/comments/add`, d);
+  const data = await axios.post(`/posts/comments/add`, d);
   const comment_icon = document.querySelector(`#comment_icon${post_id}`);
   comment_icon.innerText = ` ${parseInt(comment_icon.innerText) + 1}`;
   if (!comment_icon.classList.contains("liked")) {

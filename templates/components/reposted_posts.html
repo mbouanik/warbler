@@ -89,7 +89,7 @@
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/{{ pst.post.id }}">
+      <a class="btn primary" href="/posts/{{ pst.post.id }}">
         {% if pst.post in g.user.comments %}
         <i class="fa-sharp fa-solid fa-comments liked">
           <small id="comments_count"> {{ pst.post.comments | length }} </small>

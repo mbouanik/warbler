@@ -4,7 +4,7 @@
 
 <!-- <div class="messrges"> -->
     <ul class="list-group messages forms-list">
-        {% include "components/messages.html" %} 
+        {% include "components/posts.html" %} 
     </ul>
     <hr  class="text-white">
     <div class="forms">
@@ -31,6 +31,6 @@
 <!-- </div> -->
 {% include "components/modal_post_form.html" %}
 {% include "components/searchbar_modal.html" %}
-<script src=" {{ url_for('app_routes.static', filename='message.js' ) }} "></script>
+<script src=" {{ url_for('app_routes.static', filename='post.js' ) }} "></script>
 {% endblock %}
 

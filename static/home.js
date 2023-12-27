@@ -16,7 +16,7 @@ async function post_message(text) {
     text: text,
     csrf_token: document.querySelector("#csrf_token").value,
   };
-  const data = await axios.post("/messages", d);
+  const data = await axios.post("/posts", d);
   const content = `<li id="post${data.data.post.id}" class="list-group-item">
   <div class="top-message">
     <div class="message">
@@ -73,7 +73,7 @@ async function post_message(text) {
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/${data.data.post.id}">
+      <a class="btn primary" href="/posts/${data.data.post.id}">
         <i
           id="comment_icon${data.data.post.id}"
           class="fa-sharp fa-regular fa-comments not-commented cmt"
@@ -116,7 +116,7 @@ async function post_message(text) {
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
         id="${data.data.post.id}"
-        action="/messages/delete/${data.data.post.id}}"
+        action="/posts/delete/${data.data.post.id}}"
         class="delete-msg"
         method="POST"
       >
@@ -173,7 +173,7 @@ async function trackScroll() {
   const index = forms_list.children.length;
   if (isBottom() && index > prev) {
     prev = index;
-    res = await axios.post("/load-messages", (data = { index: index }));
+    res = await axios.post("/load-posts", (data = { index: index }));
 
     // Perform your action here, such as loading more content
     for (pst of res.data) {
@@ -262,7 +262,7 @@ async function trackScroll() {
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/${pst.id}">
+      <a class="btn primary" href="/posts/${pst.id}">
         ${
           pst.commented
             ? ` <i
@@ -324,7 +324,7 @@ async function trackScroll() {
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
         id="${pst.id}"
-        action="/messages/delete/${pst.id}"
+        action="/posts/delete/${pst.id}"
         class="delete-post"
         method="POST"
       >
