@@ -15,6 +15,7 @@ forms_list.addEventListener("submit", (evt) => {
     // confirm("Are you sure to delete this post?");
     if (window.location.pathname != `/messages/${evt.target.id}`) {
       evt.preventDefault();
+      console.log(evt.target.id);
       delete_post(parseInt(evt.target.id));
       stat_post = document.querySelector(".stat-post");
       if (stat_post) {
