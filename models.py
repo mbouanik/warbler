@@ -97,7 +97,6 @@ class Post(db.Model):
         cascade="all, delete-orphan",
         order_by=("desc(Comment.id)"),
     )
-    # users_commented = Relationship("User", secondary="comments")
 
     def __init__(self, **kwargs) -> None:
         super(Post, self).__init__(**kwargs)
