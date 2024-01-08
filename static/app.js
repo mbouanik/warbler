@@ -1,38 +1,40 @@
 const forms_list = document.querySelector(".forms-list");
 const header_follow_form = document.querySelector(".header-follow-form");
-forms_list.addEventListener("submit", (evt) => {
-  if (evt.target.classList.contains("follows")) {
-    evt.preventDefault();
-
-    follow_user(parseInt(evt.target.id));
-    // follow_form(evt);
-    forms_list_follow(evt);
-  } else if (evt.target.classList.contains("follows-btn")) {
-    evt.preventDefault();
-    follow_user(parseInt(evt.target.id));
-    follow_form(evt.target);
-  } else if (evt.target.classList.contains("delete-post")) {
-    // confirm("Are you sure to delete this post?");
-    if (window.location.pathname != `/posts/${evt.target.id}`) {
+if (forms_list) {
+  forms_list.addEventListener("submit", (evt) => {
+    if (evt.target.classList.contains("follows")) {
       evt.preventDefault();
-      delete_post(parseInt(evt.target.id));
-      stat_post = document.querySelector(".stat-post");
-      if (stat_post) {
-        stat_post.innerText = `${parseInt(stat_post.innerText) - 1}`;
+
+      follow_user(parseInt(evt.target.id));
+      // follow_form(evt);
+      forms_list_follow(evt);
+    } else if (evt.target.classList.contains("follows-btn")) {
+      evt.preventDefault();
+      follow_user(parseInt(evt.target.id));
+      follow_form(evt.target);
+    } else if (evt.target.classList.contains("delete-post")) {
+      // confirm("Are you sure to delete this post?");
+      if (window.location.pathname != `/posts/${evt.target.id}`) {
+        evt.preventDefault();
+        delete_post(parseInt(evt.target.id));
+        stat_post = document.querySelector(".stat-post");
+        if (stat_post) {
+          stat_post.innerText = `${parseInt(stat_post.innerText) - 1}`;
+        }
+        const post = document.querySelector(`#post${evt.target.id}`);
+        post.remove();
       }
-      const post = document.querySelector(`#post${evt.target.id}`);
-      post.remove();
+    } else if (evt.target.classList.contains("like-form")) {
+      evt.preventDefault();
+      like_post(parseInt(evt.target.id));
+      like_form(evt);
+    } else if (evt.target.classList.contains("repost-form")) {
+      evt.preventDefault();
+      repost(parseInt(evt.target.id));
+      repost_form(evt);
     }
-  } else if (evt.target.classList.contains("like-form")) {
-    evt.preventDefault();
-    like_post(parseInt(evt.target.id));
-    like_form(evt);
-  } else if (evt.target.classList.contains("repost-form")) {
-    evt.preventDefault();
-    repost(parseInt(evt.target.id));
-    repost_form(evt);
-  }
-});
+  });
+}
 
 if (header_follow_form) {
   header_follow_form.addEventListener("submit", (evt) => {

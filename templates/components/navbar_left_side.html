@@ -5,7 +5,7 @@
       <div>
         <a href="/">
           <img
-            class="logo-image nav-lir text-white"
+            class="logo-image nav-lir text-black"
             src="{{ url_for('app_routes.static', filename='img/galaxy.svg') }}"
             alt=""
           />
@@ -20,31 +20,28 @@
   <ul class="nav nav-pills flex-colum mb-auto nav-list-bottom">
     {% if g.user %}
     <li class="nav-item">
-      <a href="/" class="nav-link text-white home" aria-current="page">
+      <a href="/" class="nav-link text-black home" aria-current="page">
         <i class="fa-solid fa-house"></i>
         <span class="link-text">&nbsp;Home</span>
       </a>
     </li>
     <li class="nav-item">
-      <a href="/users/{{g.user.id}}" class="nav-link text-white profile">
+      <a href="/users/{{g.user.id}}" class="nav-link text-black profile">
         <i class="fa-solid fa-user"></i>
         <span class="link-text">&nbsp;Profile</span>
       </a>
     </li>
-    <!-- <li class="nav-item"> -->
-    <!--   <a -->
-    <!--     href="/users/direct_message/{{g.user.id}}" -->
-    <!--     class="nav-link text-white direct-message" -->
-    <!--   > -->
-    <!--     <i class="fa-solid fa-message"></i> -->
-    <!--     <span class="link-text">&nbsp;Messages</span> -->
-    <!--   </a> -->
-    <!-- </li> -->
+    <li class="nav-item">
+      <a href="/users/conversations" class="nav-link text-black direct-message">
+        <i class="fa-solid fa-message"></i>
+        <span class="link-text">&nbsp;Messages</span>
+      </a>
+    </li>
 
     <li class="nav-item">
       <a
         href="/users/following/{{g.user.id}}"
-        class="nav-link text-white following"
+        class="nav-link text-black following"
       >
         <i class="fa-solid fa-user-group"></i>
         <span class="link-text">&nbsp;Following</span>
@@ -53,7 +50,7 @@
     <li class="nav-item">
       <a
         href="/users/followers/{{g.user.id}}"
-        class="nav-link text-white followers"
+        class="nav-link text-black followers"
       >
         <i class="fa-solid fa-users"></i>
         <span class="link-text">&nbsp;Followers</span>
@@ -61,8 +58,8 @@
     </li>
     <li class="nav-item">
       <a
-        href="/users/messages/likes/{{g.user.id}}"
-        class="nav-link text-white likes"
+        href="/users/posts/likes/{{g.user.id}}"
+        class="nav-link text-black likes"
       >
         <i class="fa-solid fa-heart"></i>
         <span class="link-text">&nbsp;Likes</span>
@@ -87,7 +84,7 @@
   <div class="dropdown profile-menu">
     <a
       href="#"
-      class="d-flex align-items-center text-white text-decoration-none dropdown-toggle profile-men"
+      class="d-flex align-items-center text-black text-decoration-none dropdown-toggle profile-men"
       id="dropdownUser1"
       data-bs-toggle="dropdown"
       aria-expanded="false"
@@ -101,29 +98,23 @@
       />
       <strong class="mobile-hr">{{ g.user.username }}</strong>
     </a>
-    <ul
-      class="dropdown-menu dropdown-menu-color text-small shadow"
-      aria-labelledby="dropdownUser1"
-    >
-      <li class="dropdown-item" style="width: 100%">
+    <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
+      <li class="dropdown-ite" style="width: 100%">
         <a
-          class="btn text-white"
-          href="{{ url_for('app_routes.edit_user_profile', user_id=g.user.id) }}"
+          class="dropdown-item bt"
+          href="{{ url_for('app_routes.edit_user_profile') }}"
           >Edit</a
         >
       </li>
-      <!-- <hr class="dropdown-divider text-white mobile-hr" /> -->
-      <li class="dropdown-item">
+      <hr class="dropdown-divider text-white mobile-hr" />
+      <li class="dropdown-ite">
         <form
           id="{{g.user.id}}"
-          class="logout navbar-form navbar-right"
+          class="logout dropdown-item"
           action="/logout"
           method="POST"
         >
-          <button
-            id="{{g.user.id}}"
-            class="logout btn text-white link-underline-opacity-0"
-          >
+          <button id="{{g.user.id}}" class="logout dropdown-item">
             Log out {{g.user.username}}
           </button>
         </form>

@@ -1,19 +1,24 @@
+from datetime import datetime
 from flask import (
     Blueprint,
     flash,
     jsonify,
     redirect,
     render_template,
+    request_started,
     url_for,
     session,
     g,
     request,
 )
+
+from helpers import time_ago
+from sqlalchemy.sql import or_, text
 from init import db
-from models import Comment, Repost, User, Post, Likes
+from models import Comment, Conversation, Repost, User, Post, Likes, Message
 from forms import (
     CommentForm,
-    DirectMessageForm,
+    MessageForm,
     EditUserForm,
     LoginForm,
     PostForm,
@@ -140,6 +145,8 @@ def authenticate():
             email=signup_form.email.data,
             password=signup_form.password.data,
             image_url=signup_form.image_url.data,
+            location=signup_form.location.data,
+            bio=signup_form.bio.data,
         )
         db.session.add(user)
         db.session.commit()
@@ -218,30 +225,91 @@ def show_user_profile(user_id):
     )
 
 
-# @app_routes.route("/users/direct_message/<int:user_id>")
-# def direct_message(user_id):
-#     user = db.get_or_404(User, user_id)
-#     form = MessageForm()
-#     # if direct_message_form.validate_on_submit():
-#     # message = DirectMessage()
-#     # direct_message_form.populate_obj(obj=message)
-#     # user.direct_message.append(message)
-#
-#     # db.session.commit()
-#     return render_template(
-#         "direct_message.html",
-#         user=user,
-#         form=form,
-#         direct_messages=[1, 2, 3, 4, 5],
-#     )
-#
+@app_routes.route("/users/conversations")
+def conversations():
+    form = PostForm()
+    conversations = db.session.execute(
+        db.select(Conversation).where(
+            or_(
+                Conversation.recipient_id == g.user.id,
+                Conversation.sender_id == g.user.id,
+            )
+        )
+    ).scalars()
+
+    return render_template(
+        "conversations.html",
+        user=g.user,
+        form=form,
+        conversations=conversations,
+    )
+
+
+@app_routes.route(
+    "/conversations/messages/<int:conversation_id>", methods=["GET", "POST"]
+)
+def show_conversation(conversation_id):
+    form = PostForm()
+    message_form = MessageForm()
+    conversation = db.get_or_404(Conversation, conversation_id)
+    time = datetime
+
+    if message_form.validate_on_submit():
+        print("MESSAGE RECIEVED")
+        message = Message(
+            text=message_form.text.data,
+            user_id=g.user.id,
+            conversation_id=conversation_id,
+        )
+        # conversations.messages.append(message)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(
+            url_for("app_routes.show_conversation", conversation_id=conversation_id)
+        )
+    return render_template(
+        "messages.html",
+        form=form,
+        message_form=message_form,
+        user=g.user,
+        conversation=conversation,
+        time=time_ago,
+    )
+
+
+@app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])
+def show_new_conversation(user_id):
+    user = db.get_or_404(User, user_id)
+    conversation = db.session.execute(
+        db.select(Conversation).where(
+            Conversation.sender_id == min(g.user.id, user_id),
+            Conversation.recipient_id == max(g.user.id, user_id),
+        )
+    ).scalar_one_or_none()
+    if not conversation:
+        conversation = Conversation(
+            sender_id=min(g.user.id, user.id), recipient_id=max(g.user.id, user.id)
+        )
+        db.session.add(conversation)
+        db.session.commit()
+    return redirect(
+        url_for("app_routes.show_conversation", conversation_id=conversation.id)
+    )
+
+
+@app_routes.route("/conversations/delete/<int:conversation_id>", methods=["POST"])
+def delete_conversation(conversation_id):
+    conversation = db.get_or_404(Conversation, conversation_id)
+    db.session.delete(conversation)
+    db.session.commit()
+    return redirect(url_for("app_routes.conversations"))
 
 
 # edit  profile user
-@app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
+@app_routes.route("/users/edit", methods=["GET", "POST"])
 @login_required
-def edit_user_profile(user_id):
-    user = db.get_or_404(User, user_id)
+def edit_user_profile():
+    user = db.get_or_404(User, g.user.id)
     form = EditUserForm(obj=user)
     if form.validate_on_submit():
         form.populate_obj(user)
@@ -281,6 +349,25 @@ def search():
     return render_template(
         "search.html", users=users, posts=posts, form=form, user=g.user
     )
+
+
+@app_routes.route("/search-user", methods=["POST"])
+def search_user():
+    name = request.json["name"]
+    users = db.session.execute(
+        db.select(User).where(User.username.ilike(f"%{name}%")).limit(10)
+    ).scalars()
+
+    response = [
+        {
+            "id": user.id,
+            "image_url": user.image_url,
+            "bio": user.bio,
+            "username": user.username,
+        }
+        for user in users
+    ]
+    return jsonify(response)
 
 
 # follow and unfollow users

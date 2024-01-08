@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %} {% endblock %} 
+{% block content %}
+    <form id="new_convo" action="/conversations/new-conversation">
+        <input id="name_search" class="form-control" type="text" placeholder="New conversation">
+    </form>
+    <ul class="list-group list-name">
+    </ul>
+    <ul class="list-group">
+        {% for conversation in conversations %}
+        <li id="user_follow{{user.id}}" class="list-group-item display-follow">
+            <div style="display: flex; gap: 1rem">
+                <div>
+                    <a href="/conversations/messages/{{conversation.id}}"> {{conversation}}</a>
+                    <br />
+                    {{ conversation.messages[-1].user.username }} : {{ conversation.messages[-1].text }}
+                </div>
+            </div>
+            <div class="follow-bt">
+                <form action="/conversations/delete/{{conversation.id}}" method="POST">
+                    <button class="btn btn-danger"> Delete </button>
+                </form>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+       {% include "components/modal_post_form.html" %}
+    <script src="{{ url_for('app_routes.static', filename='conversation.js' ) }}"></script>
+{% endblock %}
