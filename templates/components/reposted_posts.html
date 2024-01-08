@@ -29,9 +29,7 @@
           href="{{ url_for( 'app_routes.show_user_profile',user_id=pst.post.user.id) }}"
           >@{{ pst.post.user.username }}</a
         >
-        <span class="text-muted"
-          >{{ pst.post.timestamp.strftime('%b %-d, %Y') }}</span
-        >
+        <span class="text-muted">{{ time(pst.post.timestamp)}}</span>
         <div>{{ pst.post.text }}</div>
       </div>
     </div>

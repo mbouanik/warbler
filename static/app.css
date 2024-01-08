@@ -14,11 +14,25 @@ hr {
   color: black;
 }
 
+.msg-sender {
+  background-color: #318ce7;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  color: white;
+  margin: 0.3rem;
+}
+.msg-receiver {
+  background-color: #adb5bd;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  color: white;
+  margin: 0.3rem;
+}
 .message-form {
   bottom: 0;
   position: fixed;
   width: 100%;
-  max-width: 40rem;
+  max-width: 35rem;
 }
 
 .list-group-item {

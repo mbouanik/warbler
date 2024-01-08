@@ -9,38 +9,39 @@
   {% endfor %} {% endfor %}
 </ul>
 {% endif %}
-<h5 class="text-white">{{conversation}}</h5>
+<h5 class="text-muter">{{conversation}}</h5>
 
 
-<ul class="list-group">
+<div class="list-grou">
     {% for message in conversation.messages %}
     {% if message.user.id != g.user.id %}
-    <li class="list-group-item  d-flex " style="justify-content:space-between; ">
-        <div>
+    <div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
+        <div class="msg-receiver">
             {{ message.text }} 
         </div>
-        <div class="text-muted time-ago">
-        {{ time(message.timestamp) }}
-        </div>
-    </li>
-    {% else %}
-    <li class="list-group-item d-flex " style="justify-content:space-between; ">
-        <div class="text-muted time-ago">
+    </div>
+      <div class="text-muted time-ago d-flex"  style="justify-content:flex-start;">
             {{ time(message.timestamp) }}
         </div>
-        <div>
 
-        {{ message.text }}
+    {% else %}
+    <div class="list-group-ite d-flex " style="justify-content:flex-end; ">
+        <div class="msg-sender">
+            {{ message.text }} 
         </div>
-    </li>
+        </div>
+     <div class="text-muted time-ago d-flex"  style="justify-content:flex-end;">
+            {{ time(message.timestamp) }}
+        </div>
+
     {% endif %}
     {% endfor %}
-</ul>
-   <form class="message-form" action="" method="POST">
+</div>
+<form class="message-form" action="" method="POST">
     {{ message_form.csrf_token }}
     {{ message_form.text(class="form-control") }}
-        <button class=" btn btn-primary"> send</button>
-    </form>
-{% endblock %}
+    <button class=" btn btn-primary"> send</button>
+</form>
+    {% endblock %}
 {% include "components/modal_post_form.html" %}
 {% include "components/searchbar_modal.html" %}

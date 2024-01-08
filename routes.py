@@ -95,7 +95,9 @@ def home():
             db.session.commit()
             return redirect(url_for("app_routes.home"))
 
-        return render_template("home.html", user=user, form=form, posts=posts)
+        return render_template(
+            "home.html", user=user, form=form, posts=posts, time=time_ago
+        )
     return render_template("home-non.html")
 
 
@@ -222,6 +224,7 @@ def show_user_profile(user_id):
         form=form,
         edit_form=edit_form,
         posts=posts,
+        time=time_ago,
     )
 
 
@@ -315,7 +318,7 @@ def edit_user_profile():
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+        return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
 
     return render_template("edit_user_profile.html", form=form)
 
@@ -642,7 +645,9 @@ def show_liked_post(user_id):
 
     form = PostForm()
     edit_form = EditUserForm(obj=user)
-    return render_template("likes.html", user=user, form=form, edit_form=edit_form)
+    return render_template(
+        "likes.html", user=user, form=form, edit_form=edit_form, time=time_ago
+    )
 
 
 # load posts liked by the user as you scroll down
