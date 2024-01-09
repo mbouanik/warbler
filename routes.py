@@ -227,6 +227,7 @@ def show_user_profile(user_id):
 
 
 @app_routes.route("/users/conversations")
+@login_required
 def conversations():
     form = PostForm()
     conversations = db.session.execute(
@@ -247,6 +248,7 @@ def conversations():
 
 
 @app_routes.route("/conversations/messages/<int:user_id>", methods=["GET", "POST"])
+@login_required
 def show_conversation(user_id):
     form = PostForm()
     user = db.get_or_404(User, user_id)
