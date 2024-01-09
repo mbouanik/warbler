@@ -16,8 +16,8 @@ async function post_message(text) {
     text: text,
     csrf_token: document.querySelector("#csrf_token").value,
   };
-  const data = await axios.post("/messages", d);
-  const content = `<li id="msg${data.data.message.id}" class="list-group-item">
+  const data = await axios.post("/posts", d);
+  const content = `<li id="post${data.data.post.id}" class="list-group-item">
   <div class="top-message">
     <div class="message">
       <a class="" href="/users/${data.data.user.id}">
@@ -25,14 +25,9 @@ async function post_message(text) {
       </a>
       <div class="message-area">
         <a href="/users/${data.data.user.id}">@${data.data.user.username}</a>
-         <span class="text-muted">${new Date(
-           data.data.message.timestamp,
-         ).toLocaleDateString("en-US", {
-           month: "short",
-           day: "numeric",
-           year: "numeric",
-         })}</span>
-        <div>${data.data.message.text}</div>
+         <span class="text-muted"> Just now
+       </span>
+        <div>${data.data.post.text}</div>
       </div>
     </div>
     <div class="">
@@ -51,7 +46,7 @@ async function post_message(text) {
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_msg"
+            data-bs-target="#delete_post"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
@@ -60,22 +55,20 @@ async function post_message(text) {
     </ul>
     </div>
   </div>
-  <div id="msg${data.data.message.id}" class="like-btn">
+  <div id="post${data.data.post.id}" class="like-btn">
     <div class="interaction">
-      <form id="${data.data.message.id}" class="like-form" method="POST">
+      <form id="${data.data.post.id}" class="like-form" method="POST">
         <button class="btn">
-             <i id="like_icon${
-               data.data.message.id
-             }" class="fa-regular fa-thumbs-up not-liked">
+             <i id="like_icon${data.data.post.id}" class="fa-regular fa-thumbs-up not-liked">
             0
           </i>
         </button>
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/${data.data.message.id}">
+      <a class="btn primary" href="/posts/${data.data.post.id}">
         <i
-          id="comment_icon${data.data.message.id}"
+          id="comment_icon${data.data.post.id}"
           class="fa-sharp fa-regular fa-comments not-commented cmt"
         >
 0
@@ -83,10 +76,10 @@ async function post_message(text) {
       </a>
     </div>
     <div class="interaction">
-      <form id="${data.data.message.id}" class="repost-form" method="POST">
+      <form id="${data.data.post.id}" class="repost-form" method="POST">
         <button class="btn">
           <i
-            id="repost_icon${data.data.message.id}"
+            id="repost_icon${data.data.post.id}"
             class="fa-solid fa-retweet not-reposted"
           >
 0
@@ -97,7 +90,7 @@ async function post_message(text) {
   </div>
 <div
   class="modal fade"
-  id="delete_msg"
+  id="delete_post"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -105,7 +98,7 @@ async function post_message(text) {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="delete_msg">Modal title</h1>
+        <h1 class="modal-title fs-5" id="delete_post">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -115,8 +108,8 @@ async function post_message(text) {
       </div>
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
-        id="${data.data.message.id}"
-        action="/messages/delete/${data.data.message.id}}"
+        id="${data.data.post.id}"
+        action="/posts/delete/${data.data.post.id}}"
         class="delete-msg"
         method="POST"
       >
@@ -173,23 +166,22 @@ async function trackScroll() {
   const index = forms_list.children.length;
   if (isBottom() && index > prev) {
     prev = index;
-    console.log(forms_list.children.length);
-    res = await axios.post("/load-messages", (data = { index: index }));
+    res = await axios.post("/load-posts", (data = { index: index }));
 
     // Perform your action here, such as loading more content
-    for (msg of res.data) {
-      const message = `
-<li id="msg${msg.id}" class="list-group-item">
+    for (pst of res.data) {
+      const post = `
+<li id="post${pst.id}" class="list-group-item">
   <div class="top-message">
     <div class="message">
       <div>
-        <a class="" href="/users/${msg.user_id}">
-          <img src="${msg.image_url}" alt="" class="timeline-image" />
+        <a class="" href="/users/${pst.user_id}">
+          <img src="${pst.image_url}" alt="" class="timeline-image" />
         </a>
       </div>
       <div class="message-area">
-        <a href="/users/${msg.user_id}">@${msg.username}</a>
-         <span class="text-muted">${new Date(msg.timestamp).toLocaleDateString(
+        <a href="/users/${pst.user_id}">@${pst.username}</a>
+         <span class="text-muted">${new Date(pst.timestamp).toLocaleDateString(
            "en-US",
            {
              month: "short",
@@ -198,7 +190,7 @@ async function trackScroll() {
            },
          )}</span>
 
-    <div>${msg.text}</div>
+    <div>${pst.text}</div>
       </div>
     </div>
     <div class="">
@@ -216,11 +208,11 @@ async function trackScroll() {
         </li>
         <li class="dropdown-itr text-primary">
         ${
-          msg.user_id != msg.guser
+          pst.user_id != pst.guser
             ? `
-          <form id="${msg.user_id}}" class="follows" method="POST">
+          <form id="${pst.user_id}}" class="follows" method="POST">
             ${
-              msg.follow
+              pst.follow
                 ? `  <button class="btn btn-link text-danger">Unfollow</button>
 `
                 : ` <button class="btn btn-link text-mut">Follow</button>`
@@ -235,7 +227,7 @@ async function trackScroll() {
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_msg${msg.id}"
+            data-bs-target="#delete_post${pst.id}"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
@@ -246,56 +238,56 @@ async function trackScroll() {
     </div>
   </div>
   <!-- <hr class="hr-message" /> -->
-  <div id="msg${msg.id}" class="like-btn">
+  <div id="post${pst.id}" class="like-btn">
     <div class="interaction">
-      <form id="${msg.id}}" class="like-form" method="POST">
+      <form id="${pst.id}}" class="like-form" method="POST">
         <button class="btn">
             ${
-              msg.like
-                ? ` <i id="like_icon${msg.id}" class="fa-solid fa-thumbs-up liked">
-            ${msg.likes_cnt}
+              pst.like
+                ? ` <i id="like_icon${pst.id}" class="fa-solid fa-thumbs-up liked">
+            ${pst.likes_cnt}
           </i>`
-                : `<i id="like_icon${msg.id}" class="fa-regular fa-thumbs-up not-liked">
-            ${msg.likes_cnt}
+                : `<i id="like_icon${pst.id}" class="fa-regular fa-thumbs-up not-liked">
+            ${pst.likes_cnt}
           </i>`
             }
         </button>
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/${msg.id}">
+      <a class="btn primary" href="/posts/${pst.id}">
         ${
-          msg.commented
+          pst.commented
             ? ` <i
-          id="comment_icon${msg.id}"
+          id="comment_icon${pst.id}"
           class="fa-sharp fa-solid fa-comments liked cmt"
         >
-          ${msg.cmt_cnt}
+          ${pst.cmt_cnt}
         </i>
 `
             : ` <i
-          id="comment_icon${msg.id}"
+          id="comment_icon${pst.id}"
           class="fa-sharp fa-regular fa-comments not-commented cmt"
         >
-          ${msg.cmt_cnt}
+          ${pst.cmt_cnt}
         </i>
 `
         }
              </a>
     </div>
     <div class="interaction">
-      <form id="${msg.id}" class="repost-form" method="POST">
+      <form id="${pst.id}" class="repost-form" method="POST">
         <button class="btn">
         ${
-          msg.repost
-            ? ` <i id="repost_icon${msg.id}" class="fa-solid fa-retweet reposted">
-            ${msg.repost_cnt}
+          pst.repost
+            ? ` <i id="repost_icon${pst.id}" class="fa-solid fa-retweet reposted">
+            ${pst.repost_cnt}
           </i>`
             : `<i
-            id="repost_icon${msg.id}"
+            id="repost_icon${pst.id}"
             class="fa-solid fa-retweet not-reposted"
           >
-            ${msg.repost_cnt}
+            ${pst.repost_cnt}
           </i>`
         }
                  </button>
@@ -306,7 +298,7 @@ async function trackScroll() {
 
 <div
   class="modal fade"
-  id="delete_msg${msg.id}"
+  id="delete_post${pst.id}"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -314,7 +306,7 @@ async function trackScroll() {
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="delete_msg${msg.id}">Modal title</h1>
+        <h1 class="modal-title fs-5" id="delete_post${pst.id}">Modal title</h1>
         <button
           type="button"
           class="btn-close"
@@ -324,9 +316,9 @@ async function trackScroll() {
       </div>
       <div class="modal-body">Are You sure you want to delete this post?</div>
       <form
-        id="${msg.id}"
-        action="/messages/delete/${msg.id}"
-        class="delete-msg"
+        id="${pst.id}"
+        action="/posts/delete/${pst.id}"
+        class="delete-post"
         method="POST"
       >
         <div class="modal-footer">
@@ -346,7 +338,7 @@ async function trackScroll() {
 </li>
 `;
       const template = document.createElement("template");
-      template.innerHTML = message;
+      template.innerHTML = post;
       const t = template.content;
       forms_list.append(t);
     }

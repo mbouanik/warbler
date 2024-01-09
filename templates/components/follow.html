@@ -1,10 +1,14 @@
 <li id="user_follow{{user.id}}" class="list-group-item display-follow">
   <div style="display: flex; gap: 1rem">
-    <a href="/users/{{user.id}}">
-      <img src="{{ user.image_url}}" class="timeline-image" alt="" />
+    <a href="{{ url_for( 'app_routes.show_user_profile',user_id=user.id) }}">
+      <img src="{{ user.image_url }}" class="timeline-image" alt="" />
     </a>
     <div>
-      <a class="">@{{user.username}}</a>
+      <a
+        href="{{ url_for('app_routes.show_user_profile',user_id=user.id) }}"
+        class=""
+        >@{{ user.username }}</a
+      >
 
       {% if g.user in user.following %}
       <small class="text-muted follow-indicator"> Follows you</small>
@@ -13,7 +17,7 @@
       <small>Following <span>{{ user.following | length }}</span></small>
       <small>Followers <span>{{ user.followers | length }}</span></small>
       <br />
-      {{user.bio}}
+      {{ user.bio }}
     </div>
   </div>
 

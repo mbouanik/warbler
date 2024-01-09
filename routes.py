@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import (
     Blueprint,
     flash,
@@ -9,7 +10,11 @@ from flask import (
     g,
     request,
 )
+from sqlalchemy.sql import or_
+
+from helpers import time_ago, time_ago_message
 from init import db
+<<<<<<< HEAD
 from models import Comment, DirectMessage, Repost, User, Message, Likes
 from forms import (
     CommentForm,
@@ -17,6 +22,15 @@ from forms import (
     EditUserForm,
     LoginForm,
     MessageForm,
+=======
+from models import Comment, Conversation, Repost, User, Post, Likes, Message
+from forms import (
+    CommentForm,
+    MessageForm,
+    EditUserForm,
+    LoginForm,
+    PostForm,
+>>>>>>> direct_message
     UserForm,
 )
 from functools import wraps
@@ -30,12 +44,12 @@ app_routes = Blueprint(
 )
 
 
-# verify if you login
+# verify if you are login
 def is_authenticated():
     return "user_id" in session
 
 
-# decorator for accessing each page you need to be login
+# decorator to access any page you need to be login
 def login_required(view):
     @wraps(view)
     def wrapped_view(*args, **kwargs):
@@ -74,26 +88,26 @@ def home():
     user_id = session.get("user_id", None)
     if user_id:
         user = db.get_or_404(User, user_id)
-        form = MessageForm()
+        form = PostForm()
 
-        messages = (
+        posts = (
             db.session.execute(
-                db.select(Message).order_by(Message.timestamp.desc()).limit(20)
+                db.select(Post).order_by(Post.timestamp.desc()).limit(20)
             )
             .scalars()
             .all()
         )
 
         if form.validate_on_submit():
-            message = Message(text=form.text.data, user_id=user.id)
-            db.session.add(message)
+            post = Post(text=form.text.data, user_id=user.id)
+            db.session.add(post)
             db.session.commit()
             return redirect(url_for("app_routes.home"))
 
-        return render_template("home.html", user=user, form=form, messages=messages)
+        return render_template(
+            "home.html", user=user, form=form, posts=posts, time=time_ago
+        )
     return render_template("home-non.html")
-
-    return redirect(url_for("app_routes.authenticate"))
 
 
 @app_routes.route("/login", methods=["GET", "POST"])
@@ -142,6 +156,8 @@ def authenticate():
             email=signup_form.email.data,
             password=signup_form.password.data,
             image_url=signup_form.image_url.data,
+            location=signup_form.location.data,
+            bio=signup_form.bio.data,
         )
         db.session.add(user)
         db.session.commit()
@@ -172,55 +188,56 @@ def logout():
 @login_required
 def show_user_profile(user_id):
     user = db.get_or_404(User, user_id)
-    all_messages_id = db.session.execute(
-        db.select(Message.id, Message.timestamp)
-        .where(Message.user_id == user_id)
+    all_posts_id = db.session.execute(
+        db.select(Post.id, Post.timestamp)
+        .where(Post.user_id == user_id)
         .union(
-            db.select(Message.id, Repost.timestamp)
+            db.select(Post.id, Repost.timestamp)
             .join(Repost)
             .where(Repost.user_id == user_id)
         )
         .order_by(db.desc("timestamp"))
         .limit(10)
     ).scalars()
-    repost_id = [message.id for message in user.reposted]
+    repost_id = [post.id for post in user.reposted]
 
-    messages = [db.get_or_404(Message, id) for id in all_messages_id]
-    msgs = []
-    for msg in messages:
-        if msg.id in repost_id:
-            msgs.append(
+    all_posts = [db.get_or_404(Post, id) for id in all_posts_id]
+    posts = []
+    for pst in all_posts:
+        if pst.id in repost_id:
+            posts.append(
                 {
-                    "message": msg,
+                    "post": pst,
                     "original": False,
                 }
             )
-            repost_id.remove(msg.id)
+            repost_id.remove(pst.id)
         else:
-            msgs.append(
+            posts.append(
                 {
-                    "message": msg,
+                    "post": pst,
                     "original": True,
                 }
             )
 
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        g.user.messages.append(message)
+        post = Post(text=form.text.data, user_id=user.id)
+        g.user.posts.append(post)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
     return render_template(
         "user_profile.html",
         user=user,
         form=form,
-        messages=messages,
         edit_form=edit_form,
-        msgs=msgs,
+        posts=posts,
+        time=time_ago,
     )
 
 
+<<<<<<< HEAD
 @app_routes.route("/users/direct_message/<int:user_id>")
 def direct_message(user_id):
     user = db.get_or_404(User, user_id)
@@ -244,25 +261,120 @@ def direct_message(user_id):
 @app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
 @login_required
 def edit_user_profile(user_id):
+=======
+@app_routes.route("/users/conversations")
+def conversations():
+    form = PostForm()
+    conversations = db.session.execute(
+        db.select(Conversation).where(
+            or_(
+                Conversation.recipient_id == g.user.id,
+                Conversation.sender_id == g.user.id,
+            )
+        )
+    ).scalars()
+
+    return render_template(
+        "conversations.html",
+        user=g.user,
+        form=form,
+        conversations=conversations,
+    )
+
+
+@app_routes.route("/conversations/messages/<int:user_id>", methods=["GET", "POST"])
+def show_conversation(user_id):
+    form = PostForm()
+>>>>>>> direct_message
     user = db.get_or_404(User, user_id)
+    message_form = MessageForm()
+    conversation = db.session.execute(
+        db.select(Conversation).where(
+            Conversation.sender_id == min(g.user.id, user_id),
+            Conversation.recipient_id == max(g.user.id, user_id),
+        )
+    ).scalar_one_or_none()
+
+    if message_form.validate_on_submit():
+        print("MESSAGE RECIEVED")
+        if not conversation:
+            conversation = Conversation(
+                sender_id=min(g.user.id, user_id), recipient_id=max(g.user.id, user_id)
+            )
+        db.session.add(conversation)
+        db.session.commit()
+
+        message = Message(
+            text=message_form.text.data,
+            user_id=g.user.id,
+            conversation_id=conversation.id,
+        )
+        # conversations.messages.append(message)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_conversation", user_id=user_id))
+    return render_template(
+        "messages.html",
+        form=form,
+        message_form=message_form,
+        user=user,
+        conversation=conversation,
+        time=time_ago_message,
+    )
+
+
+# @app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])
+# def show_new_conversation(user_id):
+#     user = db.get_or_404(User, user_id)
+#     conversation = db.session.execute(
+#         db.select(Conversation).where(
+#             Conversation.sender_id == min(g.user.id, user_id),
+#             Conversation.recipient_id == max(g.user.id, user_id),
+#         )
+#     ).scalar_one_or_none()
+#     if conversation:
+#         return redirect(
+#             url_for("app_routes.show_conversation", conversation_id=conversation.id)
+#             )
+#     return render_template()
+
+
+@app_routes.route("/conversations/delete/<int:conversation_id>", methods=["POST"])
+def delete_conversation(conversation_id):
+    conversation = db.get_or_404(Conversation, conversation_id)
+    for message in conversation.messages:
+        db.session.delete(message)
+    db.session.commit()
+    db.session.delete(conversation)
+    db.session.commit()
+    return redirect(url_for("app_routes.conversations"))
+
+
+# edit  profile user
+@app_routes.route("/users/edit", methods=["GET", "POST"])
+@login_required
+def edit_user_profile():
+    user = db.get_or_404(User, g.user.id)
     form = EditUserForm(obj=user)
     if form.validate_on_submit():
         form.populate_obj(user)
         db.session.add(user)
         db.session.commit()
-        return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
+        return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
 
     return render_template("edit_user_profile.html", form=form)
 
 
 # delete an user
-@app_routes.route("/users/<int:user_id>/delete", methods=["POST"])
+@app_routes.route("/users/delete", methods=["POST"])
 @login_required
-def delete_user(user_id):
+def delete_user():
+    user = db.get_or_404(User, g.user.id)
+    print(g.user)
     do_logout()
-    user = db.get_or_404(User, user_id)
     db.session.delete(user)
     db.session.commit()
+    g.user = None
     return redirect(url_for("app_routes.authenticate"))
 
 
@@ -274,14 +386,33 @@ def search():
     users = db.session.execute(
         db.select(User).where(User.username.ilike(f"%{search}%")).limit(10)
     ).scalars()
-    messages = db.session.execute(
-        db.select(Message).where(Message.text.ilike(f"%{search}%")).limit(10)
+    posts = db.session.execute(
+        db.select(Post).where(Post.text.ilike(f"%{search}%")).limit(10)
     ).scalars()
-    form = MessageForm()
+    form = PostForm()
 
     return render_template(
-        "search.html", users=users, messages=messages, form=form, user=g.user
+        "search.html", users=users, posts=posts, form=form, user=g.user, time=time_ago
     )
+
+
+@app_routes.route("/search-user", methods=["POST"])
+def search_user():
+    name = request.json["name"]
+    users = db.session.execute(
+        db.select(User).where(User.username.ilike(f"%{name}%")).limit(10)
+    ).scalars()
+
+    response = [
+        {
+            "id": user.id,
+            "image_url": user.image_url,
+            "bio": user.bio,
+            "username": user.username,
+        }
+        for user in users
+    ]
+    return jsonify(response)
 
 
 # follow and unfollow users
@@ -305,11 +436,11 @@ def follow_user():
 @login_required
 def show_user_following(user_id):
     user = db.get_or_404(User, user_id)
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        db.session.add(message)
+        post = PostForm(text=form.text.data, user_id=user.id)
+        db.session.add(post)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
@@ -326,11 +457,11 @@ def show_user_following(user_id):
 @login_required
 def show_user_followers(user_id):
     user = db.get_or_404(User, user_id)
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
     if form.validate_on_submit():
-        message = Message(text=form.text.data, user_id=user.id)
-        db.session.add(message)
+        post = PostForm(text=form.text.data, user_id=user.id)
+        db.session.add(post)
         db.session.commit()
         return redirect(url_for("app_routes.show_user_profile", user_id=user.id))
 
@@ -342,103 +473,100 @@ def show_user_followers(user_id):
     )
 
 
-# load homepage messages as you scroll down
-@app_routes.route("/load-messages", methods=["GET", "POST"])
-def load_more_msg():
+# load homepage Posts as you scroll down
+@app_routes.route("/load-posts", methods=["GET", "POST"])
+def load_more_post():
     offset = 10
     if request.json:
         index = request.json["index"]
-        if index + offset >= len(Message.query.all()):
-            offset = len(Message.query.all())
-        messages = (
+        if index + offset >= len(Post.query.all()):
+            offset = len(Post.query.all()) - 1
+        posts = (
             db.session.execute(
-                db.select(Message)
-                .order_by(Message.timestamp.desc())
+                db.select(Post)
+                .order_by(Post.timestamp.desc())
                 .slice(index, index + offset)
             )
             .scalars()
             .all()
         )
 
-        all_msg = [
+        all_posts = [
             {
-                "id": msg.id,
-                "text": msg.text,
-                "timestamp": msg.timestamp,
-                "user_id": msg.user_id,
-                "image_url": msg.user.image_url,
-                "username": msg.user.username,
-                "commented": msg in g.user.comments,
-                "like": msg in g.user.likes,
-                "repost": msg in g.user.reposted,
-                "cmt_cnt": len(msg.comments),
-                "likes_cnt": len(msg.users),
-                "repost_cnt": len(msg.reposted),
+                "id": post.id,
+                "text": post.text,
+                "timestamp": post.timestamp,
+                "user_id": post.user_id,
+                "image_url": post.user.image_url,
+                "username": post.user.username,
+                "commented": post in g.user.commented,
+                "like": post in g.user.likes,
+                "repost": post in g.user.reposted,
+                "cmt_cnt": len(post.comments),
+                "likes_cnt": len(post.users),
+                "repost_cnt": len(post.reposted),
                 "guser": g.user.id,
-                "follow": msg.user in g.user.following,
+                "follow": post.user in g.user.following,
             }
-            for msg in messages
+            for post in posts
         ]
-        return jsonify(all_msg)
-    return jsonify(response={"ok": 200})
+        return jsonify(all_posts)
+    return jsonify(response={"failed": 404})
 
 
-# load profile messages as you scroll down
-@app_routes.route("/load-profile-msg", methods=["POST"])
+# load profile posts as you scroll down
+@app_routes.route("/load-profile-post", methods=["POST"])
 def load_more_profiel_msg():
     offset = 10
     if request.json:
         index = request.json["index"]
         user_id = request.json["id"]
         user = db.get_or_404(User, user_id)
-        if index + offset >= len(
-            db.session.query(Message).filter_by(user_id=user_id).all()
-        ):
-            offset = len(db.session.query(Message).filter_by(user_id=user_id).all())
-        all_messages_id = db.session.execute(
-            db.select(Message.id, Message.timestamp)
-            .where(Message.user_id == user_id)
+
+        all_posts_id = db.session.execute(
+            db.select(Post.id, Post.timestamp)
+            .where(Post.user_id == user_id)
             .union(
-                db.select(Message.id, Repost.timestamp)
+                db.select(Post.id, Repost.timestamp)
                 .join(Repost)
                 .where(Repost.user_id == user_id)
             )
             .order_by(db.desc("timestamp"))
             .slice(index, index + offset)
         ).scalars()
-        repost_id = [message.id for message in user.reposted]
+        repost_id = [post.id for post in user.reposted]
 
-        messages = [db.get_or_404(Message, id) for id in all_messages_id]
+        posts = [db.get_or_404(Post, id) for id in all_posts_id]
 
-        # serialize messages
-        all_msg = []
-        for msg in messages:
-            all_msg.append(
+        # serialize posts
+        all_posts = []
+        for post in posts:
+            all_posts.append(
                 {
-                    "id": msg.id,
-                    "text": msg.text,
-                    "timestamp": msg.timestamp,
-                    "user_id": msg.user_id,
-                    "image_url": msg.user.image_url,
-                    "username": msg.user.username,
-                    "commented": msg in g.user.comments,
-                    "like": msg in g.user.likes,
-                    "repost": msg in g.user.reposted,
-                    "cmt_cnt": len(msg.comments),
-                    "likes_cnt": len(msg.users),
-                    "repost_cnt": len(msg.reposted),
+                    "id": post.id,
+                    "text": post.text,
+                    "timestamp": post.timestamp,
+                    "user_id": post.user_id,
+                    "image_url": post.user.image_url,
+                    "username": post.user.username,
+                    "commented": post in g.user.commented,
+                    "like": post in g.user.likes,
+                    "repost": post in g.user.reposted,
+                    "cmt_cnt": len(post.comments),
+                    "likes_cnt": len(post.users),
+                    "repost_cnt": len(post.reposted),
                     "guser": g.user.id,
-                    "follow": msg.user in g.user.following,
-                    "not_original": msg.id in repost_id,
+                    "follow": post.user in g.user.following,
+                    "not_original": post.id in repost_id,
                     "page": user_id == g.user.id,
                     "page_username": user.username,
                 }
             )
-            if msg.id in repost_id:
-                repost_id.remove(msg.id)
+            if post.id in repost_id:
+                repost_id.remove(post.id)
 
-        return jsonify(all_msg)
-    return jsonify(response={"ok": 200})
+        return jsonify(all_posts)
+    return jsonify(response={"failed": 404})
 
 
 # load mor following as you scroll down
@@ -501,9 +629,9 @@ def load_comments():
     offset = 10
     if request.json:
         index = request.json["index"]
-        message_id = request.json["message_id"]
-        message = db.get_or_404(Message, message_id)
-        comments = message.comments[index : index + offset]
+        post_id = request.json["post_id"]
+        post = db.get_or_404(Post, post_id)
+        comments = post.comments[index : index + offset]
         # serialize comments
         cmts = [
             {
@@ -522,17 +650,17 @@ def load_comments():
     return jsonify("failed")
 
 
-# save the message to the database and return the user and message as json to display it on the dom
-@app_routes.route("/messages", methods=["POST"])
+# save the post to the database and return the user and message as json to display it on the dom
+@app_routes.route("/posts", methods=["POST"])
 @login_required
 def add_post():
     data = request.json
     print(data)
-    form = MessageForm(obj=data)
+    form = PostForm(obj=data)
     if form.validate():
-        message = Message()
-        form.populate_obj(message)
-        g.user.messages.append(message)
+        post = Post()
+        form.populate_obj(post)
+        g.user.posts.append(post)
         db.session.commit()
         response = {
             "user": {
@@ -540,10 +668,10 @@ def add_post():
                 "username": g.user.username,
                 "image_url": g.user.image_url,
             },
-            "message": {
-                "id": message.id,
-                "timestamp": message.timestamp,
-                "text": message.text,
+            "post": {
+                "id": post.id,
+                "timestamp": post.timestamp,
+                "text": post.text,
             },
         }
 
@@ -551,32 +679,34 @@ def add_post():
     return jsonify(response={"response": "failed"})
 
 
-# diplay the messages liked by the user
-@app_routes.route("/users/messages/likes/<int:user_id>")
+# diplay the posts liked by the user
+@app_routes.route("/users/posts/likes/<int:user_id>")
 @login_required
-def show_liked_messagess(user_id):
+def show_liked_post(user_id):
     user = db.get_or_404(User, user_id)
 
-    form = MessageForm()
+    form = PostForm()
     edit_form = EditUserForm(obj=user)
-    return render_template("likes.html", user=user, form=form, edit_form=edit_form)
+    return render_template(
+        "likes.html", user=user, form=form, edit_form=edit_form, time=time_ago
+    )
 
 
-# load messages liked by the user as you scroll down
-@app_routes.route("/load-likes-msg", methods=["POST"])
+# load posts liked by the user as you scroll down
+@app_routes.route("/load-likes-post", methods=["POST"])
 def load_likes_msg():
     offset = 10
     if request.json:
         index = request.json["index"]
         user_id = request.json["id"]
         user = db.get_or_404(User, user_id)
-        if index + offset >= len(Message.query.all()):
-            offset = len(Message.query.all())
-        messages = (
+        if index + offset >= len(Post.query.all()):
+            offset = len(Post.query.all())
+        posts = (
             db.session.execute(
-                db.select(Message)
+                db.select(Post)
                 .join(Likes)
-                .where(Likes.message_id == Message.id, Likes.user_id == user.id)
+                .where(Likes.post_id == Post.id, Likes.user_id == user.id)
                 .order_by(Likes.id.desc())
                 .slice(index, index + offset)
             )
@@ -584,57 +714,57 @@ def load_likes_msg():
             .all()
         )
 
-        # serialize messages
-        all_msg = [
+        # serialize posts
+        all_posts = [
             {
-                "id": msg.id,
-                "text": msg.text,
-                "timestamp": msg.timestamp,
-                "user_id": msg.user_id,
-                "image_url": msg.user.image_url,
-                "username": msg.user.username,
-                "commented": msg in g.user.comments,
-                "like": msg in g.user.likes,
-                "repost": msg in g.user.reposted,
-                "cmt_cnt": len(msg.comments),
-                "likes_cnt": len(msg.users),
-                "repost_cnt": len(msg.reposted),
+                "id": post.id,
+                "text": post.text,
+                "timestamp": post.timestamp,
+                "user_id": post.user_id,
+                "image_url": post.user.image_url,
+                "username": post.user.username,
+                "commented": post in g.user.commented,
+                "like": post in g.user.likes,
+                "repost": post in g.user.reposted,
+                "cmt_cnt": len(post.comments),
+                "likes_cnt": len(post.users),
+                "repost_cnt": len(post.reposted),
                 "guser": g.user.id,
-                "follow": msg.user in g.user.following,
+                "follow": post.user in g.user.following,
             }
-            for msg in messages
+            for post in posts
         ]
-        return jsonify(all_msg)
-    return jsonify(200)
+        return jsonify(all_posts)
+    return jsonify("failed")
 
 
-# display the message and a form to add comments
-@app_routes.route("/messages/<int:message_id>")
+# display the post and a form to add comments
+@app_routes.route("/posts/<int:post_id>")
 @login_required
-def show_message(message_id):
-    msg = db.get_or_404(Message, message_id)
+def show_post(post_id):
+    post = db.get_or_404(Post, post_id)
     comment_form = CommentForm()
-    form = MessageForm()
+    form = PostForm()
     return render_template(
-        "message.html", msg=msg, comment_form=comment_form, form=form, user=g.user
+        "post.html", post=post, comment_form=comment_form, form=form, user=g.user
     )
 
 
-# add comment to message and return a json with user and comment serialized
+# add comment to post and return a json with user and comment serialized
 # to display on the DOM
-@app_routes.route("/messages/comments/add", methods=["POST"])
+@app_routes.route("/posts/comments/add", methods=["POST"])
 @login_required
 def add_comment():
     data = request.json
     form = CommentForm(obj=data)
     if request.json:
-        message = db.get_or_404(Message, request.json["message_id"])
+        post = db.get_or_404(Post, request.json["post_id"])
         if form.validate_on_submit():
             comment = Comment()
             form.populate_obj(comment)
             comment.user_id = g.user.id
-            comment.message_id = message.id
-            message.comments.append(comment)
+            comment.post_id = post.id
+            post.comments.append(comment)
             db.session.commit()
             response = {
                 "user": {
@@ -648,84 +778,85 @@ def add_comment():
                     "text": comment.text,
                 },
             }
-        return jsonify(response)
+            return jsonify(response)
     return jsonify(response={"failed": "failed to add comment"})
 
 
 # delete a comment
-@app_routes.route("/messages/comment/delete", methods=["POST"])
+@app_routes.route("/posts/comment/delete", methods=["POST"])
 @login_required
 def delete_comment():
     if request.json:
         comment_id = request.json["comment_id"]
 
         comment = db.get_or_404(Comment, comment_id)
-        message = db.get_or_404(Message, comment.message_id)
+        post = db.get_or_404(Post, comment.post_id)
 
         db.session.delete(comment)
         db.session.commit()
         return jsonify(
             response={
                 "response": "deleted",
-                "commented": g.user in message.users_commented,
-                "message_id": message.id,
+                # "commented": g.user in post.users_commented,
+                "commented": post in g.user.commented,
+                "post_id": post.id,
             }
         )
     return jsonify(response={"response": "failed"})
 
 
-# delete a message and the comments associated for the message page
+# delete a post and the comments associated for the post page
 # then return to profile page
-@app_routes.route("/messages/delete/<int:msg_id>", methods=["POST"])
+@app_routes.route("/posts/delete/<int:post_id>", methods=["POST"])
 @login_required
-def delete_show_message(msg_id):
-    if msg_id:
-        message = db.get_or_404(Message, msg_id)
-        for cmt in message.comments:
-            db.session.delete(cmt)
-        db.session.delete(message)
+def delete_show_post_page(post_id):
+    if post_id:
+        post = db.get_or_404(Post, post_id)
+        # for cmt in post.comments:
+        #     db.session.delete(cmt)
+        db.session.delete(post)
         db.session.commit()
     return redirect(url_for("app_routes.show_user_profile", user_id=g.user.id))
 
 
-# delete message on other pages likes, home, profile without reloading the page
-@app_routes.route("/messages/delete", methods=["POST"])
+# delete post on other pages likes, home, profile without reloading the page
+@app_routes.route("/posts/delete", methods=["POST"])
 @login_required
-def delete_message():
+def delete_post():
     if request.json:
-        message_id = request.json["message_id"]
-        msg = db.get_or_404(Message, message_id)
-        for comment in msg.comments:
-            db.session.delete(comment)
-        db.session.delete(msg)
+        post_id = request.json["post_id"]
+        post = db.get_or_404(Post, post_id)
+        # for comment in post.comments:
+        #     db.session.delete(comment)
+        db.session.delete(post)
         db.session.commit()
     return jsonify(response={"data": 200})
 
 
 # like and unlike functiond
-@app_routes.route("/messages/like", methods=["POST"])
+@app_routes.route("/posts/like", methods=["POST"])
 @login_required
-def like_message():
+def like_post():
     if request.json:
-        message_id = request.json["message_id"]
-        message = db.get_or_404(Message, int(message_id))
-        if message in g.user.likes:
-            g.user.likes.remove(message)
+        post_id = request.json["post_id"]
+        post = db.get_or_404(Post, post_id)
+        if post in g.user.likes:
+            g.user.likes.remove(post)
         else:
-            g.user.likes.append(message)
+            g.user.likes.append(post)
     db.session.commit()
     return jsonify(response={"response": 200})
 
 
 # repost and unrepost
-@app_routes.route("/messages/repost", methods=["POST"])
+@app_routes.route("/posts/repost", methods=["POST"])
 @login_required
-def respost_message():
+def respost_post():
     if request.json:
-        message = db.get_or_404(Message, request.json["message_id"])
-        if message in g.user.reposted:
-            g.user.reposted.remove(message)
+        post = db.get_or_404(Post, request.json["post_id"])
+        if post in g.user.reposted:
+            g.user.reposted.remove(post)
         else:
-            g.user.reposted.append(message)
+            g.user.reposted.append(post)
         db.session.commit()
     return jsonify(response={"response": 200})

@@ -1,6 +1,7 @@
+<!-- Modal -->
 <div
   class="modal fade"
-  id="globalSearchModal"
+  id="modalSearch"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
   aria-hidden="true"
@@ -8,7 +9,9 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Search</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          New conversation
+        </h1>
         <button
           type="button"
           class="btn-close"
@@ -16,18 +19,16 @@
           aria-label="Close"
         ></button>
       </div>
-
       <div class="modal-body">
-        <form action="/search" class="" role="search">
+        <form id="new_convo" action="/conversations/new-conversation">
           <input
+            id="name_search"
             class="form-control"
-            type="search"
-            name="search"
-            placeholder="search"
-            aria-label="search"
+            type="text"
+            placeholder="search by username "
           />
-          <button class="btn btn-default" type="submit"></button>
         </form>
+        <ul class="list-group list-name mb-3"></ul>
       </div>
       <div class="modal-footer"></div>
     </div>

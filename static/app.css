@@ -1,8 +1,9 @@
 body {
   margin: 0;
   padding: 0;
-  background-color: #7cb9e8;
+  /* background-color: #7cb9e8; */
 }
+<<<<<<< HEAD
 .dropdown-menu-color {
   background-color: #7cb9e8;
   border: 0.1rem solid #318ce7;
@@ -17,6 +18,63 @@ body {
 .dropdown-item :hover {
   background-color: #318ce7;
 }
+=======
+h5 {
+  text-align: center;
+}
+.time-ago {
+  font-size: 0.8rem;
+  align-items: flex-end;
+}
+hr {
+  color: black;
+}
+
+.msg-sender {
+  background-color: #7cb9e8;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  color: white;
+  margin: 0.3rem;
+}
+.top-dmessage {
+  display: flex;
+  justify-content: center;
+  background-color: white;
+  opacity: 0.9;
+}
+.msg-receiver {
+  background-color: #adb5bd;
+  border-radius: 0.3rem;
+  padding: 0.5rem;
+  color: white;
+  margin: 0.3rem;
+}
+.direct-messages {
+  /* height: 9rvh; */
+  margin-bottor: 10rem;
+  padding-bottom: 5rem;
+}
+.message-form {
+  bottom: 0;
+  z-index: 4;
+  position: fixed;
+  display: flex;
+  width: 100vw;
+  max-width: 37rem;
+}
+.bg-message-form {
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  width: 100vw;
+  padding: 1rem;
+  bottom: 0;
+  background-color: white;
+  opacity: 0.9;
+}
+
+>>>>>>> direct_message
 .list-group-item {
   padding: 0.6rem;
 }
@@ -98,7 +156,7 @@ nav {
 /*   margin: auto; */
 /* } */
 .nav-link:hover {
-  background-color: #318ce7;
+  background-color: #adb5bd;
 }
 .main-content {
   flex: 1;
@@ -113,6 +171,7 @@ nav {
 .vr {
   padding: 0.1rem;
   margin-right: 0.5rem;
+  color: black;
 }
 .hr-message {
   margin: 0;
@@ -421,6 +480,7 @@ textarea:focus {
   background-color: white;
   border-radius: 1rem;
   margin-bottom: 2rem;
+  border: 0.1rem solid grey;
   /* box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.5); */
 }
 .authenticate button {
@@ -435,9 +495,9 @@ textarea:focus {
   /* width: 100vw; */
 }
 .authenticate-form {
-  border: 0.1rem solid #c4e0e5;
+  /* border: 0.1rem solid; */
   /* box-shadow: 0.2rem 0.2rem 0.2rem 0.2rem rgba(0, 0, 200, 0.5); */
-  background-color: #7cb9e8;
+  /* background-color: #7cbre8; */
   border-bottom-left-radius: 1rem;
   border-bottom-right-radius: 1rem;
   border-radius-bottom: 1rem;
@@ -568,16 +628,16 @@ h1 {
 .not-reposted:hover {
   color: #00a86b;
 }
-.dropdown-item {
-  padding: 0;
-}
-.dropdown-menu {
-  padding: 0;
-  z-index: 2000;
-}
-.dropdown-menu[data-bs-popper] {
-  left: -4.1rem;
-}
+/* .dropdown-item { */
+/*   padding: 0; */
+/* } */
+/* .dropdown-menu { */
+/*   padding: 0; */
+/*   z-index: 2000; */
+/* } */
+/* .dropdown-menu[data-bs-popper] { */
+/*   left: -4.1rem; */
+/* } */
 .interaction {
   display: flex;
   justify-content: center;
@@ -609,6 +669,26 @@ h1 {
   display: none;
 }
 @media (max-width: 933px) {
+<<<<<<< HEAD
+=======
+  .following-sidebar {
+    display: none;
+  }
+  .followers-sidebar {
+    display: none;
+  }
+  .message-form {
+    bottom: 0;
+    position: fixed;
+    display: flex;
+    width: 100vw;
+    max-width: 100%;
+    margin-bottom: 5rem;
+  }
+  .direct-messages {
+    padding: 1rem;
+  }
+>>>>>>> direct_message
   .dropdown-menu-color a {
     background-color: #318ce7;
   }

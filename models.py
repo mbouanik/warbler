@@ -1,7 +1,18 @@
-from sqlalchemy import DateTime, ForeignKey, Integer, String, Text
+from sqlalchemy import (
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    ForeignKeyConstraint,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import Mapped, Relationship, mapped_column
+from sqlalchemy.sql.schema import PrimaryKeyConstraint
 from init import db, bcrypt
 from datetime import datetime
+from flask import g
+
 
 DEFAULT_IMG_URL = "https://pngimg.com/d/mandalorian_PNG23.png"
 DEFAULT_HEAD_IMG_URL = "https://img.freepik.com/free-photo/glowing-spaceship-orbits-planet-starry-galaxy-generated-by-ai_188544-9655.jpg?w=1480&t=st=1700941711~exp=1700942311~hmac=fe6bbf22f45bbddd98dd7c6e93c48477b10be41e2059b9fb733e7072d76782d9 "
@@ -26,7 +37,7 @@ class Likes(db.Model):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id"))
 
     def __init__(self, **kwargs) -> None:
         super(Likes, self).__init__(**kwargs)
@@ -51,8 +62,8 @@ class Repost(db.Model):
         DateTime, nullable=False, default=datetime.utcnow
     )
 
-    message_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("messages.id"), primary_key=True
+    post_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("posts.id"), primary_key=True
     )
     user_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("users.id"), primary_key=True
@@ -68,7 +79,7 @@ class Comment(db.Model):
         DateTime, nullable=False, default=datetime.utcnow
     )
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    message_id: Mapped[int] = mapped_column(Integer, ForeignKey("messages.id"))
+    post_id: Mapped[int] = mapped_column(Integer, ForeignKey("posts.id"))
 
     user = Relationship("User")
 
@@ -76,8 +87,8 @@ class Comment(db.Model):
         super(Comment, self).__init__(**kwargs)
 
 
-class Message(db.Model):
-    __tablename__ = "messages"
+class Post(db.Model):
+    __tablename__ = "posts"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(148), nullable=False)
     timestamp: Mapped[DateTime] = mapped_column(
@@ -89,15 +100,42 @@ class Message(db.Model):
     user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     reposts: Mapped[Repost] = Relationship(
-        "Repost", backref="messages", cascade="all,delete-orphan"
+        "Repost", backref="posts", cascade="all,delete-orphan"
     )
     comments: Mapped[Comment] = Relationship(
         "Comment",
-        backref="message",
+        backref="post",
         cascade="all, delete-orphan",
         order_by=("desc(Comment.id)"),
     )
-    users_commented = Relationship("User", secondary="comments")
+
+    def __init__(self, **kwargs) -> None:
+        super(Post, self).__init__(**kwargs)
+
+
+<<<<<<< HEAD
+class Conversation(db.Model):
+    __tablename__ = "conversations"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    content: Mapped[str] = mapped_column(Text)
+=======
+class Message(db.Model):
+    __tablename__ = "messages"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    text: Mapped[str] = mapped_column(String(148), nullable=False)
+>>>>>>> direct_message
+    timestamp: Mapped[DateTime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+    )
+    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    conversation_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("conversations.id")
+    )
+    user = Relationship("User")
 
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
@@ -107,12 +145,22 @@ class Conversation(db.Model):
     __tablename__ = "conversations"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    content: Mapped[str] = mapped_column(Text)
-    timestamp: Mapped[DateTime] = mapped_column(
-        DateTime,
-        nullable=False,
-        default=datetime.utcnow,
+    sender_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+
+    messages: Mapped[Message] = Relationship(
+        "Message", cascade="all, delete-orphan", order_by="Message.id"
     )
+    users = Relationship("User", secondary="messages", backref="conversations")
+
+    def __init__(self, **kwargs) -> None:
+        super(Conversation, self).__init__(**kwargs)
+
+    def __repr__(self) -> str:
+        if self.sender_id == g.user.id:
+            return db.get_or_404(User, self.recipient_id).username
+        else:
+            return db.get_or_404(User, self.sender_id).username
 
 
 class DirectMessage:
@@ -150,8 +198,8 @@ class User(db.Model):
     bio: Mapped[str] = mapped_column(String(100), default="")
     location: Mapped[str] = mapped_column(String(50), default="")
 
-    messages: Mapped[Message] = Relationship(
-        "Message", backref="user", cascade="all, delete-orphan"
+    posts: Mapped[Post] = Relationship(
+        "Post", backref="user", cascade="all, delete-orphan"
     )
 
     followers: Mapped[Follows] = Relationship(
@@ -169,17 +217,16 @@ class User(db.Model):
     )
 
     likes: Mapped[Likes] = Relationship(
-        "Message",
+        "Post",
         secondary="likes",
         backref="users",
         order_by="desc(Likes.id)",
     )
 
-    comments: Mapped[Comment] = Relationship(
-        "Message", secondary="comments", cascade="all, delete"
-    )
+    comments: Mapped[Comment] = Relationship("Comment", cascade="all, delete-orphan")
+    commented: Mapped[Post] = Relationship("Post", secondary="comments")
     reposted: Mapped[Repost] = Relationship(
-        "Message", secondary="reposts", backref="reposted", cascade="all, delete"
+        "Post", secondary="reposts", backref="reposted", cascade="all, delete"
     )
 
     # direct_messages = Relationship("DirectMessage", secondary="conversations")
@@ -188,12 +235,19 @@ class User(db.Model):
         super(User, self).__init__(**kwargs)
 
     @classmethod
-    def sign_up(cls, email, username, password, image_url):
+    def sign_up(cls, email, username, password, image_url, location, bio):
         hashed_pwd = bcrypt.generate_password_hash(password).decode("utf8")
         image_url = image_url if image_url else None
+        location = location if location else None
+        bio = bio if bio else None
 
         return cls(
-            email=email, username=username, password=hashed_pwd, image_url=image_url
+            email=email,
+            username=username,
+            password=hashed_pwd,
+            image_url=image_url,
+            location=location,
+            bio=bio,
         )
 
     @classmethod

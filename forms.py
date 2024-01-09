@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField, TextAreaField, validators
+from wtforms import PasswordField, StringField, TextAreaField
 from wtforms.validators import Email, InputRequired, Length
 from flask_wtf.file import FileField
 
@@ -19,7 +19,7 @@ class LoginForm(FlaskForm):
     password = PasswordField("Password", validators=[InputRequired(), Length(min=6)])
 
 
-class MessageForm(FlaskForm):
+class PostForm(FlaskForm):
     text = TextAreaField("Text", validators=[InputRequired(), Length(max=148, min=1)])
 
 
@@ -40,7 +40,12 @@ class CommentForm(FlaskForm):
     text = TextAreaField("Text", validators=[InputRequired(), Length(max=148, min=1)])
 
 
+<<<<<<< HEAD
 class DirectMessageForm(FlaskForm):
     content = TextAreaField(
         "Text", validators=[InputRequired(), Length(max=148, min=1)]
     )
+=======
+class MessageForm(FlaskForm):
+    text = StringField("Text", validators=[InputRequired(), Length(max=148, min=1)])
+>>>>>>> direct_message

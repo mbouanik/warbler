@@ -61,8 +61,7 @@ ${
     <form id="${user.id}" class="follows-btn" method="POST">
       <button
         class="btn btn-primary btn-sm unfollow f-btn"
-        data-hover="Unfollow"
-      >
+        data-hover="Unfollow">
         <span> Following </span>
       </button>
     </form>
@@ -71,11 +70,7 @@ ${
 `
     : `<span></span>`
 }
-</li>
-
-
-
-`;
+</li>`;
       const template = document.createElement("template");
       template.innerHTML = follow_item;
       const t = template.content;

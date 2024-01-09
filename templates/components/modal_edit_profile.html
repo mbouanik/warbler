@@ -25,11 +25,7 @@
         ></button>
       </div>
       <div class="modal-body">
-        <form
-          class="edit-modal-form"
-          action="/users/{{user.id}}/edit"
-          method="POST"
-        >
+        <form class="edit-modal-form" action="/users/edit" method="POST">
           {{ edit_form.hidden_tag() }} {% for field in edit_form if
           field.widget.input_type != "hidden" %}
           <div class="form-floating mb-3">

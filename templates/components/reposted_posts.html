@@ -1,5 +1,5 @@
-<li id="msg{{msg.message.id}}" class="list-group-item">
-  {% if not msg.original %}
+<li id="post{{pst.post.id}}" class="list-group-item">
+  {% if not pst.original %}
   <div class="repost-message">
     {% if user.id == g.user.id %}
     <small style="position: absolute"
@@ -14,21 +14,23 @@
   {%endif %}
   <div class="top-message">
     <div class="message">
-      <a class="" href="/users/{{ msg.message.user.id }}">
+      <a
+        class=""
+        href="{{ url_for( 'app_routes.show_user_profile',user_id=pst.post.user.id) }}"
+      >
         <img
-          src="{{ msg.message.user.image_url }}"
+          src="{{ pst.post.user.image_url }}"
           alt=""
           class="timeline-image"
         />
       </a>
       <div class="message-area">
-        <a href="/users/{{ msg.message.user.id }}"
-          >@{{ msg.message.user.username }}</a
+        <a
+          href="{{ url_for( 'app_routes.show_user_profile',user_id=pst.post.user.id) }}"
+          >@{{ pst.post.user.username }}</a
         >
-        <span class="text-muted"
-          >{{ msg.message.timestamp.strftime('%b %-d, %Y') }}</span
-        >
-        <div>{{ msg.message.text }}</div>
+        <span class="text-muted">{{ time(pst.post.timestamp)}}</span>
+        <div>{{ pst.post.text }}</div>
       </div>
     </div>
     <div class="">
@@ -43,21 +45,21 @@
 
       <ul class="dropdown-menu">
         <li class="dropdown-ite text-dange">
-          {% if msg.message.user.id == g.user.id %}
+          {% if pst.post.user.id == g.user.id %}
           <button
             type="button"
             class="btn btn-link text-danger"
             data-bs-toggle="modal"
-            data-bs-target="#delete_msg"
+            data-bs-target="#delete_post{{pst.post.id}}"
           >
             <i class="fa-solid fa-trash"></i> Delete
           </button>
           {% endif %}
         </li>
         <li class="dropdown-ite">
-          {% if msg.message.user.id != g.user.id %}
-          <form id="{{msg.message.user.id}}" class="follows" method="POST">
-            {% if msg.message.user in g.user.following %}
+          {% if pst.post.user.id != g.user.id %}
+          <form id="{{pst.post.user.id}}" class="follows" method="POST">
+            {% if pst.post.user in g.user.following %}
             <button class="btn btn-lin text-danger">Unfollow</button>
             {% else %}
             <button class="btn btn-lin text-primary">Follow</button>
@@ -69,70 +71,62 @@
     </div>
   </div>
   <!-- <hr class="hr-message" /> -->
-  <div id="msg{{msg.message.id}}" class="like-btn">
+  <div id="post{{pst.post.id}}" class="like-btn">
     <div class="interaction">
-      <form id="{{msg.message.id}}" class="like-form" method="POST">
+      <form id="{{pst.post.id}}" class="like-form" method="POST">
         <button class="btn">
-          {% if msg.message in g.user.likes %}
-          <i
-            id="like_icon{{msg.message.id}}"
-            class="fa-solid fa-thumbs-up liked"
-          >
-            <small id="likes_count"> {{ msg.message.users | length }} </small>
+          {% if pst.post in g.user.likes %}
+          <i id="like_icon{{pst.post.id}}" class="fa-solid fa-thumbs-up liked">
+            <small id="likes_count"> {{ pst.post.users | length }} </small>
           </i>
           {% else %}
           <i
-            id="like_icon{{msg.message.id}}"
+            id="like_icon{{pst.post.id}}"
             class="fa-regular fa-thumbs-up not-liked"
           >
-            <small id="likes_count"> {{ msg.message.users | length }} </small>
+            <small id="likes_count"> {{ pst.post.users | length }} </small>
           </i>
           {% endif %}
         </button>
       </form>
     </div>
     <div class="interaction">
-      <a class="btn primary" href="/messages/{{ msg.message.id }}">
-        {% if msg.message in g.user.comments %}
+      <a
+        class="btn primary"
+        href="{{ url_for('app_routes.show_post', post_id=pst.post.id) }}"
+      >
+        {% if pst.post in g.user.commented %}
         <i class="fa-sharp fa-solid fa-comments liked">
-          <small id="comments_count">
-            {{ msg.message.comments | length }}
-          </small>
+          <small id="comments_count"> {{ pst.post.comments | length }} </small>
         </i>
         {% else %}
         <i class="fa-sharp fa-regular fa-comments not-commented">
-          <small id="comments_count">
-            {{ msg.message.comments | length }}
-          </small>
+          <small id="comments_count"> {{ pst.post.comments | length }} </small>
         </i>
         {% endif %}
       </a>
     </div>
     <div class="interaction">
-      <form id="{{msg.message.id}}" class="repost-form" method="POST">
+      <form id="{{pst.post.id}}" class="repost-form" method="POST">
         <button class="btn">
-          {% if msg.message in g.user.reposted %}
+          {% if pst.post in g.user.reposted %}
           <i
-            id="repost_icon{{msg.message.id}}"
+            id="repost_icon{{pst.post.id}}"
             class="fa-solid fa-retweet reposted"
           >
-            <small id="repost_count">
-              {{ msg.message.reposted | length }}
-            </small>
+            <small id="repost_count"> {{ pst.post.reposted | length }} </small>
           </i>
           {% else %}
           <i
-            id="repost_icon{{msg.message.id}}"
+            id="repost_icon{{pst.post.id}}"
             class="fa-solid fa-retweet not-reposted"
           >
-            <small id="repost_count">
-              {{ msg.message.reposted | length }}
-            </small>
+            <small id="repost_count"> {{ pst.post.reposted | length }} </small>
           </i>
           {% endif %}
         </button>
       </form>
     </div>
   </div>
-  {% include "components/modal_delete_profile_msg.html" %}
+  {% include "components/modal_delete_profile_post.html" %}
 </li>

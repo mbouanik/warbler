@@ -15,7 +15,7 @@
           id="search"
         />
         <button class="btn btn-default" type="submit">
-          <!-- <span class="fa fa-search"><rspan> -->
+          <!-- <span class="fa fa-search"></span> -->
         </button>
       </form>
     </li>
@@ -42,7 +42,15 @@
           aria-labelledby="dropdownUser1"
         >
           <li class="dropdown-item">
+<<<<<<< HEAD
             <a class="btn text-white" href="/users/{{g.user.id}}/edit">Edit</a>
+=======
+            <a
+              class="btn btn-link text-white"
+              href="{{ url_for('app_routes.edit_user_profile', user_id=g.user.id) }}"
+              >Edit</a
+            >
+>>>>>>> direct_message
           </li>
           <!-- <li><hr class="dropdown-divider mobile-hr" /></li> -->
           <li class="dropdown-item">
@@ -52,12 +60,6 @@
               action="/logout"
               method="POST"
             >
-              <input
-                type="hidden"
-                name="csrf_token"
-                value="{{ csrf_token() }}"
-              />
-
               <button
                 id="{{g.user.id}}"
                 class="logout btn text-white link-underline-opacity-0"
@@ -89,7 +91,7 @@
         type="button"
         class="btn btn-sm"
         data-bs-toggle="modal"
-        data-bs-target="#search"
+        data-bs-target="#globalSearchModal"
       >
         <i class="fa-solid fa-magnifying-glass"></i>
       </button>
