@@ -25,13 +25,8 @@ async function post_message(text) {
       </a>
       <div class="message-area">
         <a href="/users/${data.data.user.id}">@${data.data.user.username}</a>
-         <span class="text-muted">${new Date(
-           data.data.post.timestamp,
-         ).toLocaleDateString("en-US", {
-           month: "short",
-           day: "numeric",
-           year: "numeric",
-         })}</span>
+         <span class="text-muted"> Just now
+       </span>
         <div>${data.data.post.text}</div>
       </div>
     </div>
@@ -64,9 +59,7 @@ async function post_message(text) {
     <div class="interaction">
       <form id="${data.data.post.id}" class="like-form" method="POST">
         <button class="btn">
-             <i id="like_icon${
-               data.data.post.id
-             }" class="fa-regular fa-thumbs-up not-liked">
+             <i id="like_icon${data.data.post.id}" class="fa-regular fa-thumbs-up not-liked">
             0
           </i>
         </button>

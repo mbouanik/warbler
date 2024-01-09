@@ -1,5 +1,5 @@
 <nav class="text-white sticky-top stiky-bottom nav-left-side">
-  <hr class="text-white mobile-hr" />
+  <hr class="text-bl mobile-hr" />
   <div class="nav-ite li-logo">
     <div class="logo nav-lin">
       <div>
@@ -38,7 +38,7 @@
       </a>
     </li>
 
-    <li class="nav-item">
+    <li class="nav-item following-sidebar">
       <a
         href="/users/following/{{g.user.id}}"
         class="nav-link text-black following"
@@ -47,7 +47,7 @@
         <span class="link-text">&nbsp;Following</span>
       </a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item followers-sidebar">
       <a
         href="/users/followers/{{g.user.id}}"
         class="nav-link text-black followers"
@@ -70,7 +70,7 @@
         type="button"
         class="btn nav-lin"
         data-bs-toggle="modal"
-        data-bs-target="#exampleModal"
+        data-bs-target="#post"
       >
         <span tyle="padding-right: 10px;" class="link-text">Post </span> &nbsp;
         <i class="fa-solid fa-solid fa-circle-plus"> </i>

@@ -9,10 +9,13 @@
   {% endfor %} {% endfor %}
 </ul>
 {% endif %}
-<h5 class="text-muter">{{conversation}}</h5>
+<div class="top-dmessage sticky-top">
+
+    <h5 class="text-muted"> {{user.username}}</h5>
+</div>
 
 
-<div class="list-grou">
+<div class="list-grou direct-messages">
     {% for message in conversation.messages %}
     {% if message.user.id != g.user.id %}
     <div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
@@ -42,6 +45,13 @@
     {{ message_form.text(class="form-control") }}
     <button class=" btn btn-primary"> send</button>
 </form>
-    {% endblock %}
+
+<div class="bg-message-form">
+</div>
 {% include "components/modal_post_form.html" %}
 {% include "components/searchbar_modal.html" %}
+
+<script src="{{ url_for('app_routes.static', filename='messages.js' ) }}"></script>
+
+    {% endblock %}
+

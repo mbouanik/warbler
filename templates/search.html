@@ -8,12 +8,11 @@
 <hr class="text-white">
 
     <ul class="list-group  messages forms-list-search">
-    {% for msg in messages %}
-    {% include "components/messages.html" %}
+    {% for post in posts %}
+    {% include "components/posts.html" %}
     {% endfor %}
 </ul>
 {% include "components/modal_post_form.html" %}
-{% include "components/searchbar_modal.html" %}
 
 <script src=" {{ url_for('app_routes.static', filename='search.js' ) }} "></script>
     {% endblock %}

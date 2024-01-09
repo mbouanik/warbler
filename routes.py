@@ -5,15 +5,14 @@ from flask import (
     jsonify,
     redirect,
     render_template,
-    request_started,
     url_for,
     session,
     g,
     request,
 )
+from sqlalchemy.sql import or_
 
-from helpers import time_ago
-from sqlalchemy.sql import or_, text
+from helpers import time_ago, time_ago_message
 from init import db
 from models import Comment, Conversation, Repost, User, Post, Likes, Message
 from forms import (
@@ -248,61 +247,68 @@ def conversations():
     )
 
 
-@app_routes.route(
-    "/conversations/messages/<int:conversation_id>", methods=["GET", "POST"]
-)
-def show_conversation(conversation_id):
+@app_routes.route("/conversations/messages/<int:user_id>", methods=["GET", "POST"])
+def show_conversation(user_id):
     form = PostForm()
-    message_form = MessageForm()
-    conversation = db.get_or_404(Conversation, conversation_id)
-    time = datetime
-
-    if message_form.validate_on_submit():
-        print("MESSAGE RECIEVED")
-        message = Message(
-            text=message_form.text.data,
-            user_id=g.user.id,
-            conversation_id=conversation_id,
-        )
-        # conversations.messages.append(message)
-        db.session.add(message)
-        db.session.commit()
-        return redirect(
-            url_for("app_routes.show_conversation", conversation_id=conversation_id)
-        )
-    return render_template(
-        "messages.html",
-        form=form,
-        message_form=message_form,
-        user=g.user,
-        conversation=conversation,
-        time=time_ago,
-    )
-
-
-@app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])
-def show_new_conversation(user_id):
     user = db.get_or_404(User, user_id)
+    message_form = MessageForm()
     conversation = db.session.execute(
         db.select(Conversation).where(
             Conversation.sender_id == min(g.user.id, user_id),
             Conversation.recipient_id == max(g.user.id, user_id),
         )
     ).scalar_one_or_none()
-    if not conversation:
-        conversation = Conversation(
-            sender_id=min(g.user.id, user.id), recipient_id=max(g.user.id, user.id)
-        )
+
+    if message_form.validate_on_submit():
+        print("MESSAGE RECIEVED")
+        if not conversation:
+            conversation = Conversation(
+                sender_id=min(g.user.id, user_id), recipient_id=max(g.user.id, user_id)
+            )
         db.session.add(conversation)
         db.session.commit()
-    return redirect(
-        url_for("app_routes.show_conversation", conversation_id=conversation.id)
+
+        message = Message(
+            text=message_form.text.data,
+            user_id=g.user.id,
+            conversation_id=conversation.id,
+        )
+        # conversations.messages.append(message)
+        db.session.add(message)
+        db.session.commit()
+        return redirect(url_for("app_routes.show_conversation", user_id=user_id))
+    return render_template(
+        "messages.html",
+        form=form,
+        message_form=message_form,
+        user=user,
+        conversation=conversation,
+        time=time_ago_message,
     )
+
+
+# @app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])
+# def show_new_conversation(user_id):
+#     user = db.get_or_404(User, user_id)
+#     conversation = db.session.execute(
+#         db.select(Conversation).where(
+#             Conversation.sender_id == min(g.user.id, user_id),
+#             Conversation.recipient_id == max(g.user.id, user_id),
+#         )
+#     ).scalar_one_or_none()
+#     if conversation:
+#         return redirect(
+#             url_for("app_routes.show_conversation", conversation_id=conversation.id)
+#             )
+#     return render_template()
 
 
 @app_routes.route("/conversations/delete/<int:conversation_id>", methods=["POST"])
 def delete_conversation(conversation_id):
     conversation = db.get_or_404(Conversation, conversation_id)
+    for message in conversation.messages:
+        db.session.delete(message)
+    db.session.commit()
     db.session.delete(conversation)
     db.session.commit()
     return redirect(url_for("app_routes.conversations"))
@@ -350,7 +356,7 @@ def search():
     form = PostForm()
 
     return render_template(
-        "search.html", users=users, posts=posts, form=form, user=g.user
+        "search.html", users=users, posts=posts, form=form, user=g.user, time=time_ago
     )
 
 

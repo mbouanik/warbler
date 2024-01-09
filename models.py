@@ -129,22 +129,8 @@ class Message(db.Model):
     )
     user = Relationship("User")
 
-    # sender_id: Mapped[int] = mapped_column(Integer)
-    # recipient_id: Mapped[int] = mapped_column(
-    #     Integer,
-    # )
-
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
-
-    # __table_args__ = (
-    #     # PrimaryKeyConstraint("sender_id", "recipient_id", name="pk_other_table"),
-    #     ForeignKeyConstraint(
-    #         ["sender_id", "recipient_id"],
-    #         ["conversations.sender_id", "conversations.recipient_id"],
-    #     ),
-    # )
-    #
 
 
 class Conversation(db.Model):
@@ -155,13 +141,9 @@ class Conversation(db.Model):
     recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     messages: Mapped[Message] = Relationship(
-        "Message", cascade="all, delete", order_by="Message.id"
+        "Message", cascade="all, delete-orphan", order_by="Message.id"
     )
     users = Relationship("User", secondary="messages", backref="conversations")
-    # users = Relationship("User", foreign_keys=[sender_id, recipient_id])
-    # __table_args__ = (
-    #     UniqueConstraint("sender_id", "recipient_id", name="uq_sender_recipient"),
-    # )
 
     def __init__(self, **kwargs) -> None:
         super(Conversation, self).__init__(**kwargs)

@@ -22,7 +22,7 @@ async function lookup(name) {
   for (user of res.data) {
     let content = `
 <li id="user_follow{{user.id}}" class="list-group-item display-follow">
-  <div style="display: flex; gap: 1rem">
+  <div style="display: flex; gap: 1rem; text-align: start;">
     <a href="/users/${user.id}">
       <img src="${user.image_url}" class="timeline-image" alt="" />
     </a>
@@ -37,7 +37,7 @@ async function lookup(name) {
     </div>
   </div>
  <div class="follow-bt">
-<a href="/conversations/new/${user.id}">  <i class="fa-solid fa-message"></i>
+<a href="/conversations/messages/${user.id}">  <i class="fa-solid fa-message"></i>
 </a>
 </div>
 
