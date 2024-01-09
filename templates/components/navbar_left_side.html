@@ -98,17 +98,6 @@
       />
       <strong class="mobile-hr">{{ g.user.username }}</strong>
     </a>
-<<<<<<< HEAD
-    <ul
-      class="dropdown-menu dropdown-menu-color text-small shadow"
-      aria-labelledby="dropdownUser1"
-    >
-      <li class="dropdown-item" style="width: 100%">
-        <a class="btn text-white" href="/users/{{g.user.id}}/edit">Edit</a>
-      </li>
-      <!-- <hr class="dropdown-divider text-white mobile-hr" /> -->
-      <li class="dropdown-item">
-=======
     <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser1">
       <li class="dropdown-ite" style="width: 100%">
         <a
@@ -119,22 +108,13 @@
       </li>
       <hr class="dropdown-divider text-white mobile-hr" />
       <li class="dropdown-ite">
->>>>>>> direct_message
         <form
           id="{{g.user.id}}"
           class="logout dropdown-item"
           action="/logout"
           method="POST"
         >
-<<<<<<< HEAD
-          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
-          <button
-            id="{{g.user.id}}"
-            class="logout btn text-white link-underline-opacity-0"
-          >
-=======
           <button id="{{g.user.id}}" class="logout dropdown-item">
->>>>>>> direct_message
             Log out {{g.user.username}}
           </button>
         </form>
