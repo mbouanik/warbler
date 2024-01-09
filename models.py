@@ -113,19 +113,18 @@ class Post(db.Model):
         super(Post, self).__init__(**kwargs)
 
 
-<<<<<<< HEAD
-class Conversation(db.Model):
-    __tablename__ = "conversations"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    content: Mapped[str] = mapped_column(Text)
-=======
+# <<<<<<< HEAD
+# class Conversation(db.Model):
+#     __tablename__ = "conversations"
+#
+#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+#     content: Mapped[str] = mapped_column(Text)
+# =======
 class Message(db.Model):
     __tablename__ = "messages"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     text: Mapped[str] = mapped_column(String(148), nullable=False)
->>>>>>> direct_message
     timestamp: Mapped[DateTime] = mapped_column(
         DateTime,
         nullable=False,
@@ -163,21 +162,21 @@ class Conversation(db.Model):
             return db.get_or_404(User, self.sender_id).username
 
 
-class DirectMessage:
-    __tablename__ = "direct_messages"
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    sender_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    timestamp: Mapped[DateTime] = mapped_column(
-        DateTime,
-        nullable=False,
-        default=datetime.utcnow,
-    )
-    conversation_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("conversations.id")
-    )
-    conversation = Relationship("Conversation", backref="messages")
+# class DirectMessage:
+#     __tablename__ = "direct_messages"
+#
+#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
+#     sender_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+#     recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+#     timestamp: Mapped[DateTime] = mapped_column(
+#         DateTime,
+#         nullable=False,
+#         default=datetime.utcnow,
+#     )
+#     conversation_id: Mapped[int] = mapped_column(
+#         Integer, ForeignKey("conversations.id")
+#     )
+#     conversation = Relationship("Conversation", backref="messages")
 
 
 class User(db.Model):

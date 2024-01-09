@@ -40,12 +40,10 @@ class CommentForm(FlaskForm):
     text = TextAreaField("Text", validators=[InputRequired(), Length(max=148, min=1)])
 
 
-<<<<<<< HEAD
-class DirectMessageForm(FlaskForm):
-    content = TextAreaField(
-        "Text", validators=[InputRequired(), Length(max=148, min=1)]
-    )
-=======
+# <<<<<<< HEAD
+# class DirectMessageForm(FlaskForm):
+#     content = TextAreaField(
+#         "Text", validators=[InputRequired(), Length(max=148, min=1)]
+#     )
 class MessageForm(FlaskForm):
     text = StringField("Text", validators=[InputRequired(), Length(max=148, min=1)])
->>>>>>> direct_message
