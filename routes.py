@@ -1,4 +1,3 @@
-from datetime import datetime
 from flask import (
     Blueprint,
     flash,
@@ -14,15 +13,6 @@ from sqlalchemy.sql import or_
 
 from helpers import time_ago, time_ago_message
 from init import db
-<<<<<<< HEAD
-from models import Comment, DirectMessage, Repost, User, Message, Likes
-from forms import (
-    CommentForm,
-    DirectMessageForm,
-    EditUserForm,
-    LoginForm,
-    MessageForm,
-=======
 from models import Comment, Conversation, Repost, User, Post, Likes, Message
 from forms import (
     CommentForm,
@@ -30,7 +20,6 @@ from forms import (
     EditUserForm,
     LoginForm,
     PostForm,
->>>>>>> direct_message
     UserForm,
 )
 from functools import wraps
@@ -237,31 +226,6 @@ def show_user_profile(user_id):
     )
 
 
-<<<<<<< HEAD
-@app_routes.route("/users/direct_message/<int:user_id>")
-def direct_message(user_id):
-    user = db.get_or_404(User, user_id)
-    form = MessageForm()
-    # direct_message_form = DirectMessageForm()
-    # if direct_message_form.validate_on_submit():
-    # message = DirectMessage()
-    # direct_message_form.populate_obj(obj=message)
-    # user.direct_message.append(message)
-
-    # db.session.commit()
-    return render_template(
-        "direct_message.html",
-        user=user,
-        form=form,
-        # direct_message_form=direct_message_form,
-    )
-
-
-# edit  profile user
-@app_routes.route("/users/<int:user_id>/edit", methods=["GET", "POST"])
-@login_required
-def edit_user_profile(user_id):
-=======
 @app_routes.route("/users/conversations")
 def conversations():
     form = PostForm()
@@ -285,7 +249,6 @@ def conversations():
 @app_routes.route("/conversations/messages/<int:user_id>", methods=["GET", "POST"])
 def show_conversation(user_id):
     form = PostForm()
->>>>>>> direct_message
     user = db.get_or_404(User, user_id)
     message_form = MessageForm()
     conversation = db.session.execute(
