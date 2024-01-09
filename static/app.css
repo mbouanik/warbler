@@ -3,22 +3,6 @@ body {
   padding: 0;
   /* background-color: #7cb9e8; */
 }
-<<<<<<< HEAD
-.dropdown-menu-color {
-  background-color: #7cb9e8;
-  border: 0.1rem solid #318ce7;
-}
-.dropdown-menu-color a {
-  background-color: #7cb9e8;
-  width: 100%;
-  text-decoration: none;
-  text-align: left;
-  border-radius: 0;
-}
-.dropdown-item :hover {
-  background-color: #318ce7;
-}
-=======
 h5 {
   text-align: center;
 }
@@ -74,7 +58,6 @@ hr {
   opacity: 0.9;
 }
 
->>>>>>> direct_message
 .list-group-item {
   padding: 0.6rem;
 }
@@ -669,8 +652,6 @@ h1 {
   display: none;
 }
 @media (max-width: 933px) {
-<<<<<<< HEAD
-=======
   .following-sidebar {
     display: none;
   }
@@ -688,7 +669,6 @@ h1 {
   .direct-messages {
     padding: 1rem;
   }
->>>>>>> direct_message
   .dropdown-menu-color a {
     background-color: #318ce7;
   }
