@@ -10,6 +10,7 @@ from flask import (
     request,
 )
 from sqlalchemy.sql import or_
+from werkzeug.wrappers import response
 
 from helpers import time_ago, time_ago_message
 from init import db
@@ -286,6 +287,26 @@ def show_conversation(user_id):
         conversation=conversation,
         time=time_ago_message,
     )
+
+
+@app_routes.route("/conversations/messages/new", methods=["POST"])
+def new_message():
+    if request.json:
+        message_form = MessageForm(obj=request.json)
+        if message_form.validate_on_submit():
+            message = Message()
+            message_form.populate_obj(message)
+            # message.conversation_id = request.json["conversation_id"]
+            message.user_id = g.user.id
+            conversation = db.get_or_404(Conversation, request.json["conversation_id"])
+            conversation.messages.append(message)
+            db.session.commit()
+            response = {
+                "text": message.text,
+                "timestamp": time_ago_message(message.timestamp),
+            }
+            return jsonify(response)
+    return jsonify({"failed": "new message_error"})
 
 
 # @app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])

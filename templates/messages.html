@@ -18,7 +18,7 @@
 <div class="list-grou direct-messages">
     {% for message in conversation.messages %}
     {% if message.user.id != g.user.id %}
-    <div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
+<div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
         <div class="msg-receiver">
             {{ message.text }} 
         </div>
@@ -40,7 +40,7 @@
     {% endif %}
     {% endfor %}
 </div>
-<form class="message-form" action="" method="POST">
+<form id="{{conversation.id}}" class="message-form" action="" method="POST">
     {{ message_form.csrf_token }}
     {{ message_form.text(class="form-control") }}
     <button class=" btn btn-primary"> send</button>
