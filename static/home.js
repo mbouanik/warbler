@@ -63,7 +63,7 @@ async function post_message(text) {
             0
           </i>
         </button>
-      </form>
+</form>
     </div>
     <div class="interaction">
       <a class="btn primary" href="/posts/${data.data.post.id}">

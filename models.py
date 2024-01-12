@@ -148,7 +148,7 @@ class Conversation(db.Model):
     recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
 
     messages: Mapped[Message] = Relationship(
-        "Message", cascade="all, delete-orphan", order_by="Message.id"
+        "Message", cascade="all, delete-orphan", order_by="desc(Message.id)"
     )
     users = Relationship("User", secondary="messages", backref="conversations")
 

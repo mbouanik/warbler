@@ -10,7 +10,6 @@ from flask import (
     request,
 )
 from sqlalchemy.sql import or_
-from werkzeug.wrappers import response
 
 from helpers import time_ago, time_ago_message
 from init import db
@@ -260,31 +259,34 @@ def show_conversation(user_id):
             Conversation.recipient_id == max(g.user.id, user_id),
         )
     ).scalar_one_or_none()
-
-    if message_form.validate_on_submit():
-        print("MESSAGE RECIEVED")
-        if not conversation:
-            conversation = Conversation(
-                sender_id=min(g.user.id, user_id), recipient_id=max(g.user.id, user_id)
-            )
-        db.session.add(conversation)
-        db.session.commit()
-
-        message = Message(
-            text=message_form.text.data,
-            user_id=g.user.id,
-            conversation_id=conversation.id,
-        )
-        # conversations.messages.append(message)
-        db.session.add(message)
-        db.session.commit()
-        return redirect(url_for("app_routes.show_conversation", user_id=user_id))
+    messages = []
+    if conversation and conversation.messages:
+        messages = conversation.messages[:10][::-1]
+    # if message_form.validate_on_submit():
+    #     print("MESSAGE RECIEVED")
+    #     if not conversation:
+    #         conversation = Conversation(
+    #             sender_id=min(g.user.id, user_id), recipient_id=max(g.user.id, user_id)
+    #         )
+    #     db.session.add(conversation)
+    #     db.session.commit()
+    #
+    #     message = Message(
+    #         text=message_form.text.data,
+    #         user_id=g.user.id,
+    #         conversation_id=conversation.id,
+    #     )
+    #     # conversations.messages.append(message)
+    #     db.session.add(message)
+    #     db.session.commit()
+    #     return redirect(url_for("app_routes.show_conversation", user_id=user_id))
     return render_template(
         "messages.html",
         form=form,
         message_form=message_form,
         user=user,
         conversation=conversation,
+        messages=messages,
         time=time_ago_message,
     )
 
@@ -292,11 +294,19 @@ def show_conversation(user_id):
 @app_routes.route("/conversations/messages/new", methods=["POST"])
 def new_message():
     if request.json:
+        if request.json["conversation_id"] == None:
+            conversation = Conversation(
+                sender_id=min(g.user.id, request.json["user_id"]),
+                recipient_id=max(g.user.id, request.json["user_id"]),
+            )
+            db.session.add(conversation)
+            db.session.commit()
+            request.json["conversation_id"] = conversation.id
+
         message_form = MessageForm(obj=request.json)
         if message_form.validate_on_submit():
             message = Message()
             message_form.populate_obj(message)
-            # message.conversation_id = request.json["conversation_id"]
             message.user_id = g.user.id
             conversation = db.get_or_404(Conversation, request.json["conversation_id"])
             conversation.messages.append(message)
@@ -307,6 +317,23 @@ def new_message():
             }
             return jsonify(response)
     return jsonify({"failed": "new message_error"})
+
+
+@app_routes.route("/load-conversation", methods=["POST"])
+def load_conversation():
+    if request.json:
+        index = request.json["index"]
+        conversation = db.get_or_404(Conversation, request.json["conversation_id"])
+        messages = [
+            {
+                "text": message.text,
+                "timestamp": time_ago_message(message.timestamp),
+                "guser": message.user.id == g.user.id,
+            }
+            for message in conversation.messages[index : index + 10]
+        ]
+        return jsonify(messages)
+    return jsonify({"failed": "load messages"})
 
 
 # @app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])

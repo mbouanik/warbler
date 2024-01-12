@@ -33,14 +33,15 @@ hr {
   padding: 0.5rem;
   color: white;
   margin: 0.3rem;
+  justify-content: flex-start;
 }
 .direct-messages {
   /* height: 9rvh; */
-  margin-bottor: 10rem;
-  padding-bottom: 5rem;
+  margin-bottom: 10rem;
+  /* padding-bottom: 5rem; */
 }
 .message-form {
-  bottom: 0;
+  bottom: 0.5rem;
   z-index: 4;
   position: fixed;
   display: flex;

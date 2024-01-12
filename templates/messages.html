@@ -9,14 +9,14 @@
   {% endfor %} {% endfor %}
 </ul>
 {% endif %}
-<div class="top-dmessage sticky-top">
+<div id="{{user.id}}" class="top-dmessage sticky-top">
 
     <h5 class="text-muted"> {{user.username}}</h5>
 </div>
 
 
 <div class="list-grou direct-messages">
-    {% for message in conversation.messages %}
+    {% for message in messages%}
     {% if message.user.id != g.user.id %}
 <div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
         <div class="msg-receiver">
