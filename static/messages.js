@@ -83,6 +83,8 @@ async function trackScroll() {
         </div>
 `
         : `
+    <div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
+
  <div class="msg-receiver">
             ${message.text}
         </div>
