@@ -84,7 +84,7 @@ For major changes, please open an issue first to discuss potential modifications
 
 ## Support
 
-If you encounter any issues or have questions, feel free to reach out to our support team at [support@warpsocial.com](warpalone@gmail.com).
+If you encounter any issues or have questions, feel free to reach out to our support team at [warpalone@gmail.com](warpalone@gmail.com).
 
 ## License
 
