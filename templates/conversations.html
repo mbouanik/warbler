@@ -3,10 +3,13 @@
     <!-- <form id="new_convo" action="/conversations/new-conversation"> -->
     <!--     <input id="name_search" class="form-control" type="text" placeholder="New conversation"> -->
     <!-- </form> -->
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSearch">
-  New Conversation
+    <div class="d-flex"  style="justify-content:flex-end; ">
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSearch">
+  <i class="fa-solid fa-user-plus"></i>
 </button>
-    <!-- <button -->
+
+    </div>
+      <!-- <button -->
      <!--    type="button" -->
      <!--    class="btn btn-sm" -->
      <!--    data-bs-toggle="modal" -->
@@ -25,7 +28,7 @@
                     <a href="/conversations/messages/{% if conversation.sender_id == g.user.id %}{{conversation.recipient_id}}
     {% else %}{{conversation.sender_id}} {% endif %}"> {{conversation}}</a>
                     <br />
-                    {{ conversation.messages[-1].user.username }} : {{ conversation.messages[-1].text }}
+                    {{ conversation.messages[0].user.username }} : {{ conversation.messages[0].text }}
                 </div>
             </div>
             <div class="follow-bt">

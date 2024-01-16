@@ -12,10 +12,11 @@ message_form.addEventListener("submit", (evt) => {
   // console.log(evt.target.children[0].value);
   send_message(evt);
   evt.target.children[1].value = "";
-  window.scrollTo(0, document.body.scrollHeight);
+  // window.scrollTo(0, document.body.scrollHeigrt);
 });
 
 async function send_message(evt) {
+  console.log(evt.target.id);
   data = {
     text: evt.target.children[1].value,
     csrf_token: evt.target.children[0].value,

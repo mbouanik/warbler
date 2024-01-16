@@ -42,12 +42,12 @@
 </div>
 <form id="{{conversation.id}}" class="message-form" action="" method="POST">
     {{ message_form.csrf_token }}
-    {{ message_form.text(class="form-control") }}
+    {{ message_form.text(class="form-control sticky-bottom") }}
     <button class=" btn btn-primary"> send</button>
 </form>
 
-<div class="bg-message-form">
-</div>
+<!-- <div class="bg-message-form"> -->
+<!-- </div> -->
 {% include "components/modal_post_form.html" %}
 {% include "components/searchbar_modal.html" %}
 
