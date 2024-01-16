@@ -42,6 +42,7 @@ Before you begin, ensure you have met the following requirements:
 
     ```bash
     pip install -r requirements.txt
+- **Multi-Media Sharing:** Share photos, videos, and updates with your network.
     ```
 
 3. Configure environment variables:
@@ -49,9 +50,9 @@ Before you begin, ensure you have met the following requirements:
     Create a `.env` file in the root directory and set the following variables:
 
     ```env
-    DATABASE_URI=""
-    SESSION_SECRET=your_session_secret
-    SENDGRID_API_KEY=""
+    DATABASE_URI="database uri"
+    SECRET_KEY="your_session_secret"
+    SENDGRID_API_KEY="api key"
 
     ```
 
