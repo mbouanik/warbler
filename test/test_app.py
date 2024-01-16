@@ -70,7 +70,7 @@ class TestHomeView(TestCase):
 
     def test_edit_user(self):
         self.client.post(
-            f"/users/{self.user.id}/edit",
+            f"/users/edit",
             data={
                 "username": "dante",
                 "email": self.user.email,

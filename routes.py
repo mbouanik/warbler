@@ -765,7 +765,12 @@ def show_post(post_id):
     comment_form = CommentForm()
     form = PostForm()
     return render_template(
-        "post.html", post=post, comment_form=comment_form, form=form, user=g.user
+        "post.html",
+        post=post,
+        comment_form=comment_form,
+        form=form,
+        user=g.user,
+        time=time_ago_message,
     )
 
 
