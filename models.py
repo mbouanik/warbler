@@ -114,13 +114,6 @@ class Post(db.Model):
         super(Post, self).__init__(**kwargs)
 
 
-# <<<<<<< HEAD
-# class Conversation(db.Model):
-#     __tablename__ = "conversations"
-#
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     content: Mapped[str] = mapped_column(Text)
-# =======
 class Message(db.Model):
     __tablename__ = "messages"
 
@@ -161,23 +154,6 @@ class Conversation(db.Model):
             return db.get_or_404(User, self.recipient_id).username
         else:
             return db.get_or_404(User, self.sender_id).username
-
-
-# class DirectMessage:
-#     __tablename__ = "direct_messages"
-#
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     sender_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-#     recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-#     timestamp: Mapped[DateTime] = mapped_column(
-#         DateTime,
-#         nullable=False,
-#         default=datetime.utcnow,
-#     )
-#     conversation_id: Mapped[int] = mapped_column(
-#         Integer, ForeignKey("conversations.id")
-#     )
-#     conversation = Relationship("Conversation", backref="messages")
 
 
 class User(db.Model):
@@ -228,8 +204,6 @@ class User(db.Model):
     reposted: Mapped[Repost] = Relationship(
         "Post", secondary="reposts", backref="reposted", cascade="all, delete"
     )
-
-    # direct_messages = Relationship("DirectMessage", secondary="conversations")
 
     def __init__(self, **kwargs) -> None:
         super(User, self).__init__(**kwargs)
