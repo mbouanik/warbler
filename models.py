@@ -9,6 +9,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import Mapped, Relationship, mapped_column
 from sqlalchemy.sql.schema import PrimaryKeyConstraint
+from helpers import welcome_email
 from init import db, bcrypt
 from datetime import datetime
 from flask import g
@@ -239,6 +240,7 @@ class User(db.Model):
         image_url = image_url if image_url else None
         location = location if location else None
         bio = bio if bio else None
+        welcome_email(email, username)
 
         return cls(
             email=email,

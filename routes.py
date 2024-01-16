@@ -11,7 +11,7 @@ from flask import (
 )
 from sqlalchemy.sql import or_
 
-from helpers import time_ago, time_ago_message
+from helpers import time_ago, time_ago_message, welcome_email
 from init import db
 from models import Comment, Conversation, Repost, User, Post, Likes, Message
 from forms import (
@@ -118,6 +118,9 @@ def signup():
     signup_form = UserForm()
 
     if signup_form and signup_form.validate_on_submit():
+        if db.get_or_404(User.email, signup_form.email.data):
+            return flash("email or username already exists")
+
         user = User.sign_up(
             username=signup_form.username.data,
             email=signup_form.email.data,
@@ -126,6 +129,9 @@ def signup():
         )
         db.session.add(user)
         db.session.commit()
+        print(
+            f"\n\n\n\n\n====================================={user.email}================================\n\n\n\n\n"
+        )
         do_login(user.id)
         return redirect(url_for("app_routes.home"))
     return render_template("signup.html", form=signup_form)

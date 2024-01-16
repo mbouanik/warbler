@@ -18,24 +18,24 @@
 <div class="list-grou direct-messages">
     {% for message in messages%}
     {% if message.user.id != g.user.id %}
-<div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
+    <div class="list-group-itm  d-flex dmessage " style="justify-content:flex-start;">
         <div class="msg-receiver">
             {{ message.text }} 
         </div>
     </div>
-      <div class="text-muted time-ago d-flex"  style="justify-content:flex-start;">
-            {{ time(message.timestamp) }}
-        </div>
+    <div class="text-muted time-ago d-flex"  style="justify-content:flex-start;">
+        {{ time(message.timestamp) }}
+    </div>
 
     {% else %}
     <div class="list-group-ite d-flex " style="justify-content:flex-end; ">
         <div class="msg-sender">
             {{ message.text }} 
         </div>
-        </div>
+    </div>
      <div class="text-muted time-ago d-flex"  style="justify-content:flex-end;">
             {{ time(message.timestamp) }}
-        </div>
+    </div>
 
     {% endif %}
     {% endfor %}

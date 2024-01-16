@@ -1,5 +1,8 @@
 from datetime import datetime
 from dateutil import tz
+from os import getenv
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 
 def time_ago_message(timestamp):
@@ -49,4 +52,22 @@ def time_ago(timestamp):
     elif minutes == 0:
         return "Just now"
     else:
-        return f"{local_time.strftime('%-I:%M %p')} "
+        return f"{local_time.strftime('%-I:%M %p')}"
+
+
+def welcome_email(reciever, name):
+    print(getenv("SENDGRID_API_KEY"))
+    message = Mail(
+        from_email="outfall.dower_07@icloud.com",
+        to_emails=reciever,
+        subject="Welcome To Warp",
+        html_content=f"<h1> Welcome to Warp {name}</h1> <br> <p> Thank you {name} for signing up take the convesation beyond </p>",
+    )
+    try:
+        sg = SendGridAPIClient(getenv("SENDGRID_API_KEY"))
+        response = sg.send(message)
+        print(response.status_code)
+        print(response.body)
+        print(response.headers)
+    except Exception as e:
+        print(e)
