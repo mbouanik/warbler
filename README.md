@@ -16,11 +16,8 @@ Warp is an innovative and user-friendly social media platform designed to connec
 ## Features
 
 - **User-friendly Interface:** Enjoy a seamless and intuitive user experience.
-- **Multi-Media Sharing:** Share photos, videos, and updates with your network.
 - **Real-time Messaging:** Connect with friends through instant messaging.
 - **Privacy Controls:** Customize your privacy settings for a secure experience.
-- **News Feed Customization:** Tailor your news feed to see content that matters to you.
-- **Events and Groups:** Create or join events and groups based on your interests.
 
 ## Getting Started
 
