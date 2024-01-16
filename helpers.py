@@ -58,7 +58,7 @@ def time_ago(timestamp):
 def welcome_email(reciever, name):
     print(getenv("SENDGRID_API_KEY"))
     message = Mail(
-        from_email="contact@warp.com",
+        from_email="outfall.dower_07@icloud.com",
         to_emails=reciever,
         subject="Welcome To Warp",
         html_content=f"<h1> Welcome to Warp {name}</h1> <br> <p> Thank you {name} for signing up take the convesation beyond </p>",
