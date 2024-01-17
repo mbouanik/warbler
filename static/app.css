@@ -19,6 +19,8 @@ hr {
   padding: 1rem;
   margin-bottom: 1rem;
   top: 0;
+  position: absolute;
+  margin-top: 1rem;
 }
 
 .msg-sender {
@@ -474,6 +476,7 @@ textarea:focus {
   border-radius: 1rem;
   margin-bottom: 2rem;
   border: 0.1rem solid grey;
+  margin-top: 5rem;
   /* box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.5); */
 }
 .authenticate button {
