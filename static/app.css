@@ -13,6 +13,13 @@ h5 {
 hr {
   color: black;
 }
+.flashes {
+  background-color: rgb(255, 0, 0, 0.3);
+  border-radius: 1rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  top: 0;
+}
 
 .msg-sender {
   background-color: #7cb9e8;

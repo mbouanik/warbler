@@ -1,3 +1,8 @@
+const flashes = document.querySelector(".flashes");
+flashes;
+setTimeout(() => {
+  flashes.remove();
+}, 3000);
 const forms_list = document.querySelector(".forms-list");
 const header_follow_form = document.querySelector(".header-follow-form");
 if (forms_list) {

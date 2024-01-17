@@ -19,11 +19,11 @@
                     <div style="flex:1;">
                         {% with messages = get_flashed_messages() %}
                         {% if messages %}
-                        <ul class=flashes>
+                        <div class="flashes">
                             {% for message in messages %}
-                            <li>{{ message }}</li>
+                            <div>{{ message }}</div>
                             {% endfor %}
-                        </ul>
+                        </div>
                         {% endif %}
                         {% endwith %}
                         {% block content %} {% endblock %}
