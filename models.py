@@ -124,11 +124,19 @@ class Message(db.Model):
         nullable=False,
         default=datetime.utcnow,
     )
-    user_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    conversation_id: Mapped[int] = mapped_column(
-        Integer, ForeignKey("conversations.id")
+    user_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), nullable=False
     )
+
+    conversation_sender_id = mapped_column(Integer, nullable=False)
+    conversation_receiver_id = mapped_column(Integer, nullable=False)
     user = Relationship("User")
+    __table_args__ = (
+        db.ForeignKeyConstraint(
+            ["conversation_sender_id", "conversation_receiver_id"],
+            ["conversations.sender_id", "conversations.receiver_id"],
+        ),
+    )
 
     def __init__(self, **kwargs) -> None:
         super(Message, self).__init__(**kwargs)
@@ -137,21 +145,28 @@ class Message(db.Model):
 class Conversation(db.Model):
     __tablename__ = "conversations"
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    sender_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
-    recipient_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id"))
+    sender_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), primary_key=True
+    )
+    receiver_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey("users.id"), primary_key=True
+    )
 
     messages: Mapped[Message] = Relationship(
         "Message", cascade="all, delete-orphan", order_by="desc(Message.id)"
     )
     users = Relationship("User", secondary="messages", backref="conversations")
 
+    __table_args__ = (
+        UniqueConstraint("sender_id", "receiver_id", name="unique_conversation_users"),
+    )
+
     def __init__(self, **kwargs) -> None:
         super(Conversation, self).__init__(**kwargs)
 
     def __repr__(self) -> str:
         if self.sender_id == g.user.id:
-            return db.get_or_404(User, self.recipient_id).username
+            return db.get_or_404(User, self.receiver_id).username
         else:
             return db.get_or_404(User, self.sender_id).username
 

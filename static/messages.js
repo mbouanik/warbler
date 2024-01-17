@@ -20,10 +20,10 @@ async function send_message(evt) {
   data = {
     text: evt.target.children[1].value,
     csrf_token: evt.target.children[0].value,
-    conversation_id: parseInt(evt.target.id),
-    user_id: parseInt(
-      document.querySelector(".top-dmessage").attributes.id.value,
-    ),
+    user_id: parseInt(evt.target.id),
+    // user_id: parseInt(
+    //   document.querySelector(".top-dmessage").attributes.id.value,
+    // ),
   };
   const res = await axios.post("/conversations/messages/new", data);
   // console.log(res.data);
@@ -65,7 +65,7 @@ async function trackScroll() {
     console.log("Hello");
     data = {
       index: index,
-      conversation_id: parseInt(message_form.attributes.id.value),
+      user_id: parseInt(message_form.attributes.id.value),
     };
     const res = await axios.post("/load-conversation", data);
     console.log(res.data);

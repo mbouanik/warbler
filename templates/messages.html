@@ -40,7 +40,7 @@
     {% endif %}
     {% endfor %}
 </div>
-<form id="{{conversation.id}}" class="message-form" action="" method="POST">
+<form id="{{user.id}}" class="message-form" action="" method="POST">
     {{ message_form.csrf_token }}
     {{ message_form.text(class="form-control sticky-bottom") }}
     <button class=" btn btn-primary"> send</button>
