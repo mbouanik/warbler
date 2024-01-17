@@ -324,3 +324,49 @@ class TestFollow(TestCase):
 
         self.assertEqual(followers_page.status_code, 200)
         self.assertIn("mandalorian", data_followers)
+
+
+class TestMessage(TestCase):
+    def setUp(self) -> None:
+        with app.app_context():
+            user = User(
+                username="mandaloria",
+                email="mandalorian@mandalorian.co",
+                password=bcrypt.generate_password_hash("hello1").decode("utf-8"),
+            )
+            user2 = User(
+                username="mace",
+                email="mace@mace.com",
+                password=bcrypt.generate_password_hash("hello1").decode("utf-8"),
+            )
+
+            db.session.add_all([user, user2])
+            db.session.commit()
+            self.client = app.test_client()
+            self.user = user
+            self.test_user = user2
+            self.test_user_id = user2.id
+
+            self.client.post(
+                "/login",
+                data={"username": "mandaloria", "password": "hello1"},
+            )
+
+    def tearDown(self) -> None:
+        with app.app_context():
+            self.client.post("/logout")
+            db.session.delete(self.user)
+            db.session.delete(self.test_user)
+            db.session.commit()
+
+    def test_send_message(self):
+        res = self.client.post(
+            "/conversations/messages/new",
+            json={"user_id": self.test_user_id, "text": "hello"},
+        )
+
+        self.assertEqual(res.status_code, 200)
+        messages = self.client.get(f"/conversations/messages/{self.test_user_id}")
+        data = messages.get_data(as_text=True)
+        self.assertEqual(messages.status_code, 200)
+        self.assertIn("hello", data)

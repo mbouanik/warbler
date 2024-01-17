@@ -238,8 +238,8 @@ def conversations():
     form = PostForm()
     conversations = db.session.execute(
         db.select(Conversation).where(
-            Conversation.receiver_id == g.user.id,
-            Conversation.sender_id == g.user.id,
+            (Conversation.sender_id == g.user.id)
+            | (Conversation.receiver_id == g.user.id)
         )
     ).scalars()
 
@@ -268,15 +268,15 @@ def show_conversation(user_id):
     messages = []
     if conversation and conversation.messages:
         messages = conversation.messages[:10][::-1]
-        return render_template(
-            "messages.html",
-            form=form,
-            message_form=message_form,
-            user=user,
-            conversation=conversation,
-            messages=messages,
-            time=time_ago_message,
-        )
+    return render_template(
+        "messages.html",
+        form=form,
+        message_form=message_form,
+        user=user,
+        conversation=conversation,
+        messages=messages,
+        time=time_ago_message,
+    )
 
 
 @app_routes.route("/conversations/messages/new", methods=["POST"])
@@ -290,12 +290,7 @@ def new_message():
                 & (Conversation.receiver_id == request.json["user_id"])
             )
         ).scalar_one_or_none()
-        # conversation = db.session.execute(
-        #     db.select(Conversation).where(
-        #         Conversation.receiver_id == g.user.id,
-        #         Conversation.sender_id == request.json["user_id"],
-        #     )
-        # ).scalar_one_or_none()
+
         if not conversation:
             conversation = Conversation(
                 sender_id=g.user.id, receiver_id=request.json["user_id"]
@@ -359,9 +354,16 @@ def load_conversation():
 #     return render_template()
 
 
-@app_routes.route("/conversations/delete/<int:conversation_id>", methods=["POST"])
-def delete_conversation(conversation_id):
-    conversation = db.get_or_404(Conversation, conversation_id)
+@app_routes.route("/conversations/delete/<int:user_id>", methods=["POST"])
+def delete_conversation(user_id):
+    conversation = db.session.execute(
+        db.select(Conversation).where(
+            (Conversation.sender_id == user_id)
+            & (Conversation.receiver_id == g.user.id)
+            | (Conversation.sender_id == g.user.id)
+            & (Conversation.receiver_id == user_id)
+        )
+    ).scalar_one_or_none()
     for message in conversation.messages:
         db.session.delete(message)
     db.session.commit()
