@@ -4,7 +4,7 @@ Warp is an innovative and user-friendly social media platform designed to connec
 <br>\
 <img src="static/assets/images/signup.png" alt="signup" style="width:400px;">
 <img src="static/assets/images/home.png" alt="homepage" style="width:400px;">
-<img src="static/assets/images/profile.png" alt="profile" style="width:400px;">
+<img src="static/assets/images/profile.png" alt="profile" style="width:400px; height:400px;">
 <img src="static/assets/images/post.png" alt="post" style="width:400px;">
 <img src="static/assets/images/messages.png" alt="messages" style="width:400px;">
 
