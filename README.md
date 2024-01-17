@@ -1,7 +1,8 @@
 # Warp Social Media Platform
 
 Warp is an innovative and user-friendly social media platform designed to connect people, share experiences, and foster meaningful interactions. Whether you're a user looking to engage with others or a developer seeking to contribute, this README will guide you through essential information about [Warp](https://warp-95c2.onrender.com).
-![signup](static/assets/images/signup.png){:width="300px"}
+<img src="static/assets/images/signup.png" alt="signup" style="width:300px;">
+<!-- ![signup](static/assets/images/signup.png){:width="300px"} -->
 ![home](static/assets/images/home.png){:width="300px"}
 ![profile](static/assets/images/profile.png){:width="300px"}
 ![post](static/assets/images/post.png){:width="300px"}
