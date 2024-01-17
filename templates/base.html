@@ -17,6 +17,15 @@
                 <div class="d-flex" style="min-height:100vh">
                     <div class="vr text-black"></div>
                     <div style="flex:1;">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        <ul class=flashes>
+                            {% for message in messages %}
+                            <li>{{ message }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% endwith %}
                         {% block content %} {% endblock %}
                     </div>
                 </div>

@@ -10,9 +10,8 @@ from flask import (
     g,
     request,
 )
-from sqlalchemy.sql import or_
 
-from helpers import time_ago, time_ago_message, welcome_email
+from helpers import time_ago, time_ago_message
 from init import db
 from models import Comment, Conversation, Repost, User, Post, Likes, Message
 from forms import (
@@ -127,6 +126,8 @@ def signup():
             email=signup_form.email.data,
             password=signup_form.password.data,
             image_url=signup_form.image_url.data,
+            bio=signup_form.bio.data,
+            location=signup_form.location.data,
         )
         db.session.add(user)
         db.session.commit()
@@ -144,6 +145,22 @@ def authenticate():
     login_form = LoginForm()
 
     if signup_form and signup_form.validate_on_submit():
+        new_user_email = db.session.execute(
+            db.select(User).where(User.email == signup_form.email.data)
+        ).scalar_one_or_none()
+        new_user_username = db.session.execute(
+            db.select(User).where(User.username == signup_form.username.data)
+        ).scalar_one_or_none()
+
+        if new_user_email:
+            flash("email exists already")
+        if new_user_username:
+            flash("username exists already")
+
+            return render_template(
+                "authenticate.html", signup_form=signup_form, login_form=login_form
+            )
+
         user = User.sign_up(
             username=signup_form.username.data,
             email=signup_form.email.data,
