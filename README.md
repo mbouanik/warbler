@@ -42,7 +42,6 @@ Before you begin, ensure you have met the following requirements:
 
     ```bash
     pip install -r requirements.txt
-- **Multi-Media Sharing:** Share photos, videos, and updates with your network.
     ```
 
 3. Configure environment variables:
@@ -68,11 +67,11 @@ Visit `http://localhost:5000` in your browser to access Warp.
 
 - Create an account or log in if you already have one.
 - Explore the platform features, post updates, and connect with others.
-- Customize your profile and privacy settings.
+- Customize your profile.
 
 ## Contributing
 
-We welcome contributions! To contribute to Warp, follow these steps:
+Contributions are welcome! To contribute to Warp, follow these steps:
 
 1. Fork the repository.
 2. Create a new branch: `git checkout -b feature/your-feature`.

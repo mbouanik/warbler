@@ -1,8 +1,5 @@
 {% extends "base.html" %} {% block title %} {% endblock %} 
 {% block content %}
-    <!-- <form id="new_convo" action="/conversations/new-conversation"> -->
-    <!--     <input id="name_search" class="form-control" type="text" placeholder="New conversation"> -->
-    <!-- </form> -->
     <div class="d-flex"  style="justify-content:flex-end; ">
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalSearch">
   <i class="fa-solid fa-user-plus"></i>
@@ -33,6 +30,5 @@
        {% include "components/new_conversation_search.html" %}
     <script src="{{ url_for('app_routes.static', filename='conversation.js' ) }}"></script>
 
-<!-- Button trigger modal -->
 
 {% endblock %}

@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from os import getenv
 
 from models import Post, User
+from routes import conversations
 
 load_dotenv()
 app = create_app()
@@ -330,8 +331,8 @@ class TestMessage(TestCase):
     def setUp(self) -> None:
         with app.app_context():
             user = User(
-                username="mandaloria",
-                email="mandalorian@mandalorian.co",
+                username="mandalorian",
+                email="mandalorian@mandalorian.com",
                 password=bcrypt.generate_password_hash("hello1").decode("utf-8"),
             )
             user2 = User(
@@ -349,15 +350,14 @@ class TestMessage(TestCase):
 
             self.client.post(
                 "/login",
-                data={"username": "mandaloria", "password": "hello1"},
+                data={"username": "mandalorian", "password": "hello1"},
             )
 
     def tearDown(self) -> None:
         with app.app_context():
-            self.client.post("/logout")
-            db.session.delete(self.user)
-            db.session.delete(self.test_user)
-            db.session.commit()
+            db.drop_all()
+            db.create_all()
+            db.session.rollback()
 
     def test_send_message(self):
         res = self.client.post(
@@ -370,3 +370,8 @@ class TestMessage(TestCase):
         data = messages.get_data(as_text=True)
         self.assertEqual(messages.status_code, 200)
         self.assertIn("hello", data)
+        conversation = self.client.get("/users/conversations")
+        data = conversation.get_data(as_text=True)
+
+        self.assertEqual(conversation.status_code, 200)
+        self.assertIn("mace", data)

@@ -1,3 +1,4 @@
+from datetime import datetime
 from flask import (
     Blueprint,
     flash,
@@ -129,9 +130,6 @@ def signup():
         )
         db.session.add(user)
         db.session.commit()
-        print(
-            f"\n\n\n\n\n====================================={user.email}================================\n\n\n\n\n"
-        )
         do_login(user.id)
         return redirect(url_for("app_routes.home"))
     return render_template("signup.html", form=signup_form)
@@ -237,10 +235,12 @@ def show_user_profile(user_id):
 def conversations():
     form = PostForm()
     conversations = db.session.execute(
-        db.select(Conversation).where(
+        db.select(Conversation)
+        .where(
             (Conversation.sender_id == g.user.id)
             | (Conversation.receiver_id == g.user.id)
         )
+        .order_by(Conversation.last_update.desc())
     ).scalars()
 
     return render_template(
@@ -303,6 +303,7 @@ def new_message():
             message = Message()
             message_form.populate_obj(message)
             message.user_id = g.user.id
+            conversation.last_update = datetime.utcnow()
             conversation.messages.append(message)
             db.session.commit()
             response = {
@@ -336,22 +337,6 @@ def load_conversation():
         ]
         return jsonify(messages)
     return jsonify({"failed": "load messages"})
-
-
-# @app_routes.route("/conversations/new/<int:user_id>", methods=["GET", "POST"])
-# def show_new_conversation(user_id):
-#     user = db.get_or_404(User, user_id)
-#     conversation = db.session.execute(
-#         db.select(Conversation).where(
-#             Conversation.sender_id == min(g.user.id, user_id),
-#             Conversation.recipient_id == max(g.user.id, user_id),
-#         )
-#     ).scalar_one_or_none()
-#     if conversation:
-#         return redirect(
-#             url_for("app_routes.show_conversation", conversation_id=conversation.id)
-#             )
-#     return render_template()
 
 
 @app_routes.route("/conversations/delete/<int:user_id>", methods=["POST"])
@@ -392,9 +377,9 @@ def edit_user_profile():
 @login_required
 def delete_user():
     user = db.get_or_404(User, g.user.id)
-    print(g.user)
     do_logout()
-    db.session.delete(user)
+    user.username = f"deleted_user{user.id}"
+    db.session.add(user)
     db.session.commit()
     g.user = None
     return redirect(url_for("app_routes.authenticate"))

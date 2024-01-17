@@ -8,7 +8,6 @@ from sqlalchemy import (
     UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, Relationship, mapped_column
-from sqlalchemy.sql.schema import PrimaryKeyConstraint
 from helpers import welcome_email
 from init import db, bcrypt
 from datetime import datetime
@@ -151,7 +150,11 @@ class Conversation(db.Model):
     receiver_id: Mapped[int] = mapped_column(
         Integer, ForeignKey("users.id"), primary_key=True
     )
-
+    last_update: Mapped[DateTime] = mapped_column(
+        DateTime,
+        nullable=False,
+        default=datetime.utcnow,
+    )
     messages: Mapped[Message] = Relationship(
         "Message", cascade="all, delete-orphan", order_by="desc(Message.id)"
     )
