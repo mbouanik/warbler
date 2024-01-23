@@ -66,7 +66,11 @@ Before you begin, ensure you have met the following requirements:
     ```bash
     python3 app.py
     ```
+5. test the application:
 
+    ```bash
+    python3  -m unittest -v test/test_app.py
+    ```
 Visit `http://localhost:5000` in your browser to access Warp.
 
 ## Usage
